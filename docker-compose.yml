@@ -30,6 +30,8 @@ services:
       - ./selfsigned.crt:/etc/nginx/ssl/selfsigned.crt:ro
       - ./selfsigned.key:/etc/nginx/ssl/selfsigned.key:ro
       - .:/usr/share/nginx/html:ro
+    depends_on:
+      - app
 
 volumes:
   mongo-data:
