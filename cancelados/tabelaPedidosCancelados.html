@@ -218,7 +218,7 @@
             const pedidosListContainer = document.getElementById('pedidosList');
 
             function carregarPedidos(estadoSelecionado = '') {
-                let url = 'http://localhost:3000/registrar/receberPedidos';
+                let url = 'http://198.211.114.77:3000/registrar/receberPedidos';
                 if (estadoSelecionado) {
                     url += `?estado=${estadoSelecionado}`;
                 }

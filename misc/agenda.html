@@ -259,7 +259,7 @@
 
         async function preencherDatasRegistradas() {
         try {
-            const response = await axios.get('http://localhost:3000/agenda/datasRegistradas');
+            const response = await axios.get('http://198.211.114.77:3000/agenda/datasRegistradas');
             const datas = response.data;
 
             if (datas.dataInicioCE) {
@@ -346,7 +346,7 @@
             const pedidosListContainer = document.getElementById('pedidosList');
 
             function carregarPedidos(estadoSelecionado = '') {
-                let url = 'http://localhost:3000/registrar/receberPedidos';
+                let url = 'http://198.211.114.77:3000/registrar/receberPedidos';
                 if (estadoSelecionado) {
                     url += `?estado=${estadoSelecionado}`;
                 }
@@ -426,7 +426,7 @@
                         return;
                     }
 
-                    const response = await axios.get('http://localhost:3000/agenda/datasRegistradas', {
+                    const response = await axios.get('http://198.211.114.77:3000/agenda/datasRegistradas', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -458,14 +458,14 @@
 
                     if (registroExistente && Object.keys(registroExistente).length > 0) {
                         // Se existir um registro, utilizar a rota PUT para atualizar
-                        response = await axios.put('http://localhost:3000/agenda/atualizarDatas', requestBody, {
+                        response = await axios.put('http://198.211.114.77:3000/agenda/atualizarDatas', requestBody, {
                             headers: {
                                 Authorization: `Bearer ${token}`
                             }
                         });
                     } else {
                         // Se não existir um registro, utilizar a rota POST para registrar
-                        response = await axios.post('http://localhost:3000/agenda/registrarDatas', requestBody, {
+                        response = await axios.post('http://198.211.114.77:3000/agenda/registrarDatas', requestBody, {
                             headers: {
                                 Authorization: `Bearer ${token}`
                             }

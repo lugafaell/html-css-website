@@ -225,7 +225,7 @@
 
         let entregador = "Sem Nome";
         function fetchPedidoInfo(pedidoId) {
-            fetch(`http://localhost:3000/registrar/receberID/${pedidoId}`)
+            fetch(`http://198.211.114.77:3000/registrar/receberID/${pedidoId}`)
                 .then(response => response.json())
                 .then(pedido => {
                     const pedidoInfoContainer = document.getElementById('pedidoInfo');

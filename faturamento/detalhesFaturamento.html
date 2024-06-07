@@ -270,7 +270,7 @@
 
         async function preencherStatusMotivo() {
             try {
-                const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+                const response = await fetch('http://198.211.114.77:3000/faturamento/receberFaturamento');
 
                 if (!response.ok) {
                     throw new Error('Erro ao obter o Status e Motivo');
@@ -574,7 +574,7 @@
                 return;
             }
 
-            fetch(`http://localhost:3000/faturamento/receberFaturamento/${faturamentoId}`)
+            fetch(`http://198.211.114.77:3000/faturamento/receberFaturamento/${faturamentoId}`)
                 .then(response => response.json())
                 .then(faturamento => {
                     fillFaturamentoDetails(faturamento);
@@ -623,7 +623,7 @@
                 motivo,
             };
 
-            fetch(`http://localhost:3000/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
+            fetch(`http://198.211.114.77:3000/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -765,7 +765,7 @@
                 contador: contador,
             };
 
-            fetch(`http://localhost:3000/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
+            fetch(`http://198.211.114.77:3000/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -807,7 +807,7 @@
                     return;
                 }
 
-                fetch(`http://localhost:3000/faturamento/receberFaturamento/${faturamentoId}`)
+                fetch(`http://198.211.114.77:3000/faturamento/receberFaturamento/${faturamentoId}`)
                     .then(response => response.json())
                     .then(faturamento => {
 

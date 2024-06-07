@@ -364,7 +364,7 @@
             };
 
             try {
-                const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -525,7 +525,7 @@
                 }
 
                 try {
-                    const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                    const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -561,7 +561,7 @@
                 }
 
                 try {
-                    const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                    const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -616,7 +616,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -663,7 +663,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -717,7 +717,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -763,7 +763,7 @@
                     }
 
                     try {
-                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        const response = await fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -795,7 +795,7 @@
 
         let entregador = "Sem Nome";
         function fetchPedidoInfo(pedidoId) {
-            fetch(`http://localhost:3000/registrar/receberID/${pedidoId}`)
+            fetch(`http://198.211.114.77:3000/registrar/receberID/${pedidoId}`)
                 .then(response => response.json())
                 .then(pedido => {
                     const pedidoInfoContainer = document.getElementById('pedidoInfo');
@@ -1008,7 +1008,7 @@
                 return;
             }
 
-            fetch(`http://localhost:3000/registrar/receberID/${pedidoId}`)
+            fetch(`http://198.211.114.77:3000/registrar/receberID/${pedidoId}`)
                 .then(response => response.json())
                 .then(pedido => {
 
@@ -1205,7 +1205,7 @@
                     let devolucao = devolucaoImage.src;
                     let comunicado = comunicadoImage.src;
 
-                    fetch('http://localhost:3000/faturamento/registrarFaturamento', {
+                    fetch('http://198.211.114.77:3000/faturamento/registrarFaturamento', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1241,7 +1241,7 @@
                                 console.log("Nota fiscal: " + notaFiscal64);
                                 console.log("Nome entregador: " + entregador);
 
-                                fetch(`http://localhost:3000/registrar/deletarPedido/${pedidoId}`, {
+                                fetch(`http://198.211.114.77:3000/registrar/deletarPedido/${pedidoId}`, {
                                     method: 'DELETE'
                                 })
                                     .then(() => {
