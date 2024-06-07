@@ -32,6 +32,3 @@ services:
       - .:/usr/share/nginx/html:ro
     depends_on:
       - app
-
-volumes:
-  mongo-data:
