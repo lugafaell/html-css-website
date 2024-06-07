@@ -88,7 +88,7 @@
       const formData = new FormData(this);
 
       try {
-        const response = await axios.post('https://198.211.114.77:3000/auth/login', {
+        const response = await axios.post('http://198.211.114.77:3000/auth/login', {
           username: formData.get('username'),
           password: formData.get('password')
         });
