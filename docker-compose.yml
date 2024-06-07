@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ./app
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -9,7 +9,7 @@ services:
       - DATABASE=${DATABASE}
       - JWT_SECRET=${JWT_SECRET}
     volumes:
-      - .:/app
+      - ./app:/app
     depends_on:
       - mongo
 
@@ -30,8 +30,8 @@ services:
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
-      - ./selfsigned.crt:/etc/nginx/certs/selfsigned.crt:ro
-      - ./selfsigned.key:/etc/nginx/certs/selfsigned.key:ro
+      - ./app/selfsigned.crt:/etc/nginx/certs/selfsigned.crt:ro
+      - ./app/selfsigned.key:/etc/nginx/certs/selfsigned.key:ro
 
 volumes:
   mongo-data:
