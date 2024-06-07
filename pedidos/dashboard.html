@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        #background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #017f2d;
+            background-size: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        #dashboard-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: transparent; /* Fundo transparente */
+        }
+        canvas {
+            margin-bottom: 20px;
+        }
+
+        #valor-total {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #meta-progress {
+          width: calc(100% - 160px); /* Ajuste para separar do campo de entrada */
+            height: 30px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            margin-right: 20px; /* Adicionando margem à direita */
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            transition: width 0.3s ease;
+        }
+
+        #percentual {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            line-height: 30px;
+            color: black;
+        }
+
+        #meta-value {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .barra-vermelha {
+            background-color: #ff6347;
+        }
+
+        .barra-amarela {
+            background-color: #ffd700;
+        }
+
+        .barra-verde {
+            background-color: #28a745;
+        }
+
+        nav.navbar {
+            background-color: #343a40;
+        }
+
+        .offcanvas-header h3 {
+            margin: 0;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        .nav-link {
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #00d084;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+            border-top: none;
+        }
+
+        .table th:first-child, .table td:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .table th:last-child, .table td:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #000000;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .fundo-preto {
+    background-color: #000000; /* cor preta */
+    color: #ffffff; /* texto branco para contrastar */
+}
+    </style>
+</head>
+<body>
+
+    <div id="background-container"></div>
+
+    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+      <div class="container-fluid">
+          <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+              height="30" class="d-inline-block align-top" alt="">
+
+          <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+              aria-labelledby="offcanvasNavbarLabel">
+              <div class="offcanvas-header">
+                  <h3 class="text-white" id="userName"></h3>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                      aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                  <ul class="navbar-nav">
+                      <li class="nav-item">
+                          <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
+                      </li>
+                      <li id="faturamento" class="nav-item">
+                          <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
+                      </li>
+                      <li id="pedidosCancelados" class="nav-item">
+                          <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
+                      </li>
+                      <li id="agenda" class="nav-item">
+                        <a class="nav-link text-white" href="../misc/agenda.html">Agendamento THULEP</a>
+                    </li>
+                      <li class="nav-item">
+                          <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </nav>
+    <div class="container mt-4">
+        <div class="card-body">
+            <h2>Progressão da Meta</h2>
+
+            <div class="d-flex align-items-center justify-content-between mt-3">
+                <div id="meta-progress" style="flex-grow: 1;">
+                    <div id="progress-bar"></div>
+                    <div id="percentual"></div>
+                </div>
+
+                  <form id="meta-form" class="d-flex align-items-center">
+                    <div class="flex-grow-1 me-3">
+                        <input type="number" id="nova-meta" class="form-control" placeholder="Meta Mensal" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="dashboard-container">
+            <h2>Dashboard</h2>
+            <div class="card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="pie-chart"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <canvas id="terceiro-grafico-pizza"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="row mt-4">
+                    <div class="col">
+                        <h3>Mapeamento</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Estados</th>
+                                    <th>Aguardando Faturamento</th>
+                                    <th>Pendência de Faturamento</th>
+                                </tr>
+                            </thead>
+                            <tbody id="estados-table-body">
+                                <tr>
+                                    <td>Ceará</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Piauí</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Cariri</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Maranhão</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col">
+                        <h3>Tempo Real</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Valores</th>
+                                </tr>
+                            </thead>
+                            <tbody id="status-table-body">
+                                <tr>
+                                    <td>Faturado</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Disponível para Faturar</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Previsão de Faturamento</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Meta Mensal</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Falta para Atingir a Meta</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div id="meta-value"></div>
+                <canvas id="line-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+
+  <script>
+
+    function logout() {
+      // Limpe o token do localStorage
+      localStorage.removeItem('token');
+
+      // Limpe o email do usuário do localStorage
+      localStorage.removeItem('userEmail');
+
+      // Redirecione para a tela de login
+      window.location.href = '../login/tela_login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const userEmail = localStorage.getItem('userEmail');
+
+      if (userEmail !== null) {
+                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+            } else {
+                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+            }
+
+      const metaForm = document.getElementById('meta-form');
+
+      metaForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const novaMetaInput = document.getElementById('nova-meta');
+        const novaMeta = novaMetaInput.value.trim();
+
+        if (!novaMeta) {
+          alert('Por favor, insira um valor válido para a nova meta.');
+          return;
+        }
+
+        try {
+          const response = await fetch('http://localhost:3000/meta/atualizarMeta', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ meta: parseFloat(novaMeta) })
+          });
+
+          if (!response.ok) {
+            throw new Error('Erro ao atualizar a meta.');
+          }
+
+          const data = await response.json();
+          console.log('Meta atualizada com sucesso:', data.meta);
+          location.reload();
+
+          novaMetaInput.value = '';
+
+        } catch (error) {
+          console.error('Erro ao atualizar a meta:', error.message);
+          alert('Erro ao atualizar a meta. Por favor, tente novamente.');
+        }
+      });
+
+      carregarDados();
+      exibirGraficoPizza();
+      criarTerceiroGraficoPizza();
+      exibirGraficoLinha();
+    });
+
+    async function exibirGraficoLinha() {
+      const ctx = document.getElementById('line-chart').getContext('2d');
+
+      try {
+        const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar faturamentos');
+        }
+        const faturamentos = await response.json();
+
+        const dadosPorAnoMes = {};
+
+        faturamentos.forEach(pedido => {
+          const dataProcedimento = new Date(pedido.dataProcedimento);
+          const ano = dataProcedimento.getFullYear();
+          const mes = dataProcedimento.getMonth() + 1;
+
+          const chave = `${ano}-${mes.toString().padStart(2, '0')}`;
+          if (!dadosPorAnoMes[chave]) {
+            dadosPorAnoMes[chave] = 0;
+          }
+
+          dadosPorAnoMes[chave] += pedido.valorTotal || 0;
+        });
+
+        const anos = [...new Set(Object.keys(dadosPorAnoMes).map(chave => chave.split('-')[0]))];
+        const meses = Array.from({ length: 12 }, (_, i) => i + 1);
+        const labels = meses.map(mes => {
+          const date = new Date(`2022-${mes}-01`);
+          return date.toLocaleString('default', { month: 'long' });
+        });
+
+        const datasets = anos.map(ano => {
+          const data = meses.map(mes => {
+            const chave = `${ano}-${mes.toString().padStart(2, '0')}`;
+            return dadosPorAnoMes[chave] || 0;
+          });
+
+          const hasData = data.some(value => value > 0);
+
+          if (hasData) {
+            return {
+              label: `Valores por Mês - ${ano}`,
+              data: data,
+              fill: false,
+              borderColor: getRandomColor(),
+              tension: 0.1
+            };
+          } else {
+            return null;
+          }
+        }).filter(dataset => dataset !== null)
+
+        const lineChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: datasets
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Erro ao obter faturamentos:', error);
+      }
+    }
+
+    function getRandomColor() {
+      return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+    }
+
+    async function obterSomaValorTotalPorEstado() {
+      try {
+        const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar faturamentos');
+        }
+        const faturamentos = await response.json();
+
+        const somaValorTotalPorEstado = {};
+
+        const estadosVerificados = ['CE', 'PI', 'RMC', 'MA'];
+
+        // Obter mês e ano atuais
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
+        const anoAtual = dataAtual.getFullYear();
+
+        faturamentos.forEach(pedido => {
+          if (pedido.status !== 'FATURADO') {
+            const { estado, valorTotal, dataProcedimento } = pedido;
+
+            const data = new Date(dataProcedimento);
+            const mesProcedimento = data.getMonth() + 1;
+            const anoProcedimento = data.getFullYear();
+
+            // Verificar se o pedido é do mês e ano corrente
+            if (mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
+              const parsedValue = parseFloat(valorTotal);
+              const valorParaSomar = !isNaN(parsedValue) ? parsedValue : 0;
+
+              if (estado in somaValorTotalPorEstado) {
+                somaValorTotalPorEstado[estado] += valorParaSomar;
+              } else {
+                somaValorTotalPorEstado[estado] = valorParaSomar;
+              }
+            }
+          }
+        });
+
+        estadosVerificados.forEach(estado => {
+          if (!(estado in somaValorTotalPorEstado)) {
+            somaValorTotalPorEstado[estado] = 0;
+          }
+        });
+
+        console.log('Soma do valor total por estado:', somaValorTotalPorEstado);
+
+        return somaValorTotalPorEstado;
+      } catch (error) {
+        console.error('Erro ao obter faturamentos:', error);
+        return {};
+      }
+    }
+
+    async function obterPedidosAguardandoFaturamento() {
+      try {
+        const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar faturamentos');
+        }
+        const faturamentos = await response.json();
+
+        const somaValorPorEstadoStatus = {};
+
+        // Obter mês e ano atuais
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
+        const anoAtual = dataAtual.getFullYear();
+
+        faturamentos.forEach(pedido => {
+          if (pedido.status === 'AGUARDANDO FATURAMENTO') {
+            const { estado, valorTotal, dataProcedimento } = pedido;
+
+            const data = new Date(dataProcedimento);
+            const mesProcedimento = data.getMonth() + 1;
+            const anoProcedimento = data.getFullYear();
+
+            if(mesProcedimento === mesAtual && anoProcedimento === anoAtual){
+
+              if (estado in somaValorPorEstadoStatus) {
+              somaValorPorEstadoStatus[estado] += valorTotal;
+            } else {
+              somaValorPorEstadoStatus[estado] = valorTotal;
+            }
+
+            }
+          }
+        });
+
+        const estadosVerificados = ['CE', 'PI', 'RMC', 'MA'];
+
+        estadosVerificados.forEach(estado => {
+          if (!(estado in somaValorPorEstadoStatus)) {
+            somaValorPorEstadoStatus[estado] = 0;
+          }
+        });
+
+        console.log('Soma do valor total por estado:', somaValorPorEstadoStatus);
+
+        return somaValorPorEstadoStatus;
+      } catch (error) {
+        console.error('Erro ao obter faturamentos:', error);
+        return {};
+      }
+    }
+
+    async function obterPedidosFinalizado() {
+      try {
+        const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar faturamentos');
+        }
+        const faturamentos = await response.json();
+
+        const somaValorPorEstadoFinalizado = {};
+
+        // Obter mês e ano atuais
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
+        const anoAtual = dataAtual.getFullYear();
+
+        faturamentos.forEach(pedido => {
+          if (pedido.status === 'FATURADO') {
+            const { estado, valorTotal, dataProcedimento } = pedido;
+
+            const data = new Date(dataProcedimento);
+            const mesProcedimento = data.getMonth() + 1;
+            const anoProcedimento = data.getFullYear();
+
+            if(mesProcedimento === mesAtual && anoProcedimento === anoAtual){
+              if (estado in somaValorPorEstadoFinalizado) {
+              somaValorPorEstadoFinalizado[estado] += valorTotal;
+            } else {
+              somaValorPorEstadoFinalizado[estado] = valorTotal;
+            }
+            }
+          }
+        });
+
+        const estados = ['CE', 'PI', 'RMC', 'MA'];
+        estados.forEach(estado => {
+          if (!(estado in somaValorPorEstadoFinalizado)) {
+            somaValorPorEstadoFinalizado[estado] = 0;
+          }
+        });
+
+        console.log('Soma do valor total por estado:', somaValorPorEstadoFinalizado);
+
+        return somaValorPorEstadoFinalizado;
+      } catch (error) {
+        console.error('Erro ao obter faturamentos:', error);
+        return {};
+      }
+    }
+
+    function exibirGraficoPizza(somaValorPorEstadoStatus, somaValorTotalPorEstado, somaValorPorEstadoFinalizado) {
+      if (
+        somaValorPorEstadoStatus &&
+        Object.keys(somaValorPorEstadoStatus).length > 0 &&
+        somaValorTotalPorEstado &&
+        Object.keys(somaValorTotalPorEstado).length > 0 &&
+        somaValorPorEstadoFinalizado &&
+        Object.keys(somaValorPorEstadoFinalizado).length > 0
+      ) {
+        fetch('http://localhost:3000/meta/dashboard')
+          .then(response => response.json())
+          .then(data => {
+            const valorTotalSomado = data.valorTotalSomado.toFixed(2);
+            const pedidosRealizados = data.pedidosRealizados;
+
+            const pieChartData = {
+              labels: ['Pedidos Realizados', 'Pedidos Pendentes', 'Pedidos Concluídos'],
+              datasets: [{
+                label: 'Status dos Pedidos',
+                backgroundColor: ['#ff9999', '#66b3ff', '#99ff99'],
+                borderColor: '#ffffff',
+                borderWidth: 1,
+                data: [data.pedidosRealizados, data.pedidosPendentes, data.pedidosConcluidos]
+              }]
+            };
+
+            var ctx = document.getElementById('pie-chart').getContext('2d');
+            var pieChart = new Chart(ctx, {
+              type: 'pie',
+              data: pieChartData,
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
+
+            fetch('http://localhost:3000/meta/receberMeta')
+              .then(response => response.json())
+              .then(metaData => {
+                const meta = metaData.meta;
+
+                const estadosTableBody = document.getElementById('estados-table-body');
+                estadosTableBody.innerHTML = '';
+                const estadosData = [
+                  { estado: 'Ceará', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['CE'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['CE'] || '' },
+                  { estado: 'Piauí', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['PI'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['PI'] || '' },
+                  { estado: 'Cariri', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['RMC'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['RMC'] || '' },
+                  { estado: 'Maranhão', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['MA'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['MA'] || '' },
+                  { estado: 'Total', aguardandoFaturamento: 'R$ ' + (somaValorPorEstadoStatus['CE'] + somaValorPorEstadoStatus['PI'] + somaValorPorEstadoStatus['RMC'] + somaValorPorEstadoStatus['MA']) || '', pendenciaFaturamento: 'R$ ' + (somaValorTotalPorEstado['CE'] + somaValorTotalPorEstado['PI'] + somaValorTotalPorEstado['RMC'] + somaValorTotalPorEstado['MA']) || '' }
+                ];
+
+                estadosData.forEach(estData => {
+                  const row = `<tr>
+                            <td>${estData.estado}</td>
+                            <td>${estData.aguardandoFaturamento}</td>
+                            <td>${estData.pendenciaFaturamento}</td>
+                          </tr>`;
+                  estadosTableBody.innerHTML += row;
+                });
+
+                const statusTableBody = document.getElementById('status-table-body');
+                const faturado = somaValorPorEstadoFinalizado['CE'] + somaValorPorEstadoFinalizado['PI'] + somaValorPorEstadoFinalizado['RMC'] + somaValorPorEstadoFinalizado['MA'];
+                const disponivel = somaValorPorEstadoStatus['CE'] + somaValorPorEstadoStatus['PI'] + somaValorPorEstadoStatus['RMC'] + somaValorPorEstadoStatus['MA'];
+                const previsao = faturado + disponivel;
+
+                statusTableBody.innerHTML = '';
+                const statusData = [
+                  { status: 'Faturado', valores: 'R$ ' + faturado || '' },
+                  { status: 'Disponível para Faturar', valores: 'R$ ' + disponivel || '' },
+                  { status: 'Previsão de Faturamento', valores: 'R$ ' + previsao || '' },
+                  { status: 'Meta Mensal', valores: 'R$ ' + meta || '' },
+                  { status: 'Falta para Atingir a Meta', valores: 'R$ ' + (meta - previsao) || '' }
+                ];
+
+                statusData.forEach(status => {
+                  const row = `<tr>
+                            <td>${status.status}</td>
+                            <td>${status.valores}</td>
+                          </tr>`;
+                  statusTableBody.innerHTML += row;
+                });
+
+                const progresso = (valorTotalSomado / meta);
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = `${progresso}%`;
+
+                const percentual = progresso.toFixed(1);
+                document.getElementById('percentual').innerText = `${percentual}%`;
+                document.getElementById('meta-value').innerText = `Meta: R$ ${meta.toFixed(2)}`;
+
+                if (progresso < 50) {
+                  progressBar.classList.add('barra-vermelha');
+                } else if (progresso >= 50 && progresso < 100) {
+                  progressBar.classList.add('barra-amarela');
+                } else {
+                  progressBar.classList.add('barra-verde');
+                }
+              })
+              .catch(error => console.error('Erro ao obter a meta:', error));
+          })
+          .catch(error => console.error('Erro ao obter dados dos pedidos:', error));
+      } else {
+        console.error('Soma do valor por estado não está definida ou está vazia.');
+      }
+    }
+
+    async function contarPedidosPorEstado() {
+  try {
+    const response = await fetch('http://localhost:3000/faturamento/receberFaturamento');
+    if (!response.ok) {
+      throw new Error('Erro ao buscar faturamentos');
+    }
+    const faturamentos = await response.json();
+
+    const estadosAlvo = ['CE', 'PI', 'MA', 'RMC'];
+
+    const pedidosPorEstado = {};
+    estadosAlvo.forEach(estado => {
+      pedidosPorEstado[estado] = 0;
+    });
+
+    // Obter mês e ano atuais
+    const dataAtual = new Date();
+    const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
+    const anoAtual = dataAtual.getFullYear();
+
+    faturamentos.forEach(pedido => {
+      const { estado, dataProcedimento } = pedido;
+      
+      const data = new Date(dataProcedimento);
+      const mesProcedimento = data.getMonth() + 1;
+      const anoProcedimento = data.getFullYear();
+
+      // Verificar se o pedido é do mês e ano corrente
+      if (estadosAlvo.includes(estado) && mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
+        pedidosPorEstado[estado]++;
+      }
+    });
+
+    return pedidosPorEstado;
+  } catch (error) {
+    console.error('Erro ao contar pedidos por estado:', error);
+    throw error;
+  }
+}
+
+    async function criarTerceiroGraficoPizza() {
+      try {
+        const pedidosPorEstado = await contarPedidosPorEstado();
+
+        const labels = Object.keys(pedidosPorEstado);
+        const data = Object.values(pedidosPorEstado);
+        console.log(pedidosPorEstado)
+
+        const ctx = document.getElementById('terceiro-grafico-pizza').getContext('2d');
+        const terceiroGraficoPizza = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Pedidos por Estado',
+              backgroundColor: ['#ff9999', '#66b3ff', '#99ff99', '#ffb3e6'],
+              borderColor: '#ffffff',
+              borderWidth: 1,
+              data: data
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Erro ao criar o terceiro gráfico de pizza:', error);
+      }
+    }
+
+    async function carregarDados() {
+      try {
+        const somaValorPorEstadoStatus = await obterPedidosAguardandoFaturamento();
+        const somaValorTotalPorEstado = await obterSomaValorTotalPorEstado();
+        const somaValorPorEstadoFinalizado = await obterPedidosFinalizado();
+
+        exibirGraficoPizza(somaValorPorEstadoStatus, somaValorTotalPorEstado, somaValorPorEstadoFinalizado);
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informações do Pedido</title>
+    <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+    <style>
+        #background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #017f2d;
+            background-size: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #6b6868;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .table th {
+            background-color: #e6e0e0;
+            padding: 12px;
+            text-align: left;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .table td {
+            padding: 12px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table td:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .table tbody tr:nth-of-type(even) {
+            background-color: #f5f5f5;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #131212;
+            border-radius: 4px;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .table input[type="text"]:focus {
+            outline: none;
+            border-color: #66afe9;
+            box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            background-color: black;
+            color: white;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-info {
+            background-color: #212529;
+            border: 1px solid #ced4da;
+        }
+
+        .card-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .nota-img {
+            max-width: 200px;
+            /* Defina o tamanho máximo de largura desejado */
+            max-height: 200px;
+            /* Defina o tamanho máximo de altura desejado */
+            /* Adicione outras propriedades de estilo conforme necessário */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background-container"></div>
+
+    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+        <div class="container-fluid">
+            <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+                height="30" class="d-inline-block align-top" alt="">
+
+            <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h3 class="text-white" id="userName"></h3>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                        <li id="pedidos" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/pedidos.html">Pedidos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
+                        </li>
+                        <li id="faturamento" class="nav-item">
+                            <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendente de
+                                Faturamento</a>
+                        </li>
+                        <li id="pedidosCancelados" class="nav-item">
+                            <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos
+                                Cancelados</a>
+                        </li>
+                        <li id="dashboard" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Detalhes do Pedido</h2>
+        <button id="btnVoltar" class="btn btn-outline mt-2"><- Voltar</button>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-info mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Informações do Pedido</h5>
+                                <div id="pedidoInfo"></div>
+                                <button id="btnEditar" class="btn btn-secondary mt-2">Editar</button>
+                                <button id="btnCancelar" class="btn btn-danger mt-2">Cancelar</button>
+                                <div id="container-text-area"></div>
+                                <button id="btnConfirmar" class="btn btn-success mt-2"
+                                    style="display: none;">Confirmar</button>
+                                <button id="btnX" class="btn btn-danger mt-2" style="display: none;">Fechar</button>
+                                <div id="cardLinkAutorizacao">
+                                    <label for="linkAutorizacaoInput" class="form-label mt-2">Link de
+                                        Autorização</label>
+                                    <input type="text" class="form-control" id="linkAutorizacaoInput"></input>
+                                </div>
+
+                                <div>
+                                    <label for="comunicadoInput" class="form-label mt-2">Comunicado de Uso</label>
+                                    <input type="file" class="form-control" id="comunicadoInput" accept="image/*" />
+                                    <img id="comunicadoImage" class="nota-img" src="" alt="Preview"
+                                        style="max-width: 100%; margin-top: 10px; display: none;" />
+                                    <button id="btnComunicado" class="btn btn-success mt-2">Anexar Comunicado de
+                                        Uso</button>
+                                    <button id="btnComunicadoAtualizar" class="btn btn-success mt-2"
+                                        style="display: none;">Atulizar Comunicado de Uso</button>
+                                </div>
+
+                                <div id="remessaDevolucao">
+                                    <div>
+                                        <label for="remessaInput" class="form-label mt-3">Nota de Remessa</label>
+                                        <input type="file" class="form-control" id="remessaInput" accept="image/*" />
+                                        <img id="remessaImage" class="nota-img" src="#" alt="Preview"
+                                            style="max-width: 100%; margin-top: 10px; display: none;" />
+                                        <button id="btnRemessa" class="btn btn-success mt-2">Anexar Nota de
+                                            Remessa</button>
+                                        <button id="btnRemessaAtualizar" class="btn btn-success mt-2"
+                                            style="display: none;">Atulizar Nota de Remessa</button>
+                                    </div>
+
+                                    <label for="devolucaoInput" class="form-label mt-3">Nota de Devolução</label>
+                                    <input type="file" class="form-control" id="devolucaoInput" accept="image/*" />
+                                    <img id="devolucaoImage" class="nota-img" src="#" alt="Preview"
+                                        style="max-width: 100%; margin-top: 10px; display: none;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card card-info mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Itens da Cirurgia</h5>
+                                <div id="equipamentosInfo"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div id="cardFiscal" class="card card-info mb-4">
+                            <div class="card-body">
+                                <div id="novoCardInfo">
+                                    <h5 class="card-title">Anexar Nota Fiscal</h5>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="nomeEntregadorInput"
+                                            placeholder="Nome do Entregador..." />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <input type="file" class="form-control" id="fotoInput" accept="image/*" />
+                                        <img id="previewImage" class="nota-img" src="#" alt="Preview"
+                                            style="max-width: 100%; margin-top: 10px; display: none;" />
+                                    </div>
+
+                                    <button id="btnNota" class="btn btn-success">Anexar Nota Fiscal</button>
+                                    <button id="btnNotaAtualizar" class="btn btn-success"
+                                        style="display: none;">Atualizar Nota
+                                        Fiscal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="enviarFaturamentoBtn" class="btn btn-primary mt-3">
+                    Enviar para Faturamento
+                </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+
+        document.getElementById('btnEditar').addEventListener('click', function () {
+            // Obtém a URL atual
+            const urlParams = new URLSearchParams(window.location.search);
+            // Extrai o parâmetro 'id' da URL
+            const pacienteId = urlParams.get('id');
+
+            if (pacienteId) {
+                // Constrói a URL de redirecionamento para a página de edição do paciente
+                const editUrl = `../pedidos/editarPaciente.html?id=${pacienteId}`;
+                // Redireciona para a nova URL
+                window.location.href = editUrl;
+            } else {
+                alert('ID do paciente não encontrado na URL');
+            }
+        });
+
+        const btnVoltar = document.getElementById('btnVoltar');
+
+        btnVoltar.addEventListener('click', function () {
+            window.location.href = "../pedidos/tabelaPedidos.html";
+        })
+
+        function logout() {
+            localStorage.removeItem('token');
+
+            localStorage.removeItem('userEmail');
+
+            window.location.href = '../login/tela_login.html';
+        }
+
+        const btnCancelar = document.getElementById('btnCancelar');
+
+        btnCancelar.addEventListener('click', function () {
+            const btnEditar = document.getElementById('btnEditar');
+            const btnConfirmar = document.getElementById('btnConfirmar');
+            const btnX = document.getElementById('btnX');
+
+            btnEditar.style.display = 'none';
+            btnCancelar.style.display = 'none';
+            btnConfirmar.style.display = 'block';
+            btnX.style.display = 'block';
+
+            const textarea = document.createElement('textarea');
+            textarea.id = 'novaTextarea';
+            textarea.rows = 4;
+            textarea.cols = 50;
+            textarea.placeholder = 'Informe o Motivo do cancelamento...';
+
+            const container = document.getElementById('container-text-area');
+            container.appendChild(textarea);
+        });
+
+        const btnX = document.getElementById('btnX');
+
+        btnX.addEventListener('click', function () {
+            const btnEditar = document.getElementById('btnEditar');
+            const btnCancelar = document.getElementById('btnCancelar');
+            const btnConfirmar = document.getElementById('btnConfirmar');
+
+            btnEditar.style.display = 'block';
+            btnCancelar.style.display = 'block';
+            btnConfirmar.style.display = 'none';
+            btnX.style.display = 'none';
+
+            const textarea = document.getElementById('novaTextarea');
+            if (textarea) {
+                textarea.remove();
+            }
+        });
+
+        const btnConfirmar = document.getElementById('btnConfirmar');
+
+        btnConfirmar.addEventListener('click', async function () {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const pacienteId = urlParams.get('id');
+
+            if (!pacienteId) {
+                console.error('ID do paciente não encontrado na URL');
+                return;
+            }
+
+            const textarea = document.getElementById('novaTextarea');
+            const motivoCancelamento = textarea ? textarea.value : '';
+
+            if (!motivoCancelamento) {
+                alert('Por favor, informe o motivo do cancelamento.');
+                return;
+            }
+
+            const data = {
+                situacao: 'Cancelado',
+                motivoCancelamento: motivoCancelamento
+            };
+
+            try {
+                const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao atualizar o registro.');
+                }
+
+                const result = await response.json();
+                window.location.href = "../pedidos/tabelaPedidos.html";
+                // Aqui você pode adicionar código para atualizar a UI se necessário
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const cargo = localStorage.getItem("cargo");
+
+            if (cargo === "Vendedor" || cargo === "Comercial2") {
+                const cardFiscal = document.getElementById("cardFiscal");
+                const cardLinkAutorizacao = document.getElementById("cardLinkAutorizacao");
+                const remessaDevolucao = document.getElementById('remessaDevolucao');
+                const enviarFaturamentoBtn = document.getElementById('enviarFaturamentoBtn');
+                const pedidos = document.getElementById('pedidos');
+
+                cardFiscal.style.display = "none";
+                cardLinkAutorizacao.style.display = "none";
+                remessaDevolucao.style.display = "none";
+                enviarFaturamentoBtn.style.display = "none";
+                pedidos.style.display = "none"
+
+            }
+
+            if (cargo === "Logistica" || cargo === "Vendedor") {
+                const faturamento = document.getElementById('faturamento');
+                const pedidos = document.getElementById('pedidos');
+
+                pedidos.style.display = 'none';
+                faturamento.style.display = 'none';
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial") {
+                const cancelados = document.getElementById('pedidosCancelados');
+
+                cancelados.style.display = 'none';
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const dashboard = document.getElementById('dashboard');
+
+                dashboard.style.display = 'none';
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '../login/tela_login.html';
+            }
+            const userEmail = localStorage.getItem('userEmail');
+
+            if (userEmail !== null) {
+                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+            } else {
+                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const fotoInput = document.getElementById('fotoInput');
+            const comunicadoInput = document.getElementById('comunicadoInput');
+            const remessaInput = document.getElementById('remessaInput');
+            const devolucaoInput = document.getElementById('devolucaoInput');
+
+            const comunicadoImage = document.getElementById('comunicadoImage');
+            const previewImage = document.getElementById('previewImage');
+            const remessaImage = document.getElementById('remessaImage');
+            const devolucaoImage = document.getElementById('devolucaoImage');
+
+            fotoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewImage.style.display = 'block';
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            comunicadoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    comunicadoImage.src = e.target.result;
+                    comunicadoImage.style.display = 'block';
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            remessaInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    remessaImage.src = e.target.result;
+                    remessaImage.style.display = 'block';
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            devolucaoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    devolucaoImage.src = e.target.result;
+                    devolucaoImage.style.display = 'block';
+                };
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        const btnComunicado = document.getElementById('btnComunicado');
+
+        btnComunicado.addEventListener('click', async function () {
+            const comunicadoImage = document.getElementById('comunicadoImage');
+            const imageUrl = comunicadoImage.src;
+
+            const comunicadoInput = document.getElementById('comunicadoInput');
+            const file = comunicadoInput.files[0];
+
+            if (!file) {
+                alert('Anexe uma Imagem Válida');
+                return;
+            }
+
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemComunicadoUso64: imageUrl, })
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageComunicadoUso64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageComunicadoUso64 para o paciente:', pacienteId);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
+                }
+                location.reload();
+            } else {
+                console.error('URL da imagem está vazia.');
+            }
+        });
+
+        const btnComunicadoAtualizar = document.getElementById('btnComunicadoAtualizar');
+
+        btnComunicadoAtualizar.addEventListener('click', async function () {
+            const comunicadoImage = document.getElementById('comunicadoImage');
+            const imageUrl = comunicadoImage.src;
+
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemComunicadoUso64: "Sem comunicado de uso", })
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageComunicadoUso64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageComunicadoUso64 para o paciente:', pacienteId);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
+                }
+            } else {
+                console.error('URL da imagem está vazia.');
+            }
+            location.reload();
+        });
+
+        const btnNota = document.getElementById('btnNota');
+
+        btnNota.addEventListener('click', async function () {
+            const previewImage = document.getElementById('previewImage');
+            const nomeEntregador = document.getElementById('nomeEntregadorInput').value;
+
+            const fotoInput = document.getElementById('fotoInput');
+            const file = fotoInput.files[0];
+
+            if (!file) {
+                alert('Anexe uma Imagem Válida');
+                return;
+            } else if (!nomeEntregador) {
+                alert('Informe o Nome do Entregador');
+                return;
+            }
+
+            if (previewImage) {
+                if (previewImage.src && previewImage.src !== '#') {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = previewImage.width;
+                    canvas.height = previewImage.height;
+                    context.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
+                    const base64Image = canvas.toDataURL('image/png');
+
+                    const pacienteId = getPedidoIdFromUrl();
+                    if (!pacienteId) {
+                        console.error('ID do paciente não encontrado na URL.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imagemNotaFiscal64: base64Image, entregador: nomeEntregador })
+                        });
+
+                        if (response.ok) {
+                            console.log('Campo imagemNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
+                        } else {
+                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao realizar a requisição:', error);
+                    }
+                } else {
+                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                }
+            } else {
+                console.error('Elemento de imagem de pré-visualização não encontrado.');
+            }
+            location.reload();
+        });
+
+        const btnNotaAtualizar = document.getElementById('btnNotaAtualizar');
+
+        btnNotaAtualizar.addEventListener('click', async function () {
+            const previewImage = document.getElementById('previewImage');
+            const nomeEntregador = document.getElementById('nomeEntregadorInput').value;
+
+            if (previewImage) {
+                if (previewImage.src && previewImage.src !== '#') {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = previewImage.width;
+                    canvas.height = previewImage.height;
+                    context.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
+                    const base64Image = canvas.toDataURL('image/png');
+
+                    const pacienteId = getPedidoIdFromUrl();
+                    if (!pacienteId) {
+                        console.error('ID do paciente não encontrado na URL.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imagemNotaFiscal64: "Sem Nota Fiscal", entregador: "Informe o Entregador" })
+                        });
+
+                        if (response.ok) {
+                            console.log('Campo imagemNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
+                        } else {
+                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao realizar a requisição:', error);
+                    }
+                } else {
+                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                }
+            } else {
+                console.error('Elemento de imagem de pré-visualização não encontrado.');
+            }
+            location.reload();
+        });
+
+        const btnRemessa = document.getElementById('btnRemessa');
+
+        btnRemessa.addEventListener('click', async function () {
+            const remessaImage = document.getElementById('remessaImage');
+
+            const remessaInput = document.getElementById('remessaInput');
+            const file = remessaInput.files[0];
+
+            if (!file) {
+                alert('Anexe uma Imagem Válida');
+                return;
+            }
+
+            if (remessaImage) {
+                if (remessaImage.src && remessaImage.src !== '#') {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = remessaImage.width;
+                    canvas.height = remessaImage.height;
+                    context.drawImage(remessaImage, 0, 0, remessaImage.width, remessaImage.height);
+                    const base64Image = canvas.toDataURL('image/png');
+
+                    const pacienteId = getPedidoIdFromUrl();
+                    if (!pacienteId) {
+                        console.error('ID do paciente não encontrado na URL.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imagemRemessa64: base64Image })
+                        });
+
+                        if (response.ok) {
+                            console.log('Campo imagemRemessa64 atualizado com sucesso para o paciente:', pacienteId);
+                        } else {
+                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao realizar a requisição:', error);
+                    }
+                } else {
+                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                }
+            } else {
+                console.error('Elemento de imagem de pré-visualização não encontrado.');
+            }
+            location.reload();
+        });
+
+        const btnRemessaAtualizar = document.getElementById('btnRemessaAtualizar');
+
+        btnRemessaAtualizar.addEventListener('click', async function () {
+            const remessaImage = document.getElementById('remessaImage');
+
+            if (remessaImage) {
+                if (remessaImage.src && remessaImage.src !== '#') {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = remessaImage.width;
+                    canvas.height = remessaImage.height;
+                    context.drawImage(remessaImage, 0, 0, remessaImage.width, remessaImage.height);
+                    const base64Image = canvas.toDataURL('image/png');
+
+                    const pacienteId = getPedidoIdFromUrl();
+                    if (!pacienteId) {
+                        console.error('ID do paciente não encontrado na URL.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(`http://localhost:3000/registrar/atualizarPedido/${pacienteId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imagemRemessa64: "Sem Nota de Remessa" })
+                        });
+
+                        if (response.ok) {
+                            console.log('Nota de Remessa atualizada com sucesso para o paciente:', pacienteId);
+                        } else {
+                            console.error('Falha ao atualizar a Nota de Remessa para o paciente:', pacienteId);
+                        }
+                    } catch (error) {
+                        console.error('Erro ao realizar a requisição:', error);
+                    }
+                } else {
+                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                }
+            } else {
+                console.error('Elemento de imagem de pré-visualização não encontrado.');
+            }
+            location.reload();
+        });
+
+        function getPedidoIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        let entregador = "Sem Nome";
+        function fetchPedidoInfo(pedidoId) {
+            fetch(`http://localhost:3000/registrar/receberID/${pedidoId}`)
+                .then(response => response.json())
+                .then(pedido => {
+                    const pedidoInfoContainer = document.getElementById('pedidoInfo');
+                    const equipamentosInfoContainer = document.getElementById('equipamentosInfo');
+
+                    pedidoInfoContainer.innerHTML = '';
+
+                    const fieldsToShow = [
+                        'idPaciente',
+                        'nomePaciente',
+                        'hospital',
+                        'horaProcedimento',
+                        'vendedor',
+                        'linha',
+                        'carimboHorario',
+                        'responsabilidade',
+                        'instrumentador',
+                        'dataProcedimento',
+                        'medico',
+                        'tipoProcedimento'
+                    ];
+
+                    let rowHtml = '';
+
+                    fieldsToShow.forEach(key => {
+                        const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+                        const value = pedido[key];
+
+                        rowHtml += `
+                    <div class="col-md-4">
+                        <div class="pedido-info-item">
+                            <p class="pedido-info-label">${label}:</p>
+                            <p class="pedido-info-value">${value}</p>
+                        </div>
+                    </div>
+                `;
+                    });
+
+                    pedidoInfoContainer.innerHTML = `
+                <div class="row">
+                    ${rowHtml}
+                </div>
+            `;
+
+                    const cssStyle = `
+                .pedido-info-item {
+                    background-color: #6a6868;
+                    border: 1px solid #dee2e6;
+                    padding: 8px;
+                    margin-bottom: 10px;
+                    border-radius: 8px;
+                }
+                .pedido-info-label {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                .pedido-info-value {
+                    margin-bottom: 0;
+                }
+            `;
+
+                    const styleElement = document.createElement('style');
+                    styleElement.textContent = cssStyle;
+                    document.head.appendChild(styleElement);
+                    equipamentosInfoContainer.innerHTML = '';
+
+                    if (pedido.equipamentos && pedido.equipamentos.length > 0) {
+                        equipamentosInfoContainer.innerHTML += `
+        <div>
+            <h5>Equipamentos:</h5>
+            <ul>
+                ${pedido.equipamentos.map(equipamento => `
+                    <li>${equipamento.nome} (Quantidade: ${equipamento.quantidade})</li>
+                `).join('')}
+            </ul>
+        </div>
+    `;
+                    } else {
+                        equipamentosInfoContainer.innerHTML += '<p>Nenhum equipamento registrado para este pedido.</p>';
+                    }
+
+                    if (pedido.materiais && pedido.materiais.length > 0) {
+                        equipamentosInfoContainer.innerHTML += `
+        <div>
+            <h5>Materiais:</h5>
+            <ul>
+                ${pedido.materiais.map(material => `
+                    <li>${material.nome} (Quantidade: ${material.quantidade})</li>
+                `).join('')}
+            </ul>
+        </div>
+    `;
+                    } else {
+                        equipamentosInfoContainer.innerHTML += '<p>Nenhum material registrado para este pedido.</p>';
+                    }
+
+                    entregador = pedido.entregador;
+
+                    const comunicadoImage = document.getElementById('comunicadoImage');
+                    if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64.trim() !== '') {
+                        comunicadoImage.src = `${pedido.imagemComunicadoUso64}`;
+                        comunicadoImage.style.display = 'block';
+                    }
+
+                    if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64 !== 'Sem comunicado de uso') {
+                        const comunicadoInput = document.getElementById('comunicadoInput');
+                        const btnComunicado = document.getElementById('btnComunicado');
+                        const btnComunicadoAtualizar = document.getElementById('btnComunicadoAtualizar');
+
+                        if (comunicadoInput) {
+                            comunicadoInput.style.display = 'none';
+                        }
+
+                        if (btnComunicado) {
+                            btnComunicado.style.display = 'none';
+                            btnComunicadoAtualizar.style.display = 'block';
+                        }
+                    } else {
+                        comunicadoImage.style.display = 'none';
+                        btnComunicadoAtualizar.style.display = 'none';
+                    }
+
+                    const fotoInput = document.getElementById('fotoInput')
+                    const previewImage = document.getElementById('previewImage');
+                    if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64.trim() !== '') {
+                        previewImage.src = `${pedido.imagemNotaFiscal64}`
+                        previewImage.style.display = 'block';
+                    }
+
+                    if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64 != 'Sem Nota Fiscal') {
+                        const nomeEntregador = document.getElementById('nomeEntregadorInput');
+                        const btnNota = document.getElementById('btnNota');
+                        const btnNotaAtualizar = document.getElementById('btnNotaAtualizar');
+
+                        if (fotoInput) {
+                            fotoInput.style.display = 'none';
+                        }
+
+                        if (nomeEntregador) {
+                            nomeEntregador.style.display = 'none';
+                        }
+
+                        if (btnNota) {
+                            btnNota.style.display = 'none';
+                            btnNotaAtualizar.style.display = 'block'
+                        }
+
+                    } else {
+                        previewImage.style.display = 'none';
+                        btnNotaAtualizar.style.display = 'none';
+                    }
+
+                    const remessaInput = document.getElementById('remessaInput')
+                    const remessaImage = document.getElementById('remessaImage');
+                    if (pedido.imagemRemessa64 && pedido.imagemRemessa64.trim() !== '') {
+                        remessaImage.src = `${pedido.imagemRemessa64}`
+                        remessaImage.style.display = 'block';
+                    }
+
+                    if (pedido.imagemRemessa64 && pedido.imagemRemessa64 != 'Sem Nota de Remessa') {
+                        const btnRemessa = document.getElementById('btnRemessa');
+                        const btnRemessaAtualizar = document.getElementById('btnRemessaAtualizar');
+
+                        if (remessaInput) {
+                            remessaInput.style.display = 'none';
+                        }
+
+                        if (btnRemessa) {
+                            btnRemessa.style.display = 'none';
+                            btnRemessaAtualizar.style.display = 'block'
+                        }
+
+                    } else {
+                        remessaImage.style.display = 'none';
+                        btnRemessaAtualizar.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao obter informações do pedido:', error);
+                    alert('Erro ao obter informações do pedido. Tente novamente.');
+                });
+        }
+
+
+
+        function enviarParaFaturamento(pedidoId) {
+
+            const nomeEntregador = document.getElementById('nomeEntregadorInput').value;
+            const fotoInput = document.getElementById('fotoInput');
+            const remessaInput = document.getElementById('remessaInput');
+            const devolucaoInput = document.getElementById('devolucaoInput');
+            const comunicadoInput = document.getElementById('comunicadoInput');
+            const previewImagem = document.getElementById('previewImage');
+            const comunicadoImage = document.getElementById('comunicadoImage');
+
+            let notaFiscal64 = previewImagem.src;
+
+            const remessaFile = remessaInput.files[0];
+            const reader = new FileReader();
+
+            const linkAutorizacaoInput = document.getElementById('linkAutorizacaoInput');
+            const linkAutorizacao = linkAutorizacaoInput.value;
+
+            if (linkAutorizacao === undefined || linkAutorizacao === null) {
+                linkAutorizacao = ' ';
+            }
+
+            if (!linkAutorizacao || !isValidURL(linkAutorizacao)) {
+                alert('Por favor, forneça um Link da Autorização válido.');
+                return;
+            }
+
+            fetch(`http://localhost:3000/registrar/receberID/${pedidoId}`)
+                .then(response => response.json())
+                .then(pedido => {
+
+                    const { imagemComunicadoUso64, imagemNotaFiscal64, imagemRemessa64 } = pedido;
+
+                    if (imagemComunicadoUso64 === "Sem comunicado de uso") {
+                        alert('Anexar Comunicado de Uso');
+                        return;
+                    }
+
+                    if (imagemNotaFiscal64 === "Sem Nota Fiscal") {
+                        alert('Anexar Nota Fiscal');
+                        return;
+                    }
+
+                    if (imagemNotaFiscal64 === "Sem Nota de Remessa") {
+                        alert('Anexar Nota de Remessa');
+                        return;
+                    }
+
+
+                    const { hospital, nomePaciente, convenio, tipoProcedimento, dataProcedimento, horaProcedimento, carimboHorario, idPaciente, vendedor, equipamentos, materiais, medico, estado } = pedido;
+
+                    let CNPJ = '';
+                    let formaPagamento = '';
+                    if (hospital === 'São Camilo') {
+                        CNPJ = '60.975.737/0035-09';
+                        formaPagamento = 'BOLETO 120 DIAS';
+                    } else if (hospital === 'HDOC - Hosp. Dr. Oswaldo Cruz' && convenio === 'PARTICULAR') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                    } else if (hospital === 'HDOC - Hosp. Dr. Oswaldo Cruz') {
+                        formaPagamento = 'BOLETO 110 DIAS';
+                    } else if (convenio === 'GEAP PI') {
+                        formaPagamento = 'CARTEIRA 90 DIAS';
+                        CNPJ = '03.658.432/0016-69';
+                    } else if (convenio === 'GEAP MA') {
+                        formaPagamento = 'TRANSFERÊNCIA 90 DIAS';
+                        CNPJ = '03.658.432/0010-73';
+                    } else if (convenio === 'GEAP CE') {
+                        //lmebrar de atualizar
+                    } else if (convenio === 'GEAP PA') {
+                        //lembrar de atualizar
+                    } else if (hospital === 'Protocardio') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '08.711.085/0001-28';
+                    } else if (hospital === 'Hospital Genesis') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '07.136.971/0001-02';
+                    } else if (hospital === 'ICC') {
+                        formaPagamento = 'BOLETO 90 DIAS';
+                        CNPJ = '07.265.515/0001-62';
+                    } else if (hospital === 'São Raimundo') {
+                        formaPagamento = 'BOLETO 90 DIAS';
+                        CNPJ = '07.265.515/0005-96';
+                    } else if (hospital === 'Hospital Batista Memorial') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (hospital === 'Hospital Batista Memorial') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (medico === 'DR. IBRAIM' || medico === 'dr. ibraim' || medico === 'DR IBRAIM' || medico === 'dr ibraim' || medico === 'DOUTOR IBRAIM' || medico === 'doutor ibraim' || medico === 'IBRAIM' || medico === 'ibraim' && convenio === 'PARTICULAR') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (hospital === 'Hospital Batista Memorial') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (medico === 'DR. FERNANDO KENNEDY' || medico === 'dr. fernando kennedy' || medico === 'DR FERNANDO KENNEDY' || medico === 'dr fernando kennedy' || medico === 'DOUTOR FERNANDO KENNEDY' || medico === 'doutor fernando kennedy' || medico === 'FERNANDO KENNEDY' || medico === 'fernando kennedy' && convenio === 'PARTICULAR') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (medico === 'DR. FELIPE VENTO' || medico === 'dr. felipe vento' || medico === 'DR FELIPE VENTO' || medico === 'dr felipe vento' || medico === 'DOUTOR FELIPE VENTO' || medico === 'doutor felipe vento' || medico === 'FELIPE VENTO' || medico === 'felipe vento' && convenio === 'PARTICULAR') {
+                        formaPagamento = 'TRANSFERÊNCIA 7 DIAS';
+                    } else if (convenio === 'CIRURGIA JÁ!') {
+                        formaPagamento = 'BOLETO 7 DIAS';
+                        CNPJ = '48.352.789/0001-76';
+                    } else if (convenio === 'CIRURGIA JÁ!') {
+                        formaPagamento = 'BOLETO 7 DIAS';
+                        CNPJ = '48.352.789/0001-76';
+                    } else if (convenio === 'LIV SAUDE') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '00.846.662/0004-20';
+                    } else if (convenio === 'AMIL') {
+                        formaPagamento = 'TRANSFERÊNCIA 30 DIAS';
+                    } else if (hospital === 'SANTA CASA') {
+                        formaPagamento = 'CARTEIRA 30 DIAS';
+                        CNPJ = '07.273.592/0001-64'
+                    } else if (hospital === 'SANTA CASA' && convenio === 'PARTICULAR') {
+                        formaPagamento = 'CARTEIRA Á VISTA';
+                    } else if (hospital === 'São Mateus') {
+                        formaPagamento = 'BOLETO 60 DIAS';
+                        CNPJ = '41.580.077/0001-65'
+                    } else if (hospital === 'HOSPITAL CARDIO ALIANÇA') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '09.454.829/0001-39'
+                    } else if (hospital === 'Clinica São José') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '10.338.960/0001-10'
+                    } else if (hospital === 'Clinica São José') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '10.338.960/0001-10'
+                    } else if (hospital === 'PRONTOCARDIO') {
+                        formaPagamento = 'TRANSFERÊNCIA 30 DIAS';
+                        CNPJ = '11.828.089/0001-03'
+                    } else if (convenio === 'EMSERH') {
+                        formaPagamento = 'CARTEIRA 30 DIAS';
+                        CNPJ = '18.519.709/0001-63'
+                    } else if (hospital === 'Unimed') {
+                        formaPagamento = 'CARTEIRA 30 DIAS';
+                        CNPJ = '05.868.278/0001-07'
+                    } else if (hospital === 'UNIMED CARIRI') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '07.583.396/0001-96'
+                    } else if (hospital === 'SÃO MARCOS') {
+                        formaPagamento = 'TRANSFERÊNCIA 30 DIAS';
+                        CNPJ = '06.870.026/0001-77'
+                    } else if (convenio === 'INTERMED') {
+                        formaPagamento = 'BOLETO 90 DIAS';
+                        CNPJ = '00.885.918/0001-65'
+                    } else if (convenio === 'ABEAS') {
+                        formaPagamento = 'TRANSFERÊNCIA BANCÁRIA 45 DIAS';
+                        CNPJ = '04.547.278/0003-04'
+                    } else if (hospital === 'UNIMED TERESINA') {
+                        formaPagamento = 'BOLETO 90 DIAS';
+                        CNPJ = '07.241.136/0001-32'
+                    } else if (hospital === 'UNIMED PRIMAVERA') {
+                        formaPagamento = 'TRANSFERÊNCIA 90 DIAS';
+                        CNPJ = '07.241.136/0005-66'
+                    } else if (hospital === 'UNIMED PRIMAVERA') {
+                        formaPagamento = 'TRANSFERÊNCIA 90 DIAS';
+                        CNPJ = '07.241.136/0005-66'
+                    } else if (hospital === 'HOSPITAL SAO LUIS - HSLZ LTDA.') {
+                        formaPagamento = 'BOLETO 30 DIAS'
+                        CNPJ = '09.192.098/0002-81'
+                    } else if (convenio === 'CAMED') {
+                        formaPagamento = 'TRANSFERÊNCIA 30 DIAS';
+                        CNPJ = '05.814.777/0001-03'
+                    } else if (hospital === 'União de Clinicas do Ceará') {
+                        formaPagamento = 'BOLETO 120 DIAS';
+                        CNPJ = '05.867.015/0001-75'
+                    } else if (hospital === 'Hospital São Domingos') {
+                        formaPagamento = 'TRANSFERÊNCIA 60 DIAS';
+                        CNPJ = '11.006.293/0001-30'
+                    } else if (hospital === 'Hospital Esperança UDI') {
+                        formaPagamento === 'BOLETO 90 DIAS';
+                        CNPJ === '02.284.062/0011-70';
+                    } else if (convenio === 'VALE') {
+                        formaPagamento === 'TRANSFERÊNCIA 30 DIAS';
+                        CNPJ === '33.592.510/0001-54';
+                    } else if (hospital === 'Gastroclinica') {
+                        formaPagamento = 'BOLETO 60 DIAS';
+                        CNPJ = '07.272.404/0001-83';
+                    } else if (hospital === 'São Carlos') {
+                        formaPagamento = 'BOLETO 120 DIAS';
+                        CNPJ = '11.794.674/0001-21';
+                    } else if (hospital === 'Otoclinica') {
+                        formaPagamento = 'BOLETO 60 DIAS';
+                        CNPJ = '23.443.518/0001-03';
+                    } else if (convenio === 'CAPSESP') {
+                        formaPagamento = 'TRANSFERÊNCIA BANCÁRIA 60 DIAS';
+                        CNPJ = '30.036.685/0001-97';
+                    } else if (hospital === 'Monte klinikum') {
+                        formaPagamento = 'BOLETO 90 DIAS';
+                        CNPJ = '29.435.005/0074-84';
+                    } else if (convenio === 'HAPVIDA') {
+                        formaPagamento = 'CARTEIRA 45 DIAS';
+                        CNPJ = '63.554.067/0001-98';
+                    } else if (convenio === 'CAFAZ') {
+                        formaPagamento = 'TRANSFERÊNCIA BANCÁRIA 45 DIAS';
+                        CNPJ = '63.367.700/0001-39';
+                    } else if (convenio === 'CASSI') {
+                        formaPagamento = 'TRANSFERÊNCIA 30 DIAS';
+                        CNPJ = '33.719.485/0027-66';
+                    } else if (convenio === 'ASSEFAZ') {
+                        formaPagamento = 'CARTEIRA 30 DIAS';
+                        CNPJ = '00.628.107/0021-22';
+                    } else if (convenio === 'POSTAL SAUDE') {
+                        formaPagamento = 'TRANSFERÊNCIA BANCÁRIA 60 DIAS';
+                        CNPJ = '18.275.071/0001-62';
+                    } else if (convenio === 'CAPESAÚDE') {
+                        formaPagamento = 'CARTEIRA 30 DIAS';
+                        CNPJ = '30.036.685/0001-97';
+                    } else if (hospital === 'HOSPITAL ALDENORA BELO') {
+                        formaPagamento = 'BOLETO 30 DIAS';
+                        CNPJ = '05.292.982/0001-56';
+                    } else if (hospital === 'Central de Fortaleza') {
+                        formaPagamento = 'BOLETO 60 DIAS';
+                        CNPJ = '04.870.928/0001-88';
+                    } else if (hospital === 'G.O CLINIC') {
+                        formaPagamento = 'CARTEIRA 120 DIAS';
+                        CNPJ = '02.972.680/0001-30';
+                    }
+
+                    const novoEquipamentos = [];
+                    const novoMateriais = [];
+                    const remessaImage = document.getElementById('remessaImage');
+                    const devolucaoImage = document.getElementById('devolucaoImage');
+                    const comunicadoImage = document.getElementById('comunicadoImage');
+                    const contador = 0;
+                    let remessa = remessaImage.src;
+                    let devolucao = devolucaoImage.src;
+                    let comunicado = comunicadoImage.src;
+
+                    fetch('http://localhost:3000/faturamento/registrarFaturamento', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            hospital,
+                            estado,
+                            linkAutorizacao,
+                            nomePaciente,
+                            convenio,
+                            tipoProcedimento,
+                            dataProcedimento,
+                            horaProcedimento,
+                            carimboHorario,
+                            idPaciente,
+                            vendedor,
+                            equipamentos,
+                            materiais,
+                            novoEquipamentos,
+                            novoMateriais,
+                            contador,
+                            CNPJ,
+                            formaPagamento,
+                            nomeEntregador: entregador,
+                            imagemBase64: notaFiscal64,
+                            imagemRemessa64: remessa,
+                            imagemDevolucao64: devolucao,
+                            imagemComunicado64: comunicado,
+                        })
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Nota fiscal: " + notaFiscal64);
+                                console.log("Nome entregador: " + entregador);
+
+                                fetch(`http://localhost:3000/registrar/deletarPedido/${pedidoId}`, {
+                                    method: 'DELETE'
+                                })
+                                    .then(() => {
+                                        alert('Pedido enviado para faturamento com sucesso!');
+
+                                        window.location.href = '../pedidos/tabelaPedidos.html';
+                                    })
+                                    .catch(error => {
+                                        console.error('Erro ao remover o pedido:', error);
+                                        alert('Erro ao remover o pedido. Tente novamente.');
+                                    });
+                            } else {
+                                console.error('Erro ao enviar para faturamento:', response.status);
+                                alert('Erro ao enviar para faturamento. Tente novamente.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao enviar para faturamento:', error);
+                            alert('Erro ao enviar para faturamento. Tente novamente.');
+                        });
+                })
+                .catch(error => {
+                    console.error('Erro ao obter informações do pedido:', error);
+                    alert('Erro ao obter informações do pedido. Tente novamente.');
+                });
+
+
+
+
+        }
+
+        function isValidURL(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+
+        function initialize() {
+            const pedidoId = getPedidoIdFromUrl();
+            if (pedidoId) {
+                fetchPedidoInfo(pedidoId);
+
+                const enviarFaturamentoBtn = document.getElementById('enviarFaturamentoBtn');
+                enviarFaturamentoBtn.addEventListener('click', () => {
+                    if (confirm('Tem certeza que deseja enviar este pedido para faturamento?')) {
+                        enviarParaFaturamento(pedidoId);
+                    }
+                });
+            } else {
+                console.error('ID do pedido não encontrado na URL.');
+                alert('ID do pedido não encontrado na URL.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+
+</html>

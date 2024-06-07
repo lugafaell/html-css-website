@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ITMF - Pedidos</title>
+  <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <style>
+    #background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-color: #017f2d;
+      background-size: 40%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Estilos para o contêiner do conteúdo principal */
+    .content-container {
+      position: relative;
+      z-index: 1;
+      /* Garante que o conteúdo principal fique acima da imagem de fundo */
+      padding: 20px;
+      /* Adapte conforme necessário */
+    }
+
+    .navbar {
+      transition: all 0.3s ease;
+    }
+
+    .forms {
+      transition: all 0.3s ease;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .select2-container .select2-selection--single {
+      width: 100%;
+      padding: 0.375rem 0.75rem;
+      height: calc(1.5em + 0.75rem + 2px);
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+      height: calc(1.5em + 0.75rem);
+    }
+
+    .select2-container .select2-dropdown {
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="background-container"></div>
+
+  <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+    <div class="container-fluid">
+      <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30" height="30"
+        class="d-inline-block align-top" alt="">
+
+      <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h3 class="text-white" id="userName"></h3>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="tabelaPedidos.html">Lista de Pedidos</a>
+            </li>
+            <li id="faturamento" class="nav-item">
+              <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
+            </li>
+            <li id="pedidosCancelados" class="nav-item">
+              <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
+            </li>
+            <li id="dashboard" class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="card bg-dark shadow forms fade-in">
+      <div class="card-body text-white">
+        <h2 class="card-title text-center mb-4">Formulário de Pedidos</h2>
+        <form>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="hospital" class="form-label">Hospital</label>
+              <select class="form-select custom-select2-container" id="hospital">
+                <option selected disabled>Selecione...</option>
+                <option value="São Carlos">São Carlos</option>
+                <option value="São Mateus">São Mateus</option>
+                <option value="São Camilo">São Camilo</option>
+                <option value="Unimed">Unimed</option>
+                <option value="UNIMED CARIRI">UNIMED CARIRI</option>
+                <option value="UNIMED TERESINA">UNIMED TERESINA</option>
+                <option value="UNIMED PRIMAVERA">UNIMED PRIMAVERA</option>
+                <option value="Monte klinikum">Monte klinikum</option>
+                <option value="São Raimundo">São Raimundo</option>
+                <option value="HGeF">HGeF</option>
+                <option value="ICC">ICC</option>
+                <option value="Otoclinica">Otoclinica</option>
+                <option value="Gastroclinica">Gastroclinica</option>
+                <option value="Protocardio">Protocardio</option>
+                <option value="HOSPITAL CARDIO ALIANÇA">
+                  HOSPITAL CARDIO ALIANÇA
+                </option>
+                <option value="IOF">IOF</option>
+                <option value="Antonio Prudente">Antonio Prudente</option>
+                <option value="União de Clinicas do Ceará">
+                  União de Clinicas do Ceará
+                </option>
+                <option value="Central de Fortaleza">
+                  Central de Fortaleza
+                </option>
+                <option value="HUWC e MEAC">HUWC e MEAC</option>
+                <option value="Universitário de São Luís">
+                  Universitário de São Luís
+                </option>
+                <option value="Universitário da universidade federal do Piauí">
+                  Universitário da universidade federal do Piauí
+                </option>
+                <option value="Geral de Fortaleza">Geral de Fortaleza</option>
+                <option value="Messejana">Messejana</option>
+                <option value="FUNDES">FUNDES</option>
+                <option value="SANTA CASA">SANTA CASA</option>
+                <option value="MULTICLIN HOSPITAL DIA">
+                  MULTICLIN HOSPITAL DIA
+                </option>
+                <option value="G.O CLINIC">G.O CLINIC</option>
+                <option value="Hospital Genesis">Hospital Genesis</option>
+                <option value="Clinica Digestive">Clinica Digestive</option>
+                <option value="HDOC - Hosp. Dr. Oswaldo Cruz">
+                  HDOC - Hosp. Dr. Oswaldo Cruz
+                </option>
+                <option value="Hospital Batista Memorial">
+                  Hospital Batista Memorial
+                </option>
+                <option value="HGF - HOSPITAL DO EXERCITO">
+                  HGF - HOSPITAL DO EXERCITO
+                </option>
+                <option value="HOSPITAL MENINO JESUS">
+                  HOSPITAL MENINO JESUS
+                </option>
+                <option value="ISGH">ISGH</option>
+                <option value="WALTER CANTIDIO">WALTER CANTIDIO</option>
+                <option value="CLINICA LEVITA MEDICINA E SAUDE">
+                  CLINICA LEVITA MEDICINA E SAUDE
+                </option>
+                <option value="HOSPITAL JÓRIO DA ESCÓSSIA">
+                  HOSPITAL JÓRIO DA ESCÓSSIA
+                </option>
+                <option value="Unimed Sul">Unimed Sul</option>
+                <option value="HOSPITAL LEVITA">HOSPITAL LEVITA</option>
+                <option value="HOSPITAL DA POLICIA MILITAR">
+                  HOSPITAL DA POLICIA MILITAR
+                </option>
+                <option value="CLINICA DIVINA LUZ">CLINICA DIVINA LUZ</option>
+                <option value="ABEMP - ASSOCIAÇÃO BENEFICENTE MÉDICA PAJUÇARA">
+                  ABEMP - ASSOCIAÇÃO BENEFICENTE MÉDICA PAJUÇARA
+                </option>
+                <option value="PRONTOCARDIO">PRONTOCARDIO</option>
+                <option value="HOSPITAL SANTA MARIA">
+                  HOSPITAL SANTA MARIA
+                </option>
+                <option value="CLÍNICA UNIQUE">CLÍNICA UNIQUE</option>
+                <option value="SÃO MARCOS">SÃO MARCOS</option>
+                <option value="UNIMED TERESINA">UNIMED TERESINA</option>
+                <option value="Centro de Cardiologia HSD">
+                  Centro de Cardiologia HSD
+                </option>
+                <option value="CEMED">CEMED</option>
+                <option value="Centro Medico Maranhece">
+                  Centro Medico Maranhece
+                </option>
+                <option value="Clinica São José">Clinica São José</option>
+                <option value="Clinica São Marcos">Clinica São Marcos</option>
+                <option value="Fundação Antônio Jorge Dino">
+                  Fundação Antônio Jorge Dino
+                </option>
+                <option value="GEAP">GEAP</option>
+                <option value="HCI">HCI</option>
+                <option value="Hospital Tarquínio Lopes">
+                  Hospital Tarquínio Lopes
+                </option>
+                <option value="Hospital Carlos Macieira">
+                  Hospital Carlos Macieira
+                </option>
+                <option value="Hospital Esperança UDI">
+                  Hospital Esperança UDI
+                </option>
+                <option value="Hospital Guarás">Hospital Guarás</option>
+                <option value="Hospital São Domingos">
+                  Hospital São Domingos
+                </option>
+                <option value="Hospital Universitário Pres. Dutra">
+                  Hospital Universitário Pres. Dutra
+                </option>
+                <option value="Image HSD">Image HSD</option>
+                <option value="Sogastro">Sogastro</option>
+                <option value="Unihosp">Unihosp</option>
+                <option value="Urocentro">Urocentro</option>
+                <option value="HOSPITAL SAO LUIS - HSLZ LTDA.">
+                  HOSPITAL SAO LUIS - HSLZ LTDA.
+                </option>
+                <option value="HOSPITAL ALDENORA BELO">
+                  HOSPITAL ALDENORA BELO
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="linha" class="form-label">Linha</label>
+              <select class="form-select custom-select2-container" id="linha">
+                <option selected disabled>Selecione...</option>
+                <option value="GERAL">GERAL</option>
+                <option value="VASCULAR">VASCULAR</option>
+                <option value="UROLOGIA">UROLOGIA</option>
+                <option value="CARDÍACA">CARDÍACA</option>
+                <option value="GERAL / VASCULAR">GERAL / VASCULAR</option>
+                <option value="GERAL / CARDÍACA">GERAL / CARDÍACA</option>
+                <option value="GERAL / UROLOGIA">GERAL / UROLOGIA</option>
+                <option value="VASCULAR / CARDÍACA">
+                  VASCULAR / CARDÍACA
+                </option>
+                <option value="VASCULAR / UROLOGIA">
+                  VASCULAR / UROLOGIA
+                </option>
+                <option value="CARDÍACA / UROLOGIA">
+                  CARDÍACA / UROLOGIA
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="dataProcedimento" class="form-label">Data do Procedimento</label>
+              <input type="date" class="form-control" id="dataProcedimento" />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="horaProcedimento" class="form-label">Hora do Procedimento</label>
+              <input type="time" class="form-control" id="horaProcedimento" />
+            </div>
+            <div class="col-md-4">
+              <label for="instrumentador" class="form-label">Instrumentador</label>
+              <select class="form-select" id="instrumentador">
+                <option selected disabled>Selecione...</option>
+                <option value="SANDRA SOUSA">SANDRA SOUSA</option>
+                <option value="BENEVIDES">BENEVIDES</option>
+                <option value="CONSIGNAÇÃO">CONSIGNAÇÃO</option>
+                <option value="NATALIA">NATALIA</option>
+                <option value="FREELANCER´S">FREELANCER´S</option>
+                <option value="NÁDIA">NÁDIA</option>
+                <option value="RAQUEL">RAQUEL</option>
+                <option value="REJANE">REJANE</option>
+                <option value="JULIANA">JULIANA</option>
+                <option value="JULIANA DANTAS">JULIANA DANTAS</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="convenio" class="form-label">Convênio</label>
+              <select class="form-select custom-select2-container" id="convenio">
+                <option selected disabled>Selecione...</option>
+                <option value="UNIMED">UNIMED</option>
+                <option value="HAPVIDA">HAPVIDA</option>
+                <option value="EMSERH">EMSERH</option>
+                <option value="PARTICULAR">PARTICULAR</option>
+                <option value="CAFAZ">CAFAZ</option>
+                <option value="ASSEFAZ">ASSEFAZ</option>
+                <option value="FUSEX">FUSEX</option>
+                <option value="GEAP CE">GEAP CE</option>
+                <option value="GEAP PI">GEAP PI</option>
+                <option value="GEAP MA">GEAP MA</option>
+                <option value="GEAP PA">GEAP PA</option>
+                <option value="BANCO CENTRAL">BANCO CENTRAL</option>
+                <option value="ISSEC">ISSEC</option>
+                <option value="BRADESCO CENTRAL">BRADESCO CENTRAL</option>
+                <option value="PAS">PAS</option>
+                <option value="IPM">IPM</option>
+                <option value="AMIL">AMIL</option>
+                <option value="CASSI">CASSI</option>
+                <option value="FUNSA">FUNSA</option>
+                <option value="SUS">SUS</option>
+                <option value="CNU">CNU</option>
+                <option value="CAMED">CAMED</option>
+                <option value="CAPSESP">CAPSESP</option>
+                <option value="SULAMERICA">SULAMERICA</option>
+                <option value="AERONÁUTICA">AERONÁUTICA</option>
+                <option value="FUSMA">FUSMA</option>
+                <option value="LIV SAUDE">LIV SAUDE</option>
+                <option value="PETROBRAS">PETROBRAS</option>
+                <option value="CAPESAÚDE">CAPESAÚDE</option>
+                <option value="POSTAL SAUDE">POSTAL SAUDE</option>
+                <option value="VALE">VALE</option>
+                <option value="VENDA DIRETA">VENDA DIRETA</option>
+                <option value="CONSIGNAÇÃO">CONSIGNAÇÃO</option>
+                <option value="CAIXA">CAIXA</option>
+                <option value="PLANO ECONOMICO">PLANO ECONOMICO</option>
+                <option value="INTERMED">INTERMED</option>
+                <option value="CIRURGIA JÁ!">CIRURGIA JÁ!</option>
+                <option value="LICITAÇÃO">LICITAÇÃO</option>
+                <option value="DOAÇÃO">DOAÇÃO</option>
+                <option value="FACHESF">FACHESF</option>
+                <option value="SAUDE CAIXA">SAUDE CAIXA</option>
+                <option value="MEDISERVICE">MEDISERVICE</option>
+                <option value="ABEAS">ABEAS</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="medico" class="form-label">Médico</label>
+              <select class="form-select custom-select2-container" id="medico">
+                <option selected disabled>Selecione...</option>
+                <option value="DR. IBRAIM">DR. IBRAIM</option>
+                <option value="DR. FERNANDO KENNEDY">
+                  DR. FERNANDO KENNEDY
+                </option>
+                <option value="DR. EVERTON CASTRO">DR. EVERTON CASTRO</option>
+                <option value="DR. RAFAEL GUIMARAES">
+                  DR. RAFAEL GUIMARAES
+                </option>
+                <option value="DR. RODRIGO LANDIM">DR. RODRIGO LANDIM</option>
+                <option value="DR. ERICO DIOGENES">DR. ERICO DIOGENES</option>
+                <option value="DR LUCAS NOGUEIRA">DR LUCAS NOGUEIRA</option>
+                <option value="DR. MESQUITA">DR. MESQUITA</option>
+                <option value="DR. CARLOS ATILA">DR. CARLOS ATILA</option>
+                <option value="DR. ALBERTO LEITE">DR. ALBERTO LEITE</option>
+                <option value="DR. HIDELBRANDO">DR. HIDELBRANDO</option>
+                <option value="DR. BRUNO FERREIRA">DR. BRUNO FERREIRA</option>
+                <option value="DR. JOÃO MARCELO">DR. JOÃO MARCELO</option>
+                <option value="DR. ROBERTO LOBO">DR. ROBERTO LOBO</option>
+                <option value="DR. VIANA REBOUÇA">DR. VIANA REBOUÇA</option>
+                <option value="DR. ADRIANO LIMA">DR. ADRIANO LIMA</option>
+                <option value="DR. JANIEL PONTES">DR. JANIEL PONTES</option>
+                <option value="DR. ADNER OLIVEIRA">DR. ADNER OLIVEIRA</option>
+                <option value="DR. GERALDO MUNGUBA">
+                  DR. GERALDO MUNGUBA
+                </option>
+                <option value="DR. ROMULO SILVEIRA">
+                  DR. ROMULO SILVEIRA
+                </option>
+                <option value="DR. MATTHAUS COSTA ">
+                  DR. MATTHAUS COSTA
+                </option>
+                <option value="DR. ADRIANO MILANEZ">
+                  DR. ADRIANO MILANEZ
+                </option>
+                <option value="DR. IURI ARAGAO">DR. IURI ARAGAO</option>
+                <option value="DR. VLADMIR PINHEIRO">
+                  DR. VLADMIR PINHEIRO
+                </option>
+                <option value="DR. JURANDIR PICANÇO">
+                  DR. JURANDIR PICANÇO
+                </option>
+                <option value="DR. RAIMUNDO ANDRADE">
+                  DR. RAIMUNDO ANDRADE
+                </option>
+                <option value="DR. LUIS DE FRANÇA">DR. LUIS DE FRANÇA</option>
+                <option value="DR. CARLOS KLEBER">DR. CARLOS KLEBER</option>
+                <option value="DRA. FERNANDA RODRIGUES">
+                  DRA. FERNANDA RODRIGUES
+                </option>
+                <option value="DR. MARCOS VIEIRA">DR. MARCOS VIEIRA</option>
+                <option value="DR. THIAGO MARTINS">DR. THIAGO MARTINS</option>
+                <option value="DR. MARCOS FIUZA">DR. MARCOS FIUZA</option>
+                <option value="DR. MARINALDO">DR. MARINALDO</option>
+                <option value="DR. ALEXANDRE MARCELO">
+                  DR. ALEXANDRE MARCELO
+                </option>
+                <option value="DR. EVERALDO">DR. EVERALDO</option>
+                <option value="DR. FERNANDO PIMENTA ">
+                  DR. FERNANDO PIMENTA
+                </option>
+                <option value="DR. FELIPE VENTO">DR. FELIPE VENTO</option>
+                <option value="DR. VITOR TEIXEIRA">DR. VITOR TEIXEIRA</option>
+                <option value="DR. ALEXANDRE SABOIA">
+                  DR. ALEXANDRE SABOIA
+                </option>
+                <option value="DR. MARCELO PITTA">DR. MARCELO PITTA</option>
+                <option value="DR. JOÃO ÉDISON">DR. JOÃO ÉDISON</option>
+                <option value="DR. JOAO LUIS FALCAO">
+                  DR. JOAO LUIS FALCAO
+                </option>
+                <option value="DR. HERALDO LOBO">DR. HERALDO LOBO</option>
+                <option value="DRA. VÂNIA">DRA. VÂNIA</option>
+                <option value="DR. EUDES PINHEIRO">DR. EUDES PINHEIRO</option>
+                <option value="DR. RENATO MAZON">DR. RENATO MAZON</option>
+                <option value="DR. ERICO DIOGENES ">
+                  DR. ERICO DIOGENES
+                </option>
+                <option value="DR. FABIANO JUCÁ">DR. FABIANO JUCÁ</option>
+                <option value="DR. ÍTALO MOREIRA ">DR. ÍTALO MOREIRA</option>
+                <option value="DR. DIEGO DE ALMEIDA">
+                  DR. DIEGO DE ALMEIDA
+                </option>
+                <option value="DR. CARLOS SUCUPIRA">
+                  DR. CARLOS SUCUPIRA
+                </option>
+                <option value="DR. BRENO FALCAO">DR. BRENO FALCAO</option>
+                <option value="DR. ANASTÁCIO">DR. ANASTÁCIO</option>
+                <option value="DR. PAULO VITOR">DR. PAULO VITOR</option>
+                <option value="DR. JOSÉ ERIALDO ">DR. JOSÉ ERIALDO</option>
+                <option value="DR. HUMBERTO DE HOLANDA">
+                  DR. HUMBERTO DE HOLANDA
+                </option>
+                <option value="DR. SIDNEY PEARCE ">DR. SIDNEY PEARCE</option>
+                <option value="DR. DAVI">DR. DAVI</option>
+                <option value="DR. JUAN MEJIA">DR. JUAN MEJIA</option>
+                <option value="DR. FELIPE SANTIAGO">
+                  DR. FELIPE SANTIAGO
+                </option>
+                <option value="DRA. RITA DE CASSIA CARVALHO ROCHA">
+                  DRA. RITA DE CASSIA CARVALHO ROCHA
+                </option>
+                <option value="DR. EDUARDO MEDEIROS">
+                  DR. EDUARDO MEDEIROS
+                </option>
+                <option value="DR. PAULO MARCELO">DR. PAULO MARCELO</option>
+                <option value="DR. SANTINO">DR. SANTINO</option>
+                <option value="DR. GISLANO LIRA">DR. GISLANO LIRA</option>
+                <option value="DR. LIVIO LOBO">DR. LIVIO LOBO</option>
+                <option value="DR. DARCIO JUNIOR">DR. DARCIO JUNIOR</option>
+                <option value="DR. LEONARDO PIMENTEL">
+                  DR. LEONARDO PIMENTEL
+                </option>
+                <option value="DR. JOSE GOMES TEIXEIRA">
+                  DR. JOSE GOMES TEIXEIRA
+                </option>
+                <option value="DR. DANILO GURGEL">DR. DANILO GURGEL</option>
+                <option value="DR. JOAO HENRIQUE">DR. JOAO HENRIQUE</option>
+                <option value="DR. MARDHEN BEZERRA">
+                  DR. MARDHEN BEZERRA
+                </option>
+                <option value="DR. FRANCISCO NETO">DR. FRANCISCO NETO</option>
+                <option value="DRA. CRHISTINA BENEVIDES">
+                  DRA. CRHISTINA BENEVIDES
+                </option>
+                <option value="DR. DANIEL ARAGÃO">DR. DANIEL ARAGÃO</option>
+                <option value="DR. LUCAS RIBEIRO">DR. LUCAS RIBEIRO</option>
+                <option value="DR. ANDRE NÓBREGA">DR. ANDRE NÓBREGA</option>
+                <option value="DR. WALTER FEITOSA">DR. WALTER FEITOSA</option>
+                <option value="DR. JAIME BENEVIDES">
+                  DR. JAIME BENEVIDES
+                </option>
+                <option value="DRA. MARIANA">DRA. MARIANA</option>
+                <option value="DR. FABIO EUGÊNIO">DR. FABIO EUGÊNIO</option>
+                <option value="DRA. ALINE ROLIM">DRA. ALINE ROLIM</option>
+                <option value="DR.ÉMERSON">DR. ÉMERSON</option>
+                <option value="DR. MARCELO NEVES">DR. MARCELO NEVES</option>
+                <option value="DR. IVO PAMPLONA">DR. IVO PAMPLONA</option>
+                <option value="DR. GUSTAVO PERCICIO">
+                  DR. GUSTAVO PERCICIO
+                </option>
+                <option value="DR. SERGIO REGADAS FILHO">
+                  DR. SERGIO REGADAS FILHO
+                </option>
+                <option value="DR. RAFAEL FARIAS">DR. RAFAEL FARIAS</option>
+                <option value="DR. FABIANO JUCA">DR. FABIANO JUCA</option>
+                <option value="DR. RODRIGO DE OLIVEIRA">
+                  DR. RODRIGO DE OLIVEIRA
+                </option>
+                <option value="DR. VITOR ZARATI">DR. VITOR ZARATI</option>
+                <option value="DR. ALISSON CORDEIRO">
+                  DR. ALISSON CORDEIRO
+                </option>
+                <option value="DR. ISRAEL LOPES">DR. ISRAEL LOPES</option>
+                <option value="DR. JOSÉ ORLANDO">DR. JOSÉ ORLANDO</option>
+                <option value="DR. HELADIO FEITOSA">
+                  DR. HELADIO FEITOSA
+                </option>
+                <option value="DR. LEOCACIO">DR. LEOCACIO BARROSO</option>
+                <option value="DR. ROBERT BRINGEL">DR. ROBERT BRINGEL</option>
+                <option value="DR. NESTOR">DR. NESTOR</option>
+                <option value="DR. ALOISIO GONDIM">DR. ALOISIO GONDIM</option>
+                <option value="DR. TICIANO">DR. TICIANO</option>
+                <option value="DR. ERIRTONIO FAÇANHA">
+                  DR. ERIRTONIO FAÇANHA
+                </option>
+                <option value="DR. GEORGE ARAGÃO">DR. GEORGE ARAGÃO</option>
+                <option value="DR. JADER MENDONCA">DR. JADER MENDONCA</option>
+                <option value="DR. ARY">DR. ARY</option>
+                <option value="DR. ULISSES ALBUQUERQUE">
+                  DR. ULISSES ALBUQUERQUE
+                </option>
+                <option value="DR. IURI ARRUDA">DR. IURI ARRUDA</option>
+                <option value="DR. JERONIMO REBOUCA">
+                  DR. JERONIMO REBOUCA
+                </option>
+                <option value="DR. LUIZ BEZERRA">DR. LUIZ BEZERRA</option>
+                <option value="DR. HENRIQUE MACAMBIRA">
+                  DR. HENRIQUE MACAMBIRA
+                </option>
+                <option value="DR. MARCO AURÉLIO">DR. MARCO AURÉLIO</option>
+                <option value="DR. GENTIL BARREIRA">
+                  DR. GENTIL BARREIRA
+                </option>
+                <option value="DR. MARNEWTON TADEU">
+                  DR. MARNEWTON TADEU
+                </option>
+                <option value="DR. BEETHOVEN LANDIM">
+                  DR. BEETHOVEN LANDIM
+                </option>
+                <option value="DR. KILMER CASTELO">DR. KILMER CASTELO</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="nomePaciente" class="form-label">Nome do Paciente</label>
+              <input type="text" class="form-control" id="nomePaciente" oninput="toUpperCase()" />
+            </div>
+            <div class="col-md-4">
+              <label for="responsabilidade" class="form-label">Responsabilidade de Esterilização</label>
+              <select class="form-select" id="responsabilidade">
+                <option selected disabled>Selecione...</option>
+                <option value="CLIENTE">CLIENTE</option>
+                <option value="ITMF">ITMF</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="tipoProcedimento" class="form-label">Tipo de Procedimento</label>
+              <select class="form-select custom-select2-container" id="tipoProcedimento">
+                <option selected disabled>Selecione...</option>
+                <option value="RTU BIPOLAR">RTU BIPOLAR</option>
+                <option value="REFLUXO GASTRICO">REFLUXO GASTRICO</option>
+                <option value="HISTERECTOMIA">HISTERECTOMIA</option>
+                <option value="HISTEROSCOPIA">HISTEROSCOPIA</option>
+                <option value="RETOSSIGMOIDOCTOMIA">
+                  RETOSSIGMOIDOCTOMIA
+                </option>
+                <option value="GASTRECTOMIA">GASTRECTOMIA</option>
+                <option value="VASECTOMIA">VASECTOMIA</option>
+                <option value="ANGIOPLASTIA">ANGIOPLASTIA</option>
+                <option value="NEFRECTOMIA">NEFRECTOMIA</option>
+                <option value="URETERO FLEXIVEL">URETERO FLEXIVEL</option>
+                <option value="URETERO RIGIDO">URETERO RIGIDO</option>
+                <option value="OOFORECTOMIA">OOFORECTOMIA</option>
+                <option value="COLESCISTECTOMIA">COLESCISTECTOMIA</option>
+                <option value="PROSTATECTOMIA">PROSTATECTOMIA</option>
+                <option value="LAPAROTOMIA">LAPAROTOMIA</option>
+                <option value="CISTONEFROSCOPIO">CISTONEFROSCOPIO</option>
+                <option value="CISTOLITOTRIPSIA">CISTOLITOTRIPSIA</option>
+                <option value="PERCUTANEA">PERCUTANEA</option>
+                <option value="BARIATRICA">BARIATRICA</option>
+                <option value="TIREOIDECTOMIA">TIREOIDECTOMIA</option>
+                <option value="REVASCULARIZAÇÃO DO MIOCARDIO">
+                  REVASCULARIZAÇÃO DO MIOCARDIO
+                </option>
+                <option value="LOBECTOMIA">LOBECTOMIA</option>
+                <option value="CISTOPLASTIA">CISTOPLASTIA</option>
+                <option value="CONSIGNAÇÃO">CONSIGNAÇÃO</option>
+                <option value="VENDA DIRETA">VENDA DIRETA</option>
+                <option value="COLECTOMIA">COLECTOMIA</option>
+                <option value="HERNIORRAFIA">HERNIORRAFIA</option>
+                <option value="REPOSIÇÃO">REPOSIÇÃO</option>
+                <option value="OUTROS">OUTROS</option>
+                <option value="RETIRADA DE DUPLO J">
+                  RETIRADA DE DUPLO J
+                </option>
+                <option value="THULEP">THULEP</option>
+                <option value="URETROTOMIA">URETROTOMIA</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="vendedor" class="form-label">Vendedor</label>
+              <select class="form-select" id="vendedor">
+                <option selected disabled>Selecione...</option>
+                <option value="BENEVIDES">BENEVIDES</option>
+                <option value="JULIANA DANTAS">JULIANA DANTAS</option>
+                <option value="ADRIANA L.">ADRIANA L.</option>
+                <option value="RAQUEL BRITO">RAQUEL BRITO</option>
+                <option value="TATYANA">TATYANA</option>
+                <option value="JAELNA">JAELNA</option>
+                <option value="LEONARDO">LEONARDO</option>
+                <option value="SANDRA">SANDRA</option>
+                <option value="NADIA SILVA">NADIA SILVA</option>
+                <option value="NATALIA">NATALIA</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3" id="camposEquipamento">
+            <div class="col-md-4">
+              <label for="equipamento" class="form-label">Equipamento</label>
+              <select class="form-select custom-select2-container" name="equipamento[]">
+                <option selected disabled>Selecione...</option>
+                <option value="TRANSDUTOR INNOLCON">
+                  TRANSDUTOR INNOLCON
+                </option>
+                <option value="GERADOR INNOLCON">GERADOR INNOLCON</option>
+                <option value="GERADOR ELETROCIRURGICO ARC350">
+                  GERADOR ELETROCIRURGICO ARC350
+                </option>
+                <option value="KIT ISNTR ELET ERGO315R 360MM">
+                  KIT ISNTR ELET ERGO315R 360MM
+                </option>
+                <option
+                  value="TORRE DE VIDEO (MONITOR 26, CAMERA HUB IMAGE, FONTE DE LUZ X8000, INSUFLADOR 30 LTS, CABO DE FIBRA)">
+                  TORRE DE VIDEO (MONITOR 26, CAMERA HUB IMAGE, FONTE DE LUZ
+                  X8000, INSUFLADOR 30 LTS, CABO DE FIBRA)
+                </option>
+                <option value="EXTENSÃO 20 ÂMPERES">
+                  EXTENSÃO 20 ÂMPERES
+                </option>
+                <option value="VALVULA CO2 US-STD, CGA 320">
+                  VALVULA CO2 US-STD, CGA 320
+                </option>
+                <option value="CILINDRO COM GASES">CILINDRO COM GASES</option>
+                <option value="CARRINHO PARA CILINDRO DE OXIGÊNIO">
+                  CARRINHO PARA CILINDRO DE OXIGÊNIO
+                </option>
+                <option value="LASER MEDILAS H UROPULSE HRM">
+                  LASER MEDILAS H UROPULSE HRM
+                </option>
+                <option value="PROCESSADORA PARA FLEXÍVEL DIGITAL">
+                  PROCESSADORA PARA FLEXÍVEL DIGITAL
+                </option>
+                <option value="FLEXIVEL TECNOVASIVE - 65CM">
+                  FLEXIVEL TECNOVASIVE - 65CM
+                </option>
+                <option value="FLEX ONE ">FLEX ONE</option>
+                <option value="MONITOR COMPACTO MEDICAL">
+                  MONITOR COMPACTO MEDICAL
+                </option>
+                <option value="SUPORTE TV PEDESTAL 32 A 75">
+                  SUPORTE TV PEDESTAL 32 A 75
+                </option>
+                <option value="ESTOJO PARA FLEX ONE">
+                  ESTOJO PARA FLEX ONE
+                </option>
+                <option value="FIBRA ÓTICA 550UM REUTILIZÁVEL">
+                  FIBRA ÓTICA 550UM REUTILIZÁVEL
+                </option>
+                <option value="FIBRA ÓTICA 270UM REUTILIZÁVEL">
+                  FIBRA ÓTICA 270UM REUTILIZÁVEL
+                </option>
+                <option value="URETERORENOFIBROSCOPIO RIGIDO">
+                  URETERORENOFIBROSCOPIO RIGIDO
+                </option>
+                <option value="URETERORENOFIBROSCOPIO">
+                  URETERORENOFIBROSCOPIO
+                </option>
+                <option value="SISTEMA DE MEDIÇAO DE FLUXO SANGUINEO - BUTTERFLY">
+                  SISTEMA DE MEDIÇAO DE FLUXO SANGUINEO - BUTTERFLY
+                </option>
+                <option value="SISTEMA VERI-Q PARA CONTROLE DE QUALIDADE INTRA-OPERATORIA">
+                  SISTEMA VERI-Q PARA CONTROLE DE QUALIDADE INTRA-OPERATORIA
+                </option>
+                <option value="EXTENSÃO">EXTENSÃO</option>
+                <option value="NOBREAK">NOBREAK</option>
+                <option value="IMPRESSORA">IMPRESSORA</option>
+                <option value="PAPEL A4">PAPEL A4</option>
+                <option value="MEDIDOR DE FLUXO MODELO 3 MM(SN 64510) KIT 1">
+                  MEDIDOR DE FLUXO MODELO 3 MM(SN 64510) KIT 1
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 4 MM(SN 63433) KIT 1">
+                  MEDIDOR DE FLUXO MODELO 4 MM(SN 63433) KIT 1
+                </option>
+                <option value="SONDA QUICKFIT 3MM SEM CABO(SN 82796) KIT 1">
+                  SONDA QUICKFIT 3MM SEM CABO(SN 82796) KIT 1
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 5 MM(SN 56293) KIT 1">
+                  MEDIDOR DE FLUXO MODELO 5 MM(SN 56293) KIT 1
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 2 MM(SN 61213) KIT 1">
+                  MEDIDOR DE FLUXO MODELO 2 MM(SN 61213) KIT 1
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 3 MM(SN 3965) KIT 1">
+                  MEDIDOR DE FLUXO MODELO 3 MM(SN 3965) KIT 1
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 3 MM(SN 84911) KIT 2">
+                  MEDIDOR DE FLUXO MODELO 3 MM(SN 84911) KIT 2
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 3 MM(SN 84912) KIT 2">
+                  MEDIDOR DE FLUXO MODELO 3 MM(SN 84912) KIT 2
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 3 MM(SN 2688) KIT 2">
+                  MEDIDOR DE FLUXO MODELO 3 MM(SN 2688) KIT 2
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 2 MM(SN 83476) KIT 2">
+                  MEDIDOR DE FLUXO MODELO 2 MM(SN 83476) KIT 2
+                </option>
+                <option value="MEDIDOR DE FLUXO MODELO 4 MM(SN 63434) KIT 2">
+                  MEDIDOR DE FLUXO MODELO 4 MM(SN 63434) KIT 2
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="quantidadeEquipamento" class="form-label">Quantidade do Equipamento</label>
+              <input type="number" class="form-control" name="quantidadeEquipamento[]" />
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <button type="button" class="btn btn-success me-2"
+                onclick="adicionarCampo('camposEquipamento', 'equipamento[]', 'quantidadeEquipamento[]', 'Equipamento', 'Quantidade do Equipamento')">
+                Adicionar
+              </button>
+              <button type="button" class="btn btn-danger" onclick="removerUltimoCampo('camposEquipamento')">
+                Remover
+              </button>
+            </div>
+          </div>
+
+          <div id="novosEquipamentos"></div>
+          <div class="row mb-3" id="camposMaterial">
+            <div class="col-md-4">
+              <label for="material" class="form-label">Material</label>
+              <select class="form-select custom-select2-container" name="material[]">
+                <option selected disabled>Selecione...</option>
+                <option value="PINÇA ULTRASSONICA 22CM INNOLCON">
+                  PINÇA ULTRASSONICA 22CM INNOLCON
+                </option>
+                <option value="PINÇA ULTRASSONICA 35CM INNOLCON">
+                  PINÇA ULTRASSONICA 35CM INNOLCON
+                </option>
+                <option value="PINÇA ULTRASSONICA 45CM INNOLCON">
+                  PINÇA ULTRASSONICA 45CM INNOLCON
+                </option>
+                <option value="CARGA ARTICULADA ROXA P3H 45MM">
+                  CARGA ARTICULADA ROXA P3H 45MM
+                </option>
+                <option value="CARGA ARTICULADA ROXA P3H 60MM">
+                  CARGA ARTICULADA ROXA P3H 60MM
+                </option>
+                <option value="CARGA ARTICULADA BEGE P3H 45MM">
+                  CARGA ARTICULADA BEGE P3H 45MM
+                </option>
+                <option value="CARGA ARTICULADA PRETA P3H 45M">
+                  CARGA ARTICULADA PRETA P3H 45M
+                </option>
+                <option value="CARGA ARTICULADA PRETA P3H 60M">
+                  CARGA ARTICULADA PRETA P3H 60M
+                </option>
+                <option value="CARGA ARTICULADA BEGE P3H 60MM">
+                  CARGA ARTICULADA BEGE P3H 60MM
+                </option>
+                <option value="CARGA ARTICULADA BEGE P3H 60MM CURVED TIPP">
+                  CARGA ARTICULADA BEGE P3H 60MM CURVED TIPP
+                </option>
+                <option value="CARGA ARTICULADA BEGE P3H 45MM CURVED TIPP">
+                  CARGA ARTICULADA BEGE P3H 45MM CURVED TIPP
+                </option>
+                <option value="CARGA ARTICULADA ROXA P3H 45MM CURVED TIPP">
+                  CARGA ARTICULADA ROXA P3H 45MM CURVED TIPP
+                </option>
+                <option value="GRAMPEADOR ENDOSCOPIO ELETRONICO LONGO">
+                  GRAMPEADOR ENDOSCOPIO ELETRONICO LONGO
+                </option>
+                <option value="GRAMPEADOR ENDOSCOPIO ELETRONICO CURTO">
+                  GRAMPEADOR ENDOSCOPIO ELETRONICO CURTO
+                </option>
+                <option value="GRAMPEADOR CIRCULAR 32">
+                  GRAMPEADOR CIRCULAR 32
+                </option>
+                <option value="GRAMPEADOR CIRCULAR 29">
+                  GRAMPEADOR CIRCULAR 29
+                </option>
+                <option value="GRAMPEADOR CIRCULAR 26">
+                  GRAMPEADOR CIRCULAR 26
+                </option>
+                <option value="GRAMPEADOR CIRCULAR 24">
+                  GRAMPEADOR CIRCULAR 24
+                </option>
+                <option value="GRAMPEADOR CIRCULAR PPHNR33">
+                  GRAMPEADOR CIRCULAR PPHNR33
+                </option>
+                <option value="GRAMPEADOR LINEAR CORTANTE ULTIMATE 80MM AZUL">
+                  GRAMPEADOR LINEAR CORTANTE ULTIMATE 80MM AZUL
+                </option>
+                <option value="CARGA PARA GRAMP.LINEAR 3.8 MM">
+                  CARGA PARA GRAMP.LINEAR 3.8 MM
+                </option>
+                <option value="ENDOGRAMPEADOR LONGO 26 CM">
+                  ENDOGRAMPEADOR LONGO 26 CM
+                </option>
+                <option value="ENDOGRAMPEADOR STANDARD 16CM">
+                  ENDOGRAMPEADOR STANDARD 16CM
+                </option>
+                <option value="GRAMPEADOR LINEAR CORTANTE 40MM(PANTHOUR)">
+                  GRAMPEADOR LINEAR CORTANTE 40MM(PANTHOUR)
+                </option>
+                <option value="ENDOBAG LAPAROSCOPICO DESCARTÁVEL 12MM X 1500ML">
+                  ENDOBAG LAPAROSCOPICO DESCARTÁVEL 12MM X 1500ML
+                </option>
+                <option value="MANIPULADOR UTERINO M 34X323MM">
+                  MANIPULADOR UTERINO M 34X323MM
+                </option>
+                <option value="MANIPULADOR UTERINO G 38X323MM">
+                  MANIPULADOR UTERINO G 38X323MM
+                </option>
+                <option value="MANIPULADOR UTERINO EXTRA G 40X323MM">
+                  MANIPULADOR UTERINO EXTRA G 40X323MM
+                </option>
+                <option value="TROCARTER 12MM">TROCARTER 12MM</option>
+                <option value="TROCARTER 15MM">TROCARTER 15MM</option>
+                <option value="TROCARTER 10MM">TROCARTER 10MM</option>
+                <option value="LAMINA ESTERIL ERGO 315R - SISTEMA DE SELAGEM BIPOLAR AVANCADO">
+                  LAMINA ESTERIL ERGO 315R - SISTEMA DE SELAGEM BIPOLAR
+                  AVANCADO
+                </option>
+                <option value="GUIA R.PTFE 0,35 X 260 CM, (J) AMPLATZ">
+                  GUIA R.PTFE 0,35 X 260 CM, (J) AMPLATZ
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 4F DE 45CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 4F DE 45CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 4F DE 65CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 4F DE 65CM
+                </option>
+                <option value="INTRODUTOR SPSYLAR CONTRA LATERAL 5FR DE 120CM">
+                  INTRODUTOR SPSYLAR CONTRA LATERAL 5FR DE 120CM
+                </option>
+                <option value="INTRODUTOR SPSYLAR CONTRA LATERAL 5FR DE 90CM">
+                  INTRODUTOR SPSYLAR CONTRA LATERAL 5FR DE 90CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 6F DE 45CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 6F DE 45CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 6F DE 65CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 6F DE 65CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA LATERAL 6F DE 90CM">
+                  INTRODUTOR EPSYLAR CONTRA LATERAL 6F DE 90CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 7F DE 45CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 7F DE 45CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 7F DE 65CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 7F DE 65CM
+                </option>
+                <option value="INTRODUTOR EPSYLAR CONTRA-LATERAL 7F x 90CM">
+                  INTRODUTOR EPSYLAR CONTRA-LATERAL 7F x 90CM
+                </option>
+                <option value="CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 14MM x 4CM.">
+                  CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 14MM x 4CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 16MM x 2CM.">
+                  CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 16MM x 2CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 16MM x 4CM.">
+                  CATETER BALAO ZELOS. 6.5FR X100 CM E BALAO DE 16MM x 4CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 18MM x 2CM.">
+                  CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 18MM x 2CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 18MM x 4CM.">
+                  CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 18MM x 4CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 20MM x 4CM.">
+                  CATETER BALAO ZELOS. 7FR X100 CM E BALAO DE 20MM x 4CM.
+                </option>
+                <option value="CATETER BALAO ZELOS. 8FR X100 CM E BALAO DE 22MM x 4CM">
+                  CATETER BALAO ZELOS. 8FR X100 CM E BALAO DE 22MM x 4CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK 35 4 X 100MM X 120CM">
+                  CATETER BALAO NYLOTRACK 35 4 X 100MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 5 x 80MM">
+                  CATETER BALAO NYLOTRACK-35 - 5 x 80MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 5 x 100MM">
+                  CATETER BALAO NYLOTRACK-35 - 5 x 100MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 5 x 120MM">
+                  CATETER BALAO NYLOTRACK-35 - 5 x 120MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 5 x 150MM">
+                  CATETER BALAO NYLOTRACK-35 - 5 x 150MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 -5F x 40MM X 120CM">
+                  CATETER BALAO NYLOTRACK-35 -5F x 40MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 6 x 120MM">
+                  CATETER BALAO NYLOTRACK-35 - 6 x 120MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 6 x 150MM">
+                  CATETER BALAO NYLOTRACK-35 - 6 x 150MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 7 x 80MM">
+                  CATETER BALAO NYLOTRACK-35 - 7 x 80MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 7 x 100MM X 120CM">
+                  CATETER BALAO NYLOTRACK-35 - 7 x 100MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 7 x 120MM X 120CM">
+                  CATETER BALAO NYLOTRACK-35 - 7 x 120MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 8 x 100MM X 120CM">
+                  CATETER BALAO NYLOTRACK-35 - 8 x 100MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-35 - 8 x 120MM X 120CM">
+                  CATETER BALAO NYLOTRACK-35 - 8 x 120MM X 120CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 4 x 100MM X 135CM">
+                  CATETER BALAO NYLOTRACK-18 - 4 x 100MM X 135CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 4 x 120MM X 135CM">
+                  CATETER BALAO NYLOTRACK-18 - 4 x 120MM X 135CM
+                </option>
+                <option value="CATETER VALAO NYLOTRACK 18-4 X 135MM">
+                  CATETER VALAO NYLOTRACK 18-4 X 135MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK 18-5 X 80MM">
+                  CATETER BALAO NYLOTRACK 18-5 X 80MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK 18-5 X 150MM">
+                  CATETER BALAO NYLOTRACK 18-5 X 150MM
+                </option>
+                <option value="CATETER VALAO NYLOTRACK 18-5 X 220MM">
+                  CATETER VALAO NYLOTRACK 18-5 X 220MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 2 x 120MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 2 x 120MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 2 x 150MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 2 x 150MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 2 x 220MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 2 x 220MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3 x 100MM">
+                  CATETER BALAO NYLOTRACK-18 - 3 x 100MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3 x 120MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 3 x 120MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3 x 150MM">
+                  CATETER BALAO NYLOTRACK-18 - 3 x 150MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3 x 220MM">
+                  CATETER BALAO NYLOTRACK-18 - 3 x 220MM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 2,5 x 120MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 2,5 x 120MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 2,5 x 220MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 2,5 x 220MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3,5 x 120MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 3,5 x 120MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3,5 x 150MM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 3,5 x 150MM X 150CM
+                </option>
+                <option value="CATETER BALAO NYLOTRACK-18 - 3,5MM X 22CM X 150CM">
+                  CATETER BALAO NYLOTRACK-18 - 3,5MM X 22CM X 150CM
+                </option>
+                <option value="KIT PARA APLICACAO DE CO2 - ANGIOSET - L">
+                  KIT PARA APLICACAO DE CO2 - ANGIOSET - L
+                </option>
+                <option value="STENT SINUS XL 16MM x 60MM -">
+                  STENT SINUS XL 16MM x 60MM -
+                </option>
+                <option value="STENT SINUS XL 16MM X 80MM">
+                  STENT SINUS XL 16MM X 80MM
+                </option>
+                <option value="STENT SINUS XL 18MM x 60MM">
+                  STENT SINUS XL 18MM x 60MM
+                </option>
+                <option value="STENT SINUS XL 18MM x 80MM">
+                  STENT SINUS XL 18MM x 80MM
+                </option>
+                <option value="STENT SINUS XL 20MM x 60MM">
+                  STENT SINUS XL 20MM x 60MM
+                </option>
+                <option value="STENT SINUS XL 22MM x 60MM">
+                  STENT SINUS XL 22MM x 60MM
+                </option>
+                <option value="STENT SINUS XL 22MM x 80MM">
+                  STENT SINUS XL 22MM x 80MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX 418 3/100-SA 4F/135">
+                  STENT SINUS SUPERFLEX 418 3/100-SA 4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 3MM X 130MM X 135CM -SA4F/135">
+                  STENT SINUS SUPERFLEX-418 3MM X 130MM X 135CM -SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 3/180-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 3/180-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 3MM X 80MM X 135CM -SA4F/135">
+                  STENT SINUS SUPERFLEX-418 3MM X 80MM X 135CM -SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 4MM X 130MM X 85CM -SA4F/135">
+                  STENT SINUS SUPERFLEX-418 4MM X 130MM X 85CM -SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 4/200-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 4/200-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX 418 4/100 4F/135">
+                  STENT SINUS SUPERFLEX 418 4/100 4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 4/150-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 4/150-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX 418-4/60-SA 4F/135">
+                  STENT SINUS SUPERFLEX 418-4/60-SA 4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 5/100-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 5/100-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 5/150-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 5/150-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 5/60-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 5/60-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 5/80-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 5/80-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX 418 6/200 SA 4F/135">
+                  STENT SINUS SUPERFLEX 418 6/200 SA 4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 6/100-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 6/100-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 6/150-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 6/150-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 6MM X 180MM X 135CM-SA4F/135">
+                  STENT SINUS SUPERFLEX-418 6MM X 180MM X 135CM-SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX-418 7MM X 100MM X 135CM -SA4F/135">
+                  STENT SINUS SUPERFLEX-418 7MM X 100MM X 135CM -SA4F/135
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 6MM x 80MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 6MM x 80MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 6MM x 100MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 6MM x 100MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 6MM x 120MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 6MM x 120MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 6MM x 150MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 6MM x 150MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 7MM x 80MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 7MM x 80MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 7MM x 100MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 7MM x 100MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 7MM x 120MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 7MM x 120MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 7MM x 150MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 7MM x 150MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 8MM x 80MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 8MM x 80MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 8MM x 100MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 8MM x 100MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 8MM X 120MM X 120CM">
+                  STENT SINUS SUPERFLEX VISUAL 635 8MM X 120MM X 120CM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 8MM x 150MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 8MM x 150MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 9MM x 60MM">
+                  STENT SINUS SUPERFLEX VISUAL 635 9MM x 60MM
+                </option>
+                <option value="STENT SINUS SUPERFLEX VISUAL 635 9MM X 100MM X 120CM">
+                  STENT SINUS SUPERFLEX VISUAL 635 9MM X 100MM X 120CM
+                </option>
+                <option value="STENT SINUS VENOUS 12MM x 100MM">
+                  STENT SINUS VENOUS 12MM x 100MM
+                </option>
+                <option value="STENT SINUS VENOUS 12MM x 120MM SA 10F X 100CM">
+                  STENT SINUS VENOUS 12MM x 120MM SA 10F X 100CM
+                </option>
+                <option value="STENT SINUS VENOUS 12MM x 150MM">
+                  STENT SINUS VENOUS 12MM x 150MM
+                </option>
+                <option value="STENT SINUS VENOUS 14MM X 150MM">
+                  STENT SINUS VENOUS 14MM X 150MM
+                </option>
+                <option value="STENT SINUS VENOUS 14MM x 60MM SA 10F X 100CM">
+                  STENT SINUS VENOUS 14MM x 60MM SA 10F X 100CM
+                </option>
+                <option value="STENT SINUS VENOUS 14MM x 100MM">
+                  STENT SINUS VENOUS 14MM x 100MM
+                </option>
+                <option value="STENT SINUS VENOUS 14MM x 120MM">
+                  STENT SINUS VENOUS 14MM x 120MM
+                </option>
+                <option value="STENT SINUS VENOUS 14MM X 150MM">
+                  STENT SINUS VENOUS 14MM X 150MM
+                </option>
+                <option value="STENT SINUS VENOUS 16MM x 60MM SA 10F X 100CM">
+                  STENT SINUS VENOUS 16MM x 60MM SA 10F X 100CM
+                </option>
+                <option value="STENT SINUS VENOUS 16MM x 80MM">
+                  STENT SINUS VENOUS 16MM x 80MM
+                </option>
+                <option value="STENT SINUS VENOUS 16MM x 100MM">
+                  STENT SINUS VENOUS 16MM x 100MM
+                </option>
+                <option value="STENT SINUS VENOUS 16MM x 120MM">
+                  STENT SINUS VENOUS 16MM x 120MM
+                </option>
+                <option value="STENT SINUS VENOUS 16MM x 150MM">
+                  STENT SINUS VENOUS 16MM x 150MM
+                </option>
+                <option value="STENT SINUS VENOUS 18MM x 60MM">
+                  STENT SINUS VENOUS 18MM x 60MM
+                </option>
+                <option value="STENT SINUS VENOUS 18MM x 80MM">
+                  STENT SINUS VENOUS 18MM x 80MM
+                </option>
+                <option value="STENT SINUS VENOUS 18MM x 100MM">
+                  STENT SINUS VENOUS 18MM x 100MM
+                </option>
+                <option value="BALAO PERIFERICO OCEANUS 14 - 2,5MM x 120MM X 150CM">
+                  BALAO PERIFERICO OCEANUS 14 - 2,5MM x 120MM X 150CM
+                </option>
+                <option value="BALAO PERIFERICO OCEANUS 14 - 3MM x 150MM X 150C">
+                  BALAO PERIFERICO OCEANUS 14 - 3MM x 150MM X 150C
+                </option>
+                <option value="BALAO PERIFERICO OCEANUS 14 - 2,5MM x 150MM X 150">
+                  BALAO PERIFERICO OCEANUS 14 - 2,5MM x 150MM X 150
+                </option>
+                <option value="BALAO PERIFERICO OCEANUS 14 - 3MM x 1200MM X 150C">
+                  BALAO PERIFERICO OCEANUS 14 - 3MM x 1200MM X 150C
+                </option>
+                <option value="BALAO PERIFERICO OCEANUS 14 - 2,5MM x 200MM X 150">
+                  BALAO PERIFERICO OCEANUS 14 - 2,5MM x 200MM X 150
+                </option>
+                <option value="PURASTAT DE 5ML - SOLUCAO PEPTIDEO HEMOSTATICA ABSORVIVEL TRASNPARENTE">
+                  PURASTAT DE 5ML - SOLUCAO PEPTIDEO HEMOSTATICA ABSORVIVEL
+                  TRASNPARENTE
+                </option>
+                <option value="PURASTAT DE 3ML - SOLUCAO PEPTIDEO HEMOSTATICA ABSORVIVEL TRASNPARENTE">
+                  PURASTAT DE 3ML - SOLUCAO PEPTIDEO HEMOSTATICA ABSORVIVEL
+                  TRASNPARENTE
+                </option>
+                <option value="FIO GUIA HIDROFILICO RETO 0,035 X 150CM">
+                  FIO GUIA HIDROFILICO RETO 0,035 X 150CM
+                </option>
+                <option value="BAINHA INTRODUTORA URETERAL HIDROF 10 - 7F X 45CM">
+                  BAINHA INTRODUTORA URETERAL HIDROF 10 - 7F X 45CM
+                </option>
+                <option value="BAINHA INTRODUTORA URETERAL HIDROF 10 - 7F X 35CM">
+                  BAINHA INTRODUTORA URETERAL HIDROF 10 - 7F X 35CM
+                </option>
+                <option value="CESTA DE NITINOL HELICAL 3FR X 4 WIRE X 90CM">
+                  CESTA DE NITINOL HELICAL 3FR X 4 WIRE X 90CM
+                </option>
+                <option value="SONDA EXTRATORA DE CALCULOS ZERO TIP 1.8FR 4 FIOS X 120CM">
+                  SONDA EXTRATORA DE CALCULOS ZERO TIP 1.8FR 4 FIOS X 120CM
+                </option>
+                <option value="CATERTER DUPLO J HIDROFILICO AQUARIUS 4.7FR X 26CM">
+                  CATERTER DUPLO J HIDROFILICO AQUARIUS 4.7FR X 26CM
+                </option>
+                <option value="CATETER DUPLO J HIDROFILICO AQUARIUS 6FR X 26CM">
+                  CATETER DUPLO J HIDROFILICO AQUARIUS 6FR X 26CM
+                </option>
+                <option value="FIBRA LASER 365NM X 3M">
+                  FIBRA LASER 365NM X 3M
+                </option>
+                <option value="FIBRA LASER 272NM X 3M">
+                  FIBRA LASER 272NM X 3M
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="quantidadeMaterial" class="form-label">Quantidade do Material</label>
+              <input type="number" class="form-control" name="quantidadeMaterial[]" />
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <button type="button" class="btn btn-success me-2"
+                onclick="adicionarCampo('camposMaterial', 'material[]', 'quantidadeMaterial[]', 'Material', 'Quantidade do Material')">
+                Adicionar
+              </button>
+              <button type="button" class="btn btn-danger" onclick="removerUltimoCampo('camposMaterial')">
+                Remover
+              </button>
+            </div>
+          </div>
+
+          <div id="novosMateriais"></div>
+
+          <div class="row mb-3">
+            <div class="col-md-12 d-flex justify-content-end">
+              <button type="submit" class="btn btn-success" onclick="registrar(event)">
+                Enviar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
+  <script>
+    function logout() {
+      // Limpe o token do localStorage
+      localStorage.removeItem('token');
+
+      // Limpe o email do usuário do localStorage
+      localStorage.removeItem('userEmail');
+
+      // Redirecione para a tela de login
+      window.location.href = '../login/tela_login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // Recupera o email armazenado no localStorage
+      const userEmail = localStorage.getItem('userEmail');
+      const token = localStorage.getItem('token');
+      const cargo = localStorage.getItem('cargo');
+
+      if(cargo === "Logistica" || cargo === "Vendedor"){
+        const faturamento = document.getElementById('faturamento');
+
+        faturamento.style.display = 'none';
+      }
+      
+      if(cargo === "Vendedor" || cargo === "Comercial"){
+        const cancelados = document.getElementById('pedidosCancelados');
+
+        cancelados.style.display = 'none';
+      }
+
+      if(cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica"){
+                const dashboard = document.getElementById('dashboard');
+
+                dashboard.style.display = 'none';
+      }
+
+      if (!token) {
+        // Se não houver token, redireciona para a página de login
+        window.location.href = '../login/tela_login.html';
+      }
+
+      // Atualize o conteúdo do elemento no menu com o valor do email
+      if (userEmail !== null) {
+        document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+      } else {
+        // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+        document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+      }
+    });
+
+    function toUpperCase() {
+      var input = document.getElementById("nomePaciente");
+      input.value = input.value.toUpperCase();
+    }
+
+    $(document).ready(function () {
+      $(".custom-select2-container").select2({
+        theme: "bootstrap5",
+        width: "100%",
+      });
+    });
+
+    function formatDate(date) {
+      const formattedDate = new Date(date);
+      const year = formattedDate.getFullYear();
+      const month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(formattedDate.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function getCurrentTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      return `${hours}:${minutes}:${seconds}`;
+    }
+
+    async function obterDatasRegistradas() {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Se não houver token, redirecione para a página de login
+            window.location.href = '../login/tela_login.html';
+            return;
+        }
+
+        const response = await axios.get('http://localhost:3000/agenda/datasRegistradas', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao obter datas registradas:', error);
+        return null;
+    }
+}
+
+function isDataDentroDoPrazo(dataProcedimento, dataInicio, dataFinal) {
+    const dataProcedimentoDate = new Date(dataProcedimento);
+    const dataInicioDate = new Date(dataInicio);
+    const dataFinalDate = new Date(dataFinal);
+
+    return dataProcedimentoDate >= dataInicioDate && dataProcedimentoDate <= dataFinalDate;
+}
+
+function validarCampos() {
+    const camposObrigatorios = [
+        "hospital",
+        "linha",
+        "dataProcedimento",
+        "horaProcedimento",
+        "medico",
+        "nomePaciente",
+        "responsabilidade",
+        "tipoProcedimento",
+        "vendedor",
+        "instrumentador",
+        "convenio"
+    ];
+
+    for (const campoId of camposObrigatorios) {
+        const campo = document.getElementById(campoId);
+        if (!campo || !campo.value.trim()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+async function registrar(event) {
+    event.preventDefault();
+
+    const username = localStorage.getItem("userEmail"); // Recupera o nome do usuário do localStorage
+    const url = `http://18.231.102.188:3000/auth/users/${username}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(async (userData) => {
+            const estado = userData.estado; // Obtém o estado do usuário
+            const tipoProcedimento = document.getElementById("tipoProcedimento").value;
+            const dataProcedimento = document.getElementById("dataProcedimento").value;
+
+            if (!validarCampos()) {
+                alert("Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+
+            // Verificar se o tipo de procedimento é "THULEP"
+            if (tipoProcedimento === "THULEP") {
+                const datasRegistradas = await obterDatasRegistradas();
+
+                if (!datasRegistradas) {
+                    alert("Erro ao obter datas registradas. Tente novamente.");
+                    return;
+                }
+
+                let dentroDoPrazo = false;
+
+                if (estado === "CE") {
+                    dentroDoPrazo = isDataDentroDoPrazo(dataProcedimento, datasRegistradas.dataInicioCE, datasRegistradas.dataFinalCE);
+                } else if (estado === "PI") {
+                    dentroDoPrazo = isDataDentroDoPrazo(dataProcedimento, datasRegistradas.dataInicioPI, datasRegistradas.dataFinalPI);
+                } else if (estado === "MA") {
+                    dentroDoPrazo = isDataDentroDoPrazo(dataProcedimento, datasRegistradas.dataInicioMA, datasRegistradas.dataFinalMA);
+                } else if (estado === "RMC") {
+                    dentroDoPrazo = isDataDentroDoPrazo(dataProcedimento, datasRegistradas.dataInicioCARI, datasRegistradas.dataFinalCARI);
+                }
+
+                if (!dentroDoPrazo) {
+                    alert("Procedimento THULEP está fora do prazo");
+                    return;
+                }
+            }
+
+            const hospital = document.getElementById("hospital").value;
+            const linha = document.getElementById("linha").value;
+            const horaProcedimento = document.getElementById("horaProcedimento").value;
+            const carimboHorario = getCurrentTime();
+            const medico = document.getElementById("medico").value;
+            const nomePaciente = document.getElementById("nomePaciente").value;
+            const responsabilidade = document.getElementById("responsabilidade").value;
+            const vendedor = document.getElementById("vendedor").value;
+            const instrumentador = document.getElementById("instrumentador").value;
+            const convenio = document.getElementById("convenio").value;
+
+            const equipamentos = [];
+            const equipamentoElements = document.querySelectorAll('[name="equipamento[]"]');
+            const quantidadeEquipamentoElements = document.querySelectorAll('[name="quantidadeEquipamento[]"]');
+            equipamentoElements.forEach((element, index) => {
+                equipamentos.push({
+                    nome: element.value,
+                    quantidade: quantidadeEquipamentoElements[index].value,
+                });
+            });
+
+            const materiais = [];
+            const materialElements = document.querySelectorAll('[name="material[]"]');
+            const quantidadeMaterialElements = document.querySelectorAll('[name="quantidadeMaterial[]"]');
+            materialElements.forEach((element, index) => {
+                materiais.push({
+                    nome: element.value,
+                    quantidade: quantidadeMaterialElements[index].value,
+                });
+            });
+
+            const dadosRegistro = {
+                hospital,
+                situacao: "Em Processo",
+                motivoCancelamento: "Sem Motivo",
+                estado,
+                linha,
+                dataProcedimento,
+                horaProcedimento,
+                carimboHorario,
+                medico,
+                nomePaciente,
+                responsabilidade,
+                tipoProcedimento,
+                vendedor,
+                instrumentador,
+                convenio,
+                equipamentos,
+                materiais,
+                imagemComunicadoUso64: "Sem comunicado de uso",
+                imagemNotaFiscal64: "Sem Nota Fiscal",
+                imagemRemessa64: "Sem Nota de Remessa",
+                entregador: "Informe o Entregador",
+            };
+
+            fetch("http://18.231.102.188:3000/registrar/enviarPedido", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dadosRegistro),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Registro feito com sucesso!");
+                    } else {
+                        alert("Erro ao registrar. Tente novamente.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao registrar:", error);
+                    alert("Erro ao registrar. Tente novamente.");
+                });
+        })
+        .catch(error => {
+            console.error("Erro ao obter dados do usuário:", error);
+            alert("Erro ao registrar. Tente novamente.");
+        });
+}
+
+    function adicionarCampo(
+      containerId,
+      inputName1,
+      inputName2,
+      label1,
+      label2
+    ) {
+      var container = document.getElementById(containerId);
+
+      var novoCampo = document.createElement("div");
+      novoCampo.classList.add("row", "mb-3");
+
+      var divInput1 = document.createElement("div");
+      divInput1.classList.add("col-md-4");
+      var labelElement1 = document.createElement("label");
+      labelElement1.for = inputName1;
+      labelElement1.textContent = label1;
+      divInput1.appendChild(labelElement1);
+      var select1 = document.createElement("select");
+      select1.classList.add("form-select");
+      select1.name = inputName1;
+
+      var options = container
+        .querySelector("select")
+        .querySelectorAll("option");
+      options.forEach(function (option) {
+        select1.appendChild(option.cloneNode(true));
+      });
+      divInput1.appendChild(select1);
+      novoCampo.appendChild(divInput1);
+
+      var divInput2 = document.createElement("div");
+      divInput2.classList.add("col-md-4");
+      var labelElement2 = document.createElement("label");
+      labelElement2.for = inputName2;
+      labelElement2.textContent = label2;
+      divInput2.appendChild(labelElement2);
+      var input2 = document.createElement("input");
+      input2.type = "number";
+      input2.classList.add("form-control");
+      input2.name = inputName2;
+      divInput2.appendChild(input2);
+      novoCampo.appendChild(divInput2);
+
+      container.appendChild(novoCampo);
+    }
+
+    function removerUltimoCampo(containerId) {
+      var container = document.getElementById(containerId);
+      var ultimosCampos = container.querySelectorAll(".row");
+      if (ultimosCampos.length > 0) {
+        container.removeChild(ultimosCampos[ultimosCampos.length - 1]);
+      }
+    }
+  </script>
+</body>
+
+</html>

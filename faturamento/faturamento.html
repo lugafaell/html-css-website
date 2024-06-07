@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Faturamento</title>
+    <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<style>
+    select {
+        -webkit-appearance: none;
+        /* Remove a seta padrão no Safari */
+        -moz-appearance: none;
+        /* Remove a seta padrão no Firefox */
+        appearance: none;
+        /* Remove a seta padrão */
+        appearance: none;
+        /* Remove os estilos padrão do sistema */
+        padding: 10px;
+        /* Espaçamento interno */
+        border: 1px solid #000000;
+        /* Borda */
+        border-radius: 4px;
+        /* Cantos arredondados */
+        background-color: #030303;
+        /* Cor de fundo */
+        box-sizing: border-box;
+        /* Garante que o padding não afete a largura total */
+        font-size: 16px;
+        /* Tamanho da fonte */
+        color: #ffffff;
+        /* Cor do texto */
+        outline: none;
+        /* Remove o contorno ao focar */
+        cursor: pointer;
+        /* Mostra o cursor como apontador */
+    }
+
+    /* Estilo quando o select está focado */
+    select:focus {
+        border-color: #007bff;
+        /* Cor da borda ao focar */
+        box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+        /* Sombra ao focar */
+    }
+
+    #background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        /* Coloca o contêiner da imagem de fundo atrás do conteúdo principal */
+        background-color: #017f2d;
+        background-size: 40%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Estilos para o contêiner do conteúdo principal */
+    .content-container {
+        position: relative;
+        z-index: 1;
+        /* Garante que o conteúdo principal fique acima da imagem de fundo */
+        padding: 20px;
+        /* Adapte conforme necessário */
+    }
+
+
+
+    .table {
+        width: 100%;
+        /* Garante que a tabela ocupe toda a largura disponível */
+    }
+
+    .table th,
+    .table td {
+        white-space: nowrap;
+        /* Evita que o texto quebre em várias linhas */
+        overflow: hidden;
+        /* Oculta conteúdo que transborda das células */
+        text-overflow: ellipsis;
+        /* Exibe reticências (...) para indicar texto truncado */
+    }
+
+    .table thead th {
+        background-color: #050505;
+        /* Cor de fundo do cabeçalho */
+        color: #fff;
+        /* Cor do texto no cabeçalho */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #ccc7c7;
+        /* Cor de fundo das linhas pares */
+    }
+
+    .table tbody tr:hover {
+        background-color: #adafb1;
+        /* Cor de fundo ao passar o mouse */
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div id="background-container"></div>
+
+    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+        <div class="container-fluid">
+            <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+                height="30" class="d-inline-block align-top" alt="">
+
+            <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h3 class="text-white" id="userName"></h3>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                        <li id="pedidos" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/pedidos.html">Pedidos</a>
+                        </li>
+                        <li id="listaPedidos" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
+                        </li>
+                        <li id="pedidosCancelados" class="nav-item">
+                            <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
+                        </li>
+                        <li id="dashboard" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Visualizar Faturamento</h2>
+        <div id="faturamentoContainer" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            <select id="filtroHospital">
+                                <option value="">Hospital</option>
+                                <!-- Opções específicas do hospital podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroConvenio">
+                                <option value="">Convênio</option>
+                                <!-- Opções específicas do convênio podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroDataProcedimento">
+                                <option value="">Data do Procedimento</option>
+                                <!-- Opções específicas de data podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroCarimboHorario">
+                                <option value="">Carimbo de Horário</option>
+                                <!-- Opções específicas do carimbo de horário podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroPaciente">
+                                <option value="">Paciente</option>
+                                <!-- Opções específicas do paciente podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroIdPaciente">
+                                <option value="">ID do Paciente</option>
+                                <!-- Opções específicas do ID do paciente podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroVendedor">
+                                <option value="">Vendedor</option>
+                                <!-- Opções específicas do vendedor podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroFormaPagamento">
+                                <option value="">Forma de Pagamento</option>
+                                <!-- Opções específicas da forma de pagamento podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroValorTotal">
+                                <option value="">Valor Total</option>
+                                <!-- Opções específicas do valor total podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroStatus">
+                                <option value="">Status</option>
+                                <!-- Opções específicas do status podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th>
+                            <select id="filtroMotivo">
+                                <option value="">Motivo</option>
+                                <!-- Opções específicas do motivo podem ser preenchidas dinamicamente se necessário -->
+                            </select>
+                        </th>
+                        <th class="">Link de Autorização</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyFaturamento">
+                </tbody>
+            </table>
+        </div>
+        <button class="btn btn-primary mt-3" id="btnDownloadExcel">Baixar Tabela</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        function logout() {
+            // Limpe o token do localStorage
+            localStorage.removeItem('token');
+
+            // Limpe o email do usuário do localStorage
+            localStorage.removeItem('userEmail');
+
+            // Redirecione para a tela de login
+            window.location.href = '../login/tela_login.html';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const pedidos = document.getElementById('pedidos');
+            const listaPedidos = document.getElementById('listaPedidos');
+            const cargo = localStorage.getItem('cargo');
+
+            if (cargo === "Comercial2") {
+                pedidos.style.display = 'none';
+            } else if (cargo === "Comercial") {
+                pedidos.style.display = 'none';
+                listaPedidos.style.display = 'none';
+            }
+            
+            if(cargo === "Vendedor" || cargo === "Comercial"){
+                const cancelados = document.getElementById('pedidosCancelados');
+
+                cancelados.style.display = 'none';
+            }
+
+            if(cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica"){
+                const dashboard = document.getElementById('dashboard');
+
+                dashboard.style.display = 'none';
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // Se não houver token, redireciona para a página de login
+                window.location.href = '../login/tela_login.html';
+            }
+            // Recupera o email armazenado no localStorage
+            const userEmail = localStorage.getItem('userEmail');
+
+            // Atualize o conteúdo do elemento no menu com o valor do email
+            if (userEmail !== null) {
+                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+            } else {
+                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+            }
+        });
+
+        function filtrarTabela() {
+            const filtroHospital = document.getElementById('filtroHospital').value.toUpperCase();
+            const filtroConvenio = document.getElementById('filtroConvenio').value.toUpperCase();
+            const filtroDataProcedimento = document.getElementById('filtroDataProcedimento').value;
+            const filtroCarimboHorario = document.getElementById('filtroCarimboHorario').value.toUpperCase();
+            const filtroPaciente = document.getElementById('filtroPaciente').value.toUpperCase();
+            const filtroIdPaciente = document.getElementById('filtroIdPaciente').value.toUpperCase();
+            const filtroVendedor = document.getElementById('filtroVendedor').value.toUpperCase();
+            const filtroFormaPagamento = document.getElementById('filtroFormaPagamento').value.toUpperCase();
+            const filtroValorTotal = document.getElementById('filtroValorTotal').value.toUpperCase();
+            const filtroStatus = document.getElementById('filtroStatus').value.toUpperCase();
+            const filtroMotivo = document.getElementById('filtroMotivo').value.toUpperCase();
+
+            const linhas = document.querySelectorAll('#tbodyFaturamento tr');
+
+            linhas.forEach((linha) => {
+                const hospital = linha.getElementsByTagName('td')[0].textContent.toUpperCase();
+                const convenio = linha.getElementsByTagName('td')[1].textContent.toUpperCase();
+                const dataProcedimento = linha.getElementsByTagName('td')[2].textContent;
+                const carimboHorario = linha.getElementsByTagName('td')[3].textContent.toUpperCase();
+                const paciente = linha.getElementsByTagName('td')[4].textContent.toUpperCase();
+                const idPaciente = linha.getElementsByTagName('td')[5].textContent.toUpperCase();
+                const vendedor = linha.getElementsByTagName('td')[6].textContent.toUpperCase();
+                const formaPagamento = linha.getElementsByTagName('td')[7].textContent.toUpperCase();
+                const valorTotal = linha.getElementsByTagName('td')[8].textContent.toUpperCase();
+                const status = linha.getElementsByTagName('td')[9].textContent.toUpperCase();
+                const motivo = linha.getElementsByTagName('td')[10].textContent.toUpperCase();
+
+                const atendeFiltroHospital = filtroHospital === '' || hospital.indexOf(filtroHospital) > -1;
+                const atendeFiltroConvenio = filtroConvenio === '' || convenio.indexOf(filtroConvenio) > -1;
+                const atendeFiltroData = filtroDataProcedimento === '' || dataProcedimento === filtroDataProcedimento;
+                const atendeFiltroCarimboHorario = filtroCarimboHorario === '' || carimboHorario.indexOf(filtroCarimboHorario) > -1;
+                const atendeFiltroPaciente = filtroPaciente === '' || paciente.indexOf(filtroPaciente) > -1;
+                const atendeFiltroIdPaciente = filtroIdPaciente === '' || idPaciente.indexOf(filtroIdPaciente) > -1;
+                const atendeFiltroVendedor = filtroVendedor === '' || vendedor.indexOf(filtroVendedor) > -1;
+                const atendeFiltroFormaPagamento = filtroFormaPagamento === '' || formaPagamento.indexOf(filtroFormaPagamento) > -1;
+                const atendeFiltroValorTotal = filtroValorTotal === '' || valorTotal.indexOf(filtroValorTotal) > -1;
+                const atendeFiltroStatus = filtroStatus === '' || status.indexOf(filtroStatus) > -1;
+                const atendeFiltroMotivo = filtroMotivo === '' || motivo.indexOf(filtroMotivo) > -1;
+
+                if (atendeFiltroHospital && atendeFiltroConvenio && atendeFiltroData && atendeFiltroCarimboHorario &&
+                    atendeFiltroPaciente && atendeFiltroIdPaciente && atendeFiltroVendedor && atendeFiltroFormaPagamento &&
+                    atendeFiltroValorTotal && atendeFiltroStatus && atendeFiltroMotivo) {
+                    linha.style.display = '';
+                } else {
+                    linha.style.display = 'none';
+                }
+            });
+        }
+
+        const btnDownloadExcel = document.getElementById('btnDownloadExcel');
+
+        function exportToExcel() {
+            const table = document.getElementById('faturamentoContainer');
+            const wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, 'faturamento.xlsx');
+        }
+
+        btnDownloadExcel.addEventListener('click', () => {
+            exportToExcel();
+        });
+
+        function fillFaturamentoTable(faturamentos) {
+            const tbody = document.getElementById('tbodyFaturamento');
+            tbody.innerHTML = '';
+
+            faturamentos.forEach(faturamento => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${faturamento.hospital || '-'}</td>
+                    <td>${faturamento.convenio || '-'}</td>
+                    <td>${faturamento.dataProcedimento || '-'}</td>
+                    <td>${faturamento.carimboHorario || '-'}</td>
+                    <td>${faturamento.nomePaciente || '-'}</td>
+                    <td>${faturamento.idPaciente || '-'}</td>
+                    <td>${faturamento.vendedor || '-'}</td>
+                    <td>${faturamento.formaPagamento || '-'}</td>
+                    <td>${faturamento.valorTotal || '-'}</td>
+                    <td>${faturamento.status || '-'}</td>
+                    <td>${faturamento.motivo || '-'}</td>
+                    <td>${faturamento.linkAutorizacao || '-'}</td>
+                `;
+
+                row.addEventListener('dblclick', () => {
+                    const faturamentoId = faturamento._id;
+
+                    window.location.href = `../faturamento/detalhesFaturamento.html?id=${faturamentoId}`;
+                });
+
+
+                tbody.appendChild(row);
+            });
+
+            preencherFiltrosDinamicamente(faturamentos);
+        }
+
+        function preencherFiltrosDinamicamente(faturamentos) {
+            const preencherSelect = (elementId, valuesArray, filterName) => {
+                const select = document.getElementById(elementId);
+                select.innerHTML = '';
+
+                // Adicionar opção genérica "Mostrar Todos"
+                const allOption = document.createElement('option');
+                allOption.value = '';
+                allOption.text = `${filterName}`;
+                select.add(allOption);
+
+                // Adicionar opções dinâmicas com base nos valores únicos
+                valuesArray.forEach(value => {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.text = value || 'N/A';
+                    select.add(option);
+                });
+
+                select.placeholder = valuesArray.length > 0 ? `Filtrar ${filterName}` : 'N/A';
+            };
+
+            const hospitais = new Set();
+            const convenios = new Set();
+            const datasProcedimento = new Set();
+            const carimbosHorario = new Set();
+            const pacientes = new Set();
+            const idsPacientes = new Set();
+            const vendedores = new Set();
+            const formasPagamento = new Set();
+            const valoresTotais = new Set();
+            const statuses = new Set();
+            const motivos = new Set();
+
+            faturamentos.forEach(faturamento => {
+                hospitais.add(faturamento.hospital);
+                convenios.add(faturamento.convenio);
+                datasProcedimento.add(faturamento.dataProcedimento);
+                carimbosHorario.add(faturamento.carimboHorario);
+                pacientes.add(faturamento.nomePaciente);
+                idsPacientes.add(faturamento.idPaciente);
+                vendedores.add(faturamento.vendedor);
+                formasPagamento.add(faturamento.formaPagamento);
+                valoresTotais.add(faturamento.valorTotal);
+                statuses.add(faturamento.status);
+                motivos.add(faturamento.motivo);
+                // Adicione outros campos conforme necessário
+            });
+
+            preencherSelect('filtroHospital', Array.from(hospitais), 'Hospital');
+            preencherSelect('filtroConvenio', Array.from(convenios), 'Convênio');
+            preencherSelect('filtroDataProcedimento', Array.from(datasProcedimento), 'Data do Procedimento');
+            preencherSelect('filtroCarimboHorario', Array.from(carimbosHorario), 'Carimbo de Horário');
+            preencherSelect('filtroPaciente', Array.from(pacientes), 'Paciente');
+            preencherSelect('filtroIdPaciente', Array.from(idsPacientes), 'ID Paciente');
+            preencherSelect('filtroVendedor', Array.from(vendedores), 'Vendedor');
+            preencherSelect('filtroFormaPagamento', Array.from(formasPagamento), 'Forma de Pagamento');
+            preencherSelect('filtroValorTotal', Array.from(valoresTotais), 'Valor Total');
+            preencherSelect('filtroStatus', Array.from(statuses), 'Status');
+            preencherSelect('filtroMotivo', Array.from(motivos), 'Motivo');
+        }
+
+        fetch('http://localhost:3000/faturamento/receberFaturamento')
+            .then(response => response.json())
+            .then(faturamentos => {
+                fillFaturamentoTable(faturamentos);
+                filtrarTabela(); // Aplicar filtro inicialmente após o preenchimento dos dados
+            })
+            .catch(error => {
+                console.error('Erro ao buscar faturamentos:', error);
+                alert('Erro ao buscar faturamentos. Tente novamente.');
+            });
+
+        const filtroHospital = document.getElementById('filtroHospital');
+        filtroHospital.addEventListener('change', filtrarTabela);
+
+        const filtroConvenio = document.getElementById('filtroConvenio');
+        filtroConvenio.addEventListener('change', filtrarTabela);
+
+        const filtroDataProcedimento = document.getElementById('filtroDataProcedimento');
+        filtroDataProcedimento.addEventListener('change', filtrarTabela);
+
+        const filtroCarimboHorario = document.getElementById('filtroCarimboHorario');
+        filtroCarimboHorario.addEventListener('change', filtrarTabela);
+
+        const filtroPaciente = document.getElementById('filtroPaciente');
+        filtroPaciente.addEventListener('change', filtrarTabela);
+
+        const filtroIdPaciente = document.getElementById('filtroIdPaciente');
+        filtroIdPaciente.addEventListener('change', filtrarTabela);
+
+        const filtroVendedor = document.getElementById('filtroVendedor');
+        filtroVendedor.addEventListener('change', filtrarTabela);
+
+        const filtroFormaPagamento = document.getElementById('filtroFormaPagamento');
+        filtroFormaPagamento.addEventListener('change', filtrarTabela);
+
+        const filtroValorTotal = document.getElementById('filtroValorTotal');
+        filtroValorTotal.addEventListener('change', filtrarTabela);
+
+        const filtroStatus = document.getElementById('filtroStatus');
+        filtroStatus.addEventListener('change', filtrarTabela);
+
+        const filtroMotivo = document.getElementById('filtroMotivo');
+        filtroMotivo.addEventListener('change', filtrarTabela);
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGENDA</title>
+    <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+</head>
+
+<style>
+    #background-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-color: #017f2d;
+        background-size: 40%;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Estilos para o contêiner do conteúdo principal */
+    .content-container {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+    }
+
+    /* Ajuste o estilo da imagem */
+    .navbar img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .list-group-item {
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        position: relative;
+        padding-left: 10px;
+    }
+
+    .list-group-item {
+        background-color: #ffffff !important;
+        color: initial !important;
+    }
+
+    .list-group-item:hover {
+        background-color: #28a745 !important;
+        color: #ffffff !important;
+    }
+
+    .data-hoje:hover {
+        background-color: #198754 !important;
+        color: #ffffff !important;
+    }
+
+    .data-posterior:hover {
+        background-color: #ffc107 !important;
+        color: #000000 !important;
+    }
+
+    .data-anterior:hover {
+        background-color: #dc3545 !important;
+        color: #ffffff !important;
+    }
+
+    .list-group-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 8px;
+    }
+
+    .data-hoje::before {
+        background-color: #198754;
+    }
+
+    .data-posterior::before {
+        background-color: #ffc107;
+    }
+
+    .data-anterior::before {
+        background-color: #dc3545;
+    }
+</style>
+
+<body>
+    <div id="background-container"></div>
+
+    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+        <div class="container-fluid">
+            <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+                height="30" class="d-inline-block align-top" alt="">
+
+            <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h3 class="text-white" id="userName"></h3>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                        <li id="pedidos" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/pedidos.html">Pedidos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
+                        </li>
+                        <li id="faturamento" class="nav-item">
+                            <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendente de
+                                Faturamento</a>
+                        </li>
+                        <li id="pedidosCancelados" class="nav-item">
+                            <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos
+                                Cancelados</a>
+                        </li>
+                        <li id="dashboard" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container content-container fade-in mt-4">
+
+        <div class="container mt-5" id="listContainer">
+            <h2 class="text-center mb-4">Pedidos Thulep</h2>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForms"
+                        aria-expanded="false" aria-controls="collapseForms">
+                        Escolher Datas
+                    </button>
+                </div>
+                <div class="collapse" id="collapseForms">
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <label>CE:</label>
+                            <div class="col-auto">
+                                <label for="startDate1" class="visually-hidden">Data Inicial</label>
+                                <input id="dataInicialCE" type="date" class="form-control" id="startDate1"
+                                    placeholder="Data Inicial">
+                            </div>
+                            <div class="col-auto">
+                                <label for="endDate1" class="visually-hidden">Data Final</label>
+                                <input id="dataFinalCE" type="date" class="form-control" id="endDate1"
+                                    placeholder="Data Final">
+                            </div>
+                            <div class="col-auto">
+                                <button id="btnCE" type="submit" class="btn btn-primary mb-3">Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <label>PI:</label>
+                            <div class="col-auto">
+                                <label for="startDate2" class="visually-hidden">Data Inicial</label>
+                                <input id="dataInicialPI" type="date" class="form-control" id="startDate2"
+                                    placeholder="Data Inicial">
+                            </div>
+                            <div class="col-auto">
+                                <label for="endDate2" class="visually-hidden">Data Final</label>
+                                <input id="dataFinalPI" type="date" class="form-control" id="endDate2"
+                                    placeholder="Data Final">
+                            </div>
+                            <div class="col-auto">
+                                <button id="btnPI" type="submit" class="btn btn-primary mb-3">Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <label>MA:</label>
+                            <div class="col-auto">
+                                <label for="startDate3" class="visually-hidden">Data Inicial</label>
+                                <input id="dataInicialMA" type="date" class="form-control" id="startDate3"
+                                    placeholder="Data Inicial">
+                            </div>
+                            <div class="col-auto">
+                                <label for="endDate3" class="visually-hidden">Data Final</label>
+                                <input id="dataFinalMA" type="date" class="form-control" id="endDate3"
+                                    placeholder="Data Final">
+                            </div>
+                            <div class="col-auto">
+                                <button id="btnMA" type="submit" class="btn btn-primary mb-3">Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <label>CARIRI:</label>
+                            <div class="col-auto">
+                                <label for="startDate4" class="visually-hidden">Data Inicial</label>
+                                <input id="dataInicialCARI" type="date" class="form-control" id="startDate4"
+                                    placeholder="Data Inicial">
+                            </div>
+                            <div class="col-auto">
+                                <label for="endDate4" class="visually-hidden">Data Final</label>
+                                <input id="dataFinalCARI" type="date" class="form-control" id="endDate4"
+                                    placeholder="Data Final">
+                            </div>
+                            <div class="col-auto">
+                                <button id="btnCARI" type="submit" class="btn btn-primary mb-3">Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="estadoFiltro" class="form-label">Filtrar por Estado:</label>
+                <select class="form-select" id="estadoFiltro">
+                    <option value="">Todos os Estados</option>
+                    <option value="CE">CE</option>
+                    <option value="PI">PI</option>
+                    <option value="RMC">RMC</option>
+                    <option value="MA">MA</option>
+                </select>
+            </div>
+            <div class="list-group" id="pedidosList">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function logout() {
+            // Limpe o token do localStorage
+            localStorage.removeItem('token');
+
+            // Limpe o email do usuário do localStorage
+            localStorage.removeItem('userEmail');
+
+            // Redirecione para a tela de login
+            window.location.href = '../login/tela_login.html';
+        }
+
+        async function preencherDatasRegistradas() {
+        try {
+            const response = await axios.get('http://localhost:3000/agenda/datasRegistradas');
+            const datas = response.data;
+
+            if (datas.dataInicioCE) {
+                document.getElementById('dataInicialCE').value = datas.dataInicioCE;
+            }
+            if (datas.dataFinalCE) {
+                document.getElementById('dataFinalCE').value = datas.dataFinalCE;
+            }
+            
+            if (datas.dataInicioPI) {
+                document.getElementById('dataInicialPI').value = datas.dataInicioPI;
+            }
+            if (datas.dataFinalPI) {
+                document.getElementById('dataFinalPI').value = datas.dataFinalPI;
+            }
+
+            if (datas.dataInicioMA) {
+                document.getElementById('dataInicialMA').value = datas.dataInicioMA;
+            }
+            if (datas.dataFinalMA) {
+                document.getElementById('dataFinalMA').value = datas.dataFinalMA;
+            }
+
+            if (datas.dataInicioCARI) {
+                document.getElementById('dataInicialCARI').value = datas.dataInicioCARI;
+            }
+            if (datas.dataFinalCARI) {
+                document.getElementById('dataFinalCARI').value = datas.dataFinalCARI;
+            }
+        } catch (error) {
+            console.error('Erro ao obter as datas registradas:', error);
+        }
+    }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            preencherDatasRegistradas();
+            const cargo = localStorage.getItem('cargo');
+            const faturamento = document.getElementById('faturamento');
+            const pedidos = document.getElementById('pedidos');
+            const cancelados = document.getElementById('pedidosCancelados');
+
+            if (cargo === "Logistica" || cargo === "Vendedor") {
+                pedidos.style.display = 'block';
+                faturamento.style.display = 'none';
+            }
+
+            if (cargo === "Comercial2") {
+                pedidos.style.display = 'none';
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial") {
+                cancelados.style.display = 'none';
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const dashboard = document.getElementById('dashboard');
+                dashboard.style.display = 'none';
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // Se não houver token, redireciona para a página de login
+                window.location.href = '../login/tela_login.html';
+            }
+
+            // Recupera o email armazenado no localStorage
+            const userEmail = localStorage.getItem('userEmail');
+
+            // Atualize o conteúdo do elemento no menu com o valor do email
+            if (userEmail !== null) {
+                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+            } else {
+                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+            }
+
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const dataFormatada = `${ano}-${mes}-${dia}`;
+
+            const estadoFiltroSelect = document.getElementById('estadoFiltro');
+            const pedidosListContainer = document.getElementById('pedidosList');
+
+            function carregarPedidos(estadoSelecionado = '') {
+                let url = 'http://localhost:3000/registrar/receberPedidos';
+                if (estadoSelecionado) {
+                    url += `?estado=${estadoSelecionado}`;
+                }
+
+                // Limpe a lista de pedidos antes de buscar e exibir os novos pedidos
+                pedidosListContainer.innerHTML = '';
+
+                const cargoUsuario = localStorage.getItem('cargo');
+                const userEmail = localStorage.getItem('userEmail');
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(pedidos => {
+                        pedidos.forEach(pedido => {
+                            if (cargoUsuario === 'Vendedor') {
+                                // Se o cargo for 'Vendedor', filtrar pelos pedidos em que o vendedor seja o usuário atual
+                                if (pedido.vendedor !== userEmail) {
+                                    return; // Ignorar este pedido se não corresponder ao vendedor atual
+                                }
+                            }
+
+                            if (pedido.situacao !== 'Em Processo' || pedido.tipoProcedimento !== 'THULEP') {
+                                return; // Pule este pedido se a situacao não for "Em Processo"
+                            }
+
+                            if (estadoSelecionado && pedido.estado !== estadoSelecionado) {
+                                return; // Se o estado selecionado não corresponder ao estado do pedido, pule este pedido
+                            }
+
+                            const listItem = document.createElement('a');
+                            listItem.href = `../misc/infoPedidosTHULEP.html?id=${pedido.idPaciente}`;
+                            listItem.classList.add('list-group-item', 'list-group-item-action');
+
+                            // Adicione classes com base na data do procedimento (como você já está fazendo)
+                            if (pedido.dataProcedimento === dataFormatada) {
+                                listItem.classList.add('data-hoje');
+                            } else if (pedido.dataProcedimento > dataFormatada) {
+                                listItem.classList.add('data-posterior');
+                            } else {
+                                listItem.classList.add('data-anterior');
+                            }
+
+                            // Crie e adicione o conteúdo do pedido ao listItem
+                            listItem.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${pedido.nomePaciente}</h5>
+                            <small>${pedido.dataProcedimento} - ${pedido.horaProcedimento}</small>
+                        </div>
+                        <p class="mb-1">${pedido.hospital} - ${pedido.linha}</p>
+                        <small>${pedido.medico}</small>
+                    `;
+
+                            pedidosListContainer.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Erro ao obter pedidos:', error);
+                        alert('Erro ao obter pedidos. Tente novamente.');
+                    });
+            }
+
+            // Adicione um ouvinte de evento para o filtro de estado
+            estadoFiltroSelect.addEventListener('change', () => {
+                const estadoSelecionado = estadoFiltroSelect.value;
+                carregarPedidos(estadoSelecionado);
+            });
+
+            // Carregue todos os pedidos ao inicializar a página
+            carregarPedidos(); // Isso carrega todos os pedidos (sem filtro de estado)
+
+            async function verificarRegistroExistente() {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        // Se não houver token, redirecione para a página de login
+                        window.location.href = '../login/tela_login.html';
+                        return;
+                    }
+
+                    const response = await axios.get('http://localhost:3000/agenda/datasRegistradas', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+
+                    return response.data;
+                } catch (error) {
+                    console.error('Erro ao verificar registro existente:', error);
+                    return null;
+                }
+            }
+
+            async function registrarOuAtualizarDatas(data, type) {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        // Se não houver token, redirecione para a página de login
+                        window.location.href = '../login/tela_login.html';
+                        return;
+                    }
+
+                    const registroExistente = await verificarRegistroExistente();
+
+                    let response;
+                    const requestBody = {
+                        [`dataInicio${type}`]: data.dataInicio,
+                        [`dataFinal${type}`]: data.dataFinal
+                    };
+
+                    if (registroExistente && Object.keys(registroExistente).length > 0) {
+                        // Se existir um registro, utilizar a rota PUT para atualizar
+                        response = await axios.put('http://localhost:3000/agenda/atualizarDatas', requestBody, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
+                    } else {
+                        // Se não existir um registro, utilizar a rota POST para registrar
+                        response = await axios.post('http://localhost:3000/agenda/registrarDatas', requestBody, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        });
+                    }
+
+                    console.log(response.data);
+                } catch (error) {
+                    console.error('Erro ao registrar ou atualizar datas:', error);
+                    alert('Erro ao registrar ou atualizar datas. Tente novamente.');
+                }
+            }
+
+            // Adicionar evento de clique para o botão de atualizar CE
+            document.getElementById('btnCE').addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const dataInicioCE = document.getElementById('dataInicialCE').value;
+                const dataFinalCE = document.getElementById('dataFinalCE').value;
+
+                // Verificar se as datas são válidas
+                if (!dataInicioCE || !dataFinalCE) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+
+                // Chamada para registrar ou atualizar as datas no banco de dados
+                registrarOuAtualizarDatas({ dataInicio: dataInicioCE, dataFinal: dataFinalCE }, 'CE');
+            });
+
+            // Adicionar evento de clique para o botão de atualizar PI
+            document.getElementById('btnPI').addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const dataInicioPI = document.getElementById('dataInicialPI').value;
+                const dataFinalPI = document.getElementById('dataFinalPI').value;
+
+                // Verificar se as datas são válidas
+                if (!dataInicioPI || !dataFinalPI) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+
+                // Chamada para registrar ou atualizar as datas no banco de dados
+                registrarOuAtualizarDatas({ dataInicio: dataInicioPI, dataFinal: dataFinalPI }, 'PI');
+            });
+
+            // Adicionar evento de clique para o botão de atualizar MA
+            document.getElementById('btnMA').addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const dataInicioMA = document.getElementById('dataInicialMA').value;
+                const dataFinalMA = document.getElementById('dataFinalMA').value;
+
+                // Verificar se as datas são válidas
+                if (!dataInicioMA || !dataFinalMA) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+
+                // Chamada para registrar ou atualizar as datas no banco de dados
+                registrarOuAtualizarDatas({ dataInicio: dataInicioMA, dataFinal: dataFinalMA }, 'MA');
+            });
+
+            // Adicionar evento de clique para o botão de atualizar CARIRI
+            document.getElementById('btnCARI').addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const dataInicioCARI = document.getElementById('dataInicialCARI').value;
+                const dataFinalCARI = document.getElementById('dataFinalCARI').value;
+
+                // Verificar se as datas são válidas
+                if (!dataInicioCARI || !dataFinalCARI) {
+                    alert('Por favor, preencha ambas as datas.');
+                    return;
+                }
+
+                // Chamada para registrar ou atualizar as datas no banco de dados
+                registrarOuAtualizarDatas({ dataInicio: dataInicioCARI, dataFinal: dataFinalCARI }, 'CARI');
+            });
+        });
+    </script>
+
+</body>
+
+</html>

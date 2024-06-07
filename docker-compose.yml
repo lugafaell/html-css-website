@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE=${DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./selfsigned.crt:/etc/nginx/ssl/selfsigned.crt:ro
+      - ./selfsigned.key:/etc/nginx/ssl/selfsigned.key:ro
+      - .:/usr/share/nginx/html:ro
+
+volumes:
+  mongo-data:

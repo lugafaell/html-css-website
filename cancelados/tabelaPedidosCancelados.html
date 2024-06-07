@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pedidos Cancelados</title>
+    <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Estilos para o contêiner da imagem de fundo */
+        #background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Coloca o contêiner da imagem de fundo atrás do conteúdo principal */
+            background-color: #017f2d;
+            background-size: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Estilos para o contêiner do conteúdo principal */
+        .content-container {
+            position: relative;
+            z-index: 1;
+            /* Garante que o conteúdo principal fique acima da imagem de fundo */
+            padding: 20px;
+            /* Adapte conforme necessário */
+        }
+
+
+        /* Ajuste o estilo da imagem */
+        .navbar img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .list-group-item {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .list-group-item {
+            background-color: #ffffff !important;
+            color: initial !important;/
+        }
+
+        .list-group-item:hover {
+            background-color: #28a745 !important;
+            color: #ffffff !important;
+        }
+
+        .data-hoje:hover {
+            background-color: #198754 !important;
+            color: #ffffff !important;
+        }
+
+        .data-posterior:hover {
+            background-color: #ffc107 !important;
+            color: #000000 !important;
+        }
+
+        .data-anterior:hover {
+            background-color: #dc3545 !important;
+            color: #ffffff !important;
+        }
+
+        .list-group-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 8px;
+        }
+
+        .data-hoje::before {
+            background-color: #198754;
+        }
+
+        .data-posterior::before {
+            background-color: #ffc107;
+        }
+
+        .data-anterior::before {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background-container"></div>
+
+    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <!-- Botão de alternância -->
+            <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Imagem ao lado do botão -->
+            <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+                height="30" class="d-inline-block align-top ml-2" alt="">
+        </div>
+
+        <!-- Offcanvas content -->
+        <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h3 class="text-white" id="userName"></h3>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li id="pedidos" class="nav-item">
+                        <a class="nav-link text-white" href="../pedidos/pedidos.html">Pedidos</a>
+                    </li>
+                    <li id="faturamento" class="nav-item">
+                        <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
+                    </li>
+                    <li id="dashboard" class="nav-item">
+                        <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5" id="listContainer">
+        <h2 class="text-center mb-4">Lista de Pedidos</h2>
+        <div class="mb-3">
+            <label for="estadoFiltro" class="form-label">Filtrar por Estado:</label>
+            <select class="form-select" id="estadoFiltro">
+                <option value="">Todos os Estados</option>
+                <option value="CE">CE</option>
+                <option value="PI">PI</option>
+                <option value="RMC">RMC</option>
+                <option value="MA">MA</option>
+                <!-- Adicione outras opções de estados conforme necessário -->
+            </select>
+        </div>
+        <div class="list-group" id="pedidosList">
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        function logout() {
+            // Limpe o token do localStorage
+            localStorage.removeItem('token');
+
+            // Limpe o email do usuário do localStorage
+            localStorage.removeItem('userEmail');
+
+            // Redirecione para a tela de login
+            window.location.href = '../login/tela_login.html';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const cargo = localStorage.getItem('cargo');
+            const faturamento = document.getElementById('faturamento');
+            const pedidos = document.getElementById('pedidos');
+
+            if (cargo === "Logistica" || cargo === "Vendedor") {
+                pedidos.style.display = 'none';
+                faturamento.style.display = 'none';
+            }
+            
+            if (cargo === "Comercial2") {
+                pedidos.style.display = 'none';
+            }
+
+            if(cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica"){
+                const dashboard = document.getElementById('dashboard');
+
+                dashboard.style.display = 'none';
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // Se não houver token, redireciona para a página de login
+                window.location.href = '../login/tela_login.html';
+            }
+            // Recupera o email armazenado no localStorage
+            const userEmail = localStorage.getItem('userEmail');
+
+            // Atualize o conteúdo do elemento no menu com o valor do email
+            if (userEmail !== null) {
+                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+            } else {
+                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            const dataFormatada = `${ano}-${mes}-${dia}`;
+
+            const estadoFiltroSelect = document.getElementById('estadoFiltro');
+            const pedidosListContainer = document.getElementById('pedidosList');
+
+            function carregarPedidos(estadoSelecionado = '') {
+                let url = 'http://localhost:3000/registrar/receberPedidos';
+                if (estadoSelecionado) {
+                    url += `?estado=${estadoSelecionado}`;
+                }
+
+                // Limpe a lista de pedidos antes de buscar e exibir os novos pedidos
+                pedidosListContainer.innerHTML = '';
+                console.log('URL da requisição:', url);
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(pedidos => {
+                        pedidos.forEach(pedido => {
+                            if (pedido.situacao !== 'Cancelado') {
+                                return; // Pule este pedido se a situacao não for "Em Processo"
+                            }
+
+                            if (estadoSelecionado && pedido.estado !== estadoSelecionado) {
+                                return; // Se o estado selecionado não corresponder ao estado do pedido, pule este pedido
+                            }
+
+                            const listItem = document.createElement('a');
+                            listItem.href = `../cancelados/infoPedidosCancelados.html?id=${pedido.idPaciente}`;
+                            listItem.classList.add('list-group-item', 'list-group-item-action');
+
+                            // Adicione classes com base na data do procedimento (como você já está fazendo)
+                            if (pedido.dataProcedimento === dataFormatada) {
+                                listItem.classList.add('data-hoje');
+                            } else if (pedido.dataProcedimento > dataFormatada) {
+                                listItem.classList.add('data-posterior');
+                            } else {
+                                listItem.classList.add('data-anterior');
+                            }
+
+                            // Crie e adicione o conteúdo do pedido ao listItem
+                            listItem.innerHTML = `
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${pedido.nomePaciente}</h5>
+                    <small>${pedido.dataProcedimento} - ${pedido.horaProcedimento}</small>
+                </div>
+                <p class="mb-1">${pedido.hospital} - ${pedido.linha}</p>
+                <small>${pedido.medico}</small>
+            `;
+
+                            pedidosListContainer.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Erro ao obter pedidos:', error);
+                        alert('Erro ao obter pedidos. Tente novamente.');
+                    });
+            }
+
+            // Adicione um ouvinte de evento para o filtro de estado
+            estadoFiltroSelect.addEventListener('change', () => {
+                const estadoSelecionado = estadoFiltroSelect.value;
+                carregarPedidos(estadoSelecionado);
+            });
+
+            // Carregue todos os pedidos ao inicializar a página
+            carregarPedidos(); // Isso carrega todos os pedidos (sem filtro de estado)
+        });
+    </script>
+</body>
+
+</html>

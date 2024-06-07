@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leitura de Arquivo Excel com JavaScript</title>
+</head>
+
+<body>
+    <h1>Leitura de Arquivo Excel</h1>
+
+    <input type="file" id="fileInput" accept=".xlsx">
+    <button onclick="handleFile()">Processar Arquivo</button>
+
+    <hr>
+
+    <label for="estadoSelect">Estado:</label>
+    <select id="estadoSelect">
+        <option value="CE">CE</option>
+        <option value="PI">PI</option>
+        <option value="MA">MA</option>
+        <option value="RMC">RMC</option>
+    </select>
+
+    <hr>
+
+    <h2>Dados do Arquivo Excel:</h2>
+    <div id="excelData"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        async function handleFile() {
+            const fileInput = document.getElementById('fileInput');
+            const excelDataDiv = document.getElementById('excelData');
+            const estadoSelect = document.getElementById('estadoSelect');
+            const selectedEstado = estadoSelect.value;
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                let htmlContent = '';
+
+                workbook.SheetNames.forEach(async function(sheetName) {
+                    const sheet = workbook.Sheets[sheetName];
+                    const sheetData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                    htmlContent += `<h3>Sheet: ${sheetName}</h3>`;
+                    htmlContent += '<table border="1"><tr>';
+
+                    const headers = sheetData[0];
+                    const excludedColumns = ["PROCESSO DO PACIENTE", "NOME DO MEDICO"];
+
+                    headers.forEach(function(header) {
+                        if (!excludedColumns.includes(header)) {
+                            htmlContent += `<th>${header}</th>`;
+                        }
+                    });
+
+                    htmlContent += '</tr>';
+
+                    for (let i = 1; i < sheetData.length; i++) {
+                        const rowData = sheetData[i];
+
+                        // Check if the row is completely empty
+                        if (rowData.every(cell => cell === undefined || cell === "")) {
+                            continue;
+                        }
+
+                        htmlContent += '<tr>';
+                        let dateColumnIndex;
+                        const rowDataObject = {};
+
+                        rowData.forEach(function(cell, cellIndex) {
+                            const header = headers[cellIndex];
+
+                            if (excludedColumns.includes(header)) {
+                                return; // Skip excluded columns
+                            }
+
+                            if (header === "Carimbo de data/hora") {
+                                dateColumnIndex = cellIndex;
+                            }
+
+                            // Map table data to API fields
+                            switch (header) {
+                                case "HOSPITAL":
+                                    rowDataObject.hospital = cell || "";
+                                    break;
+                                case "CONVÊNIO":
+                                    rowDataObject.convenio = cell || "";
+                                    break;
+                                case "DATA DO PROCEDIMENTO":
+                                    rowDataObject.dataProcedimento = formatDate(cell) || "";
+                                    break;
+                                case "Carimbo de data/hora":
+                                    rowDataObject.carimboHorario = formatTime(cell) || "";
+                                    break;
+                                case "PACIENTE":
+                                    rowDataObject.nomePaciente = cell || "";
+                                    break;
+                                case "ID DO PACIENTE":
+                                    rowDataObject.idPaciente = cell ? cell.toString() : ""; // Convert to string
+                                    break;
+                                case "VENDEDOR":
+                                    rowDataObject.vendedor = cell || "";
+                                    break;
+                                case "VALOR DO TOTAL":
+                                    rowDataObject.valorTotal = cell ? parseFloat(cell) : 0; // Ensure it's a number
+                                    break;
+                                case "STATUS":
+                                    rowDataObject.status = cell || "";
+                                    break;
+                                case "MOTIVO":
+                                    rowDataObject.motivo = cell || "";
+                                    break;
+                            }
+
+                            htmlContent += `<td>${cell ? cell : ''}</td>`;
+                        });
+
+                        // Fill remaining fields with empty values and the selected "estado"
+                        rowDataObject.estado = selectedEstado;
+                        rowDataObject.linkAutorizacao = "";
+                        rowDataObject.tipoProcedimento = "";
+                        rowDataObject.horaProcedimento = "";
+                        rowDataObject.equipamentos = [];
+                        rowDataObject.materiais = [];
+                        rowDataObject.contador = 0;
+                        rowDataObject.CNPJ = "";
+                        rowDataObject.formaPagamento = "";
+                        rowDataObject.nomeEntregador = "";
+                        rowDataObject.imagemBase64 = "sem imagem anexada";
+                        rowDataObject.imagemRemessa64 = "";
+                        rowDataObject.imagemDevolucao64 = "";
+                        rowDataObject.imagemComunicado64 = "";
+                        rowDataObject.contadorPedidos = 0;
+
+                        console.log("Dados enviados para API:", rowDataObject); // Log de depuração
+                        await sendDataToAPI(rowDataObject);
+                        htmlContent += '</tr>';
+                    }
+
+                    htmlContent += '</table>';
+                });
+
+                excelDataDiv.innerHTML = htmlContent;
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+
+        async function sendDataToAPI(data) {
+            try {
+                const response = await fetch('http://localhost:3000/faturamento/registrarFaturamento', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    console.log("Dados enviados com sucesso:", data);
+                } else {
+                    const errorText = await response.text();
+                    console.error("Erro ao enviar dados:", errorText); // Log de erro detalhado
+                }
+            } catch (error) {
+                console.error("Erro ao enviar dados:", error);
+            }
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        function formatDate(excelDate) {
+            const utc_days = Math.floor(excelDate - 25569);
+            const utc_value = utc_days * 86400;
+            const date_info = new Date(utc_value * 1000);
+
+            const date = new Date(date_info.getTime() + (date_info.getTimezoneOffset() * 60000));
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatTime(excelDate) {
+            const utc_days = Math.floor(excelDate - 25569);
+            const utc_value = utc_days * 86400;
+            const date_info = new Date(utc_value * 1000);
+
+            const date = new Date(date_info.getTime() + (date_info.getTimezoneOffset() * 60000));
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            return `${hours}:${minutes}:${seconds}`;
+        }
+
+        function formatCell(cell, cellIndex, dateColumnIndex) {
+            if (typeof cell === 'number' && !isNaN(cell)) {
+                return cellIndex === dateColumnIndex ? formatTime(cell) : formatDate(cell);
+            }
+            return cell ? cell : '';
+        }
+    </script>
+</body>
+
+</html>

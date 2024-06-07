@@ -1,0 +1,11 @@
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .centered-form .card {
+    width: 400px;
+    padding: 20px;
+  }
