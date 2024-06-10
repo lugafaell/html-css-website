@@ -1348,7 +1348,7 @@
             event.preventDefault();
 
             const username = localStorage.getItem("userEmail"); // Recupera o nome do usuário do localStorage
-            const url = `http://198.211.114.77:3000/auth/users/${username}`;
+            const url = `https://api.itmf.app.br/auth/users/${username}`;
 
             fetch(url)
                 .then(response => response.json())
@@ -1405,7 +1405,7 @@
                         materiais,
                     };
 
-                    fetch(`http://198.211.114.77:3000/registrar/atualizarPedido/${pacienteId}`, {
+                    fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",

@@ -444,7 +444,7 @@
             preencherSelect('filtroMotivo', Array.from(motivos), 'Motivo');
         }
 
-        fetch('http://198.211.114.77:3000/faturamento/receberFaturamento')
+        fetch('https://api.itmf.app.br/faturamento/receberFaturamento')
             .then(response => response.json())
             .then(faturamentos => {
                 fillFaturamentoTable(faturamentos);
