@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "3000:3000"
     environment:
@@ -12,6 +10,8 @@ services:
       - .:/app
     depends_on:
       - mongo
+    networks:
+      - frontend
 
   mongo:
     image: mongo
@@ -19,19 +19,55 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - frontend
 
-  nginx_proxy_manager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: always
+  nginx:
+    image: nginx:latest
+    volumes:
+      - .:/usr/share/nginx/html
+    depends_on:
+      - app
+    networks:
+      - frontend
+
+  nginx-proxy-manager:
+    image: "jc21/nginx-proxy-manager:latest"
     ports:
-      - '80:80'
-      - '81:81'  # Port for Nginx Proxy Manager UI
-      - '443:443'
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    environment:
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm"
+      DB_MYSQL_NAME: "npm"
+    depends_on:
+      - db
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
-      - ./selfsigned.crt:/etc/nginx/certs/selfsigned.crt:ro
-      - ./selfsigned.key:/etc/nginx/certs/selfsigned.key:ro
+    networks:
+      - frontend
+
+  db:
+    image: "mariadb:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: "npm"
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD: "npm"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - frontend
 
 volumes:
   mongo-data:
+  data:
+  letsencrypt:
+  mysql:
+
+networks:
+  frontend:

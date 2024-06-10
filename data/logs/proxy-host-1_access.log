@@ -1,0 +1,2 @@
+[09/Jun/2024:14:49:47 +0000] - 200 200 - GET http localhost "/" [Client 172.22.0.1] [Length 966] [Gzip 2.45] [Sent-to nginx] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" "-"
+[09/Jun/2024:14:49:50 +0000] - 304 304 - GET http localhost "/pedidos/pedidos.html" [Client 172.22.0.1] [Length 0] [Gzip -] [Sent-to nginx] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" "http://localhost/"
