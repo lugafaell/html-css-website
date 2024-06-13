@@ -151,11 +151,11 @@ select:focus {
                         <li id="listaPedidos" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
                         </li>
-                        <li id="dashboard" class="nav-item">
-                            <a class="nav-link text-white" href="../faturamento/finalizados.html">Finalizados</a>
-                        </li>
                         <li id="pedidosCancelados" class="nav-item">
                             <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
+                        </li>
+                        <li id="dashboard" class="nav-item">
+                            <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
                         </li>
                         <li id="dashboard" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
@@ -170,7 +170,7 @@ select:focus {
     </nav>
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Visualizar Faturamento</h2>
+        <h2 class="text-center mb-4">Finalizados</h2>
         <div id="faturamentoContainer" class="table-container table-responsiv">
             <table class="table table-bordered">
                 <thead>
@@ -183,7 +183,7 @@ select:focus {
                         </th>
                         <th>
                             <select id="filtroDataProcedimento">
-                                <option value="">Data do Procedimento</option>
+                                <option value="">Data</option>
                                 <!-- Opções específicas de data podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
@@ -317,7 +317,7 @@ select:focus {
 
     // Filtrando faturamentos
     const faturamentosFiltrados = faturamentos.filter(faturamento => {
-        return faturamento.status !== "FATURADO" && faturamento.motivo !== "FINALIZADO";
+        return faturamento.status === "FATURADO" && faturamento.motivo === "FINALIZADO";
     });
 
     faturamentosFiltrados.forEach(faturamento => {
@@ -380,7 +380,7 @@ select:focus {
             });
 
             preencherSelect('filtroHospital', Array.from(hospitais), 'Hospital');
-            preencherSelect('filtroDataProcedimento', Array.from(datasProcedimento), 'Data do Procedimento');
+            preencherSelect('filtroDataProcedimento', Array.from(datasProcedimento), 'Data');
             preencherSelect('filtroPaciente', Array.from(pacientes), 'Paciente');
             preencherSelect('filtroStatus', Array.from(statuses), 'Status');
             preencherSelect('filtroMotivo', Array.from(motivos), 'Motivo');
@@ -390,7 +390,7 @@ select:focus {
             .then(response => response.json())
             .then(faturamentos => {
                 fillFaturamentoTable(faturamentos);
-                filtrarTabela(); // Aplicar filtro inicialmente após o preenchimento dos dados
+                filtrarTabela();
             })
             .catch(error => {
                 console.error('Erro ao buscar faturamentos:', error);

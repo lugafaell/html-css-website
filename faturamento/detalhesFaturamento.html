@@ -207,12 +207,12 @@
                                     <!-- Conteúdo do accordion de notas -->
                                     <h6>Comunicado de Uso</h6>
                                     <img id="imgComunicadoUso" class="nota-img" src="" alt="Comunicado de Uso">
-                                    <button class="btn btn-success mt-2"
+                                    <button id="btnUso" class="btn btn-success mt-2"
                                         onclick="downloadImage('imgComunicadoUso')">Baixar Comunicado de Uso</button>
                                     <hr>
                                     <h6>Nota de Remessa</h6>
                                     <img id="imgRemessa" class="nota-img" src="" alt="Nota de Remessa">
-                                    <button class="btn btn-success mt-2" onclick="downloadImage('imgRemessa')">Baixar
+                                    <button id="btnRemessa" class="btn btn-success mt-2" onclick="downloadImage('imgRemessa')">Baixar
                                         Nota de Remessa</button>
                                     <hr>
                                     <h6>Nota de Devolução</h6>
@@ -222,7 +222,7 @@
                                     <hr>
                                     <h6>Nota Fiscal</h6>
                                     <img id="imgNotaFiscal" class="nota-img" src="" alt="Nota Fiscal">
-                                    <button class="btn btn-success mt-2" onclick="downloadImage('imgNotaFiscal')">Baixar
+                                    <button id="btnFiscal" class="btn btn-success mt-2" onclick="downloadImage('imgNotaFiscal')">Baixar
                                         Nota Fiscal</button>
                                 </div>
                             </div>
@@ -307,6 +307,57 @@
                 // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
                 const notaDeDevolucao = imgDevolucao.previousElementSibling; // Seleciona o <h6> anterior
                 notaDeDevolucao.parentNode.insertBefore(h7, notaDeDevolucao.nextSibling);
+            }
+
+            const imgComunicadoUso = document.getElementById('imgComunicadoUso');
+
+            if (!imgComunicadoUso.src.trim() || !imgComunicadoUso.src.startsWith("data:image/")) {
+                imgComunicadoUso.style.display = 'none';
+
+                const btnUso = document.getElementById('btnUso');
+                btnUso.style.display = 'none';
+
+                // Criar e adicionar o elemento <h3>
+                const h7 = document.createElement('h7');
+                h7.textContent = "Não possui Comunicado de Uso";
+
+                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
+                const notaDeUso = imgComunicadoUso.previousElementSibling; // Seleciona o <h6> anterior
+                notaDeUso.parentNode.insertBefore(h7, notaDeUso.nextSibling);
+            }
+
+            const imgRemessa = document.getElementById('imgRemessa');
+
+            if (!imgRemessa.src.trim() || !imgRemessa.src.startsWith("data:image/")) {
+                imgRemessa.style.display = 'none';
+
+                const btnRemessa = document.getElementById('btnRemessa');
+                btnRemessa.style.display = 'none';
+
+                // Criar e adicionar o elemento <h3>
+                const h7 = document.createElement('h7');
+                h7.textContent = "Não possui Nota de Remessa";
+
+                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
+                const notaDeRemessa = imgRemessa.previousElementSibling; // Seleciona o <h6> anterior
+                notaDeRemessa.parentNode.insertBefore(h7, notaDeRemessa.nextSibling);
+            }
+
+            const imgNotaFiscal = document.getElementById('imgNotaFiscal');
+
+            if (!imgNotaFiscal.src.trim() || !imgNotaFiscal.src.startsWith("data:image/")) {
+                imgNotaFiscal.style.display = 'none';
+
+                const btnFiscal = document.getElementById('btnFiscal');
+                btnFiscal.style.display = 'none';
+
+                // Criar e adicionar o elemento <h3>
+                const h7 = document.createElement('h7');
+                h7.textContent = "Não possui Nota Fiscal";
+
+                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
+                const notaFiscal = imgNotaFiscal.previousElementSibling; // Seleciona o <h6> anterior
+                notaFiscal.parentNode.insertBefore(h7, notaFiscal.nextSibling);
             }
 
             const pedidos = document.getElementById('pedidos');

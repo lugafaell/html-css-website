@@ -10,324 +10,333 @@
   <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-        }
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f2f5;
+    }
 
-        #background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-color: #017f2d;
-            background-size: 40%;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    #background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-color: #017f2d;
+      background-size: 40%;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
-        #dashboard-container {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: transparent; /* Fundo transparente */
-        }
-        canvas {
-            margin-bottom: 20px;
-        }
+    #dashboard-container {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: transparent;
+      /* Fundo transparente */
+    }
 
-        #valor-total {
-            margin-top: 20px;
-            font-size: 18px;
-            text-align: center;
-        }
+    canvas {
+      margin-bottom: 20px;
+    }
 
-        #meta-progress {
-          width: calc(100% - 160px); /* Ajuste para separar do campo de entrada */
-            height: 30px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-            margin-right: 20px; /* Adicionando margem à direita */
-        }
+    #valor-total {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+    }
 
-        #progress-bar {
-            height: 100%;
-            width: 0;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-            transition: width 0.3s ease;
-        }
+    #meta-progress {
+      width: calc(100% - 160px);
+      /* Ajuste para separar do campo de entrada */
+      height: 30px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+      margin-right: 20px;
+      /* Adicionando margem à direita */
+    }
 
-        #percentual {
-            position: absolute;
-            top: 0;
-            right: 5px;
-            line-height: 30px;
-            color: black;
-        }
+    #progress-bar {
+      height: 100%;
+      width: 0;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      transition: width 0.3s ease;
+    }
 
-        #meta-value {
-            margin-top: 5px;
-            font-size: 14px;
-        }
+    #percentual {
+      position: absolute;
+      top: 0;
+      right: 5px;
+      line-height: 30px;
+      color: black;
+    }
 
-        .barra-vermelha {
-            background-color: #ff6347;
-        }
+    #meta-value {
+      margin-top: 5px;
+      font-size: 14px;
+    }
 
-        .barra-amarela {
-            background-color: #ffd700;
-        }
+    .barra-vermelha {
+      background-color: #ff6347;
+    }
 
-        .barra-verde {
-            background-color: #28a745;
-        }
+    .barra-amarela {
+      background-color: #ffd700;
+    }
 
-        nav.navbar {
-            background-color: #343a40;
-        }
+    .barra-verde {
+      background-color: #28a745;
+    }
 
-        .offcanvas-header h3 {
-            margin: 0;
-        }
+    nav.navbar {
+      background-color: #343a40;
+    }
 
-        .navbar-toggler {
-            border: none;
-        }
+    .offcanvas-header h3 {
+      margin: 0;
+    }
 
-        .btn-close {
-            filter: invert(1);
-        }
+    .navbar-toggler {
+      border: none;
+    }
 
-        .nav-link {
-            transition: color 0.2s;
-        }
+    .btn-close {
+      filter: invert(1);
+    }
 
-        .nav-link:hover {
-            color: #00d084;
-        }
+    .nav-link {
+      transition: color 0.2s;
+    }
 
-        .card {
-            border: none;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+    .nav-link:hover {
+      color: #00d084;
+    }
 
-        .table {
-            margin-bottom: 0;
-        }
+    .card {
+      border: none;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
 
-        .table th, .table td {
-            vertical-align: middle;
-            border-top: none;
-        }
+    .table {
+      margin-bottom: 0;
+    }
 
-        .table th:first-child, .table td:first-child {
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-        }
+    .table th,
+    .table td {
+      vertical-align: middle;
+      border-top: none;
+    }
 
-        .table th:last-child, .table td:last-child {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
+    .table th:first-child,
+    .table td:first-child {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
 
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #000000;
-        }
+    .table th:last-child,
+    .table td:last-child {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
 
-        .table-striped tbody tr:nth-of-type(even) {
-            background-color: #ffffff;
-        }
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #000000;
+    }
 
-        .form-control {
-            border-radius: 5px;
-        }
+    .table-striped tbody tr:nth-of-type(even) {
+      background-color: #ffffff;
+    }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
+    .form-control {
+      border-radius: 5px;
+    }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
 
-        .fundo-preto {
-    background-color: #000000; /* cor preta */
-    color: #ffffff; /* texto branco para contrastar */
-}
-    </style>
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+
+    .fundo-preto {
+      background-color: #000000;
+      /* cor preta */
+      color: #ffffff;
+      /* texto branco para contrastar */
+    }
+  </style>
 </head>
+
 <body>
 
-    <div id="background-container"></div>
+  <div id="background-container"></div>
 
-    <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
-      <div class="container-fluid">
-          <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
-              height="30" class="d-inline-block align-top" alt="">
+  <nav class="navbar bg-dark" id="menu" style="position: relative; box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);">
+    <div class="container-fluid">
+      <button class="navbar-toggler bg-success" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <img src="../imgs/Imagem_do_WhatsApp_de_2024-04-30_à_s__12.53.06_24f6df1d-removebg-preview.png" width="30"
+        height="30" class="d-inline-block align-top" alt="">
 
-          <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
-              aria-labelledby="offcanvasNavbarLabel">
-              <div class="offcanvas-header">
-                  <h3 class="text-white" id="userName"></h3>
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                      aria-label="Close"></button>
-              </div>
-              <div class="offcanvas-body">
-                  <ul class="navbar-nav">
-                      <li class="nav-item">
-                          <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
-                      </li>
-                      <li id="faturamento" class="nav-item">
-                          <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
-                      </li>
-                      <li id="pedidosCancelados" class="nav-item">
-                          <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
-                      </li>
-                      <li id="agenda" class="nav-item">
-                        <a class="nav-link text-white" href="../misc/agenda.html">Agendamento THULEP</a>
-                    </li>
-                      <li class="nav-item">
-                          <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
+      <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h3 class="text-white" id="userName"></h3>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/tabelaPedidos.html">Lista de Pedidos</a>
+            </li>
+            <li id="faturamento" class="nav-item">
+              <a class="nav-link text-white" href="../faturamento/faturamento.html">Pendentes de Faturamento</a>
+            </li>
+            <li id="pedidosCancelados" class="nav-item">
+              <a class="nav-link text-white" href="../cancelados/tabelaPedidosCancelados.html">Pedidos Cancelados</a>
+            </li>
+            <li id="agenda" class="nav-item">
+              <a class="nav-link text-white" href="../misc/agenda.html">Agendamento THULEP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
+            </li>
+          </ul>
+        </div>
       </div>
+    </div>
   </nav>
-    <div class="container mt-4">
-        <div class="card-body">
-            <h2>Progressão da Meta</h2>
+  <div class="container mt-4">
+    <div class="card-body">
+      <h2>Progressão da Meta</h2>
 
-            <div class="d-flex align-items-center justify-content-between mt-3">
-                <div id="meta-progress" style="flex-grow: 1;">
-                    <div id="progress-bar"></div>
-                    <div id="percentual"></div>
-                </div>
-
-                  <form id="meta-form" class="d-flex align-items-center">
-                    <div class="flex-grow-1 me-3">
-                        <input type="number" id="nova-meta" class="form-control" placeholder="Meta Mensal" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Atualizar</button>
-                </form>
-            </div>
+      <div class="d-flex align-items-center justify-content-between mt-3">
+        <div id="meta-progress" style="flex-grow: 1;">
+          <div id="progress-bar"></div>
+          <div id="percentual"></div>
         </div>
 
-        <div id="dashboard-container">
-            <h2>Dashboard</h2>
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <canvas id="pie-chart"></canvas>
-                    </div>
-                    <div class="col-md-6">
-                        <canvas id="terceiro-grafico-pizza"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-4">
-                <div class="row mt-4">
-                    <div class="col">
-                        <h3>Mapeamento</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Estados</th>
-                                    <th>Aguardando Faturamento</th>
-                                    <th>Pendência de Faturamento</th>
-                                </tr>
-                            </thead>
-                            <tbody id="estados-table-body">
-                                <tr>
-                                    <td>Ceará</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Piauí</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Cariri</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Maranhão</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Total</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="col">
-                        <h3>Tempo Real</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Status</th>
-                                    <th>Valores</th>
-                                </tr>
-                            </thead>
-                            <tbody id="status-table-body">
-                                <tr>
-                                    <td>Faturado</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Disponível para Faturar</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Previsão de Faturamento</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Meta Mensal</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Falta para Atingir a Meta</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-3">
-                <div id="meta-value"></div>
-                <canvas id="line-chart"></canvas>
-            </div>
-        </div>
+        <form id="meta-form" class="d-flex align-items-center">
+          <div class="flex-grow-1 me-3">
+            <input type="number" id="nova-meta" class="form-control" placeholder="Meta Mensal" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Atualizar</button>
+        </form>
+      </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <div id="dashboard-container">
+      <h2>Dashboard</h2>
+      <div class="card">
+        <div class="row">
+          <div class="col-md-6">
+            <canvas id="pie-chart"></canvas>
+          </div>
+          <div class="col-md-6">
+            <canvas id="terceiro-grafico-pizza"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="row mt-4">
+          <div class="col">
+            <h3>Mapeamento</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Estados</th>
+                  <th>Aguardando Faturamento</th>
+                  <th>Pendência de Faturamento</th>
+                </tr>
+              </thead>
+              <tbody id="estados-table-body">
+                <tr>
+                  <td>Ceará</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Piauí</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Cariri</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Maranhão</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Total</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col">
+            <h3>Tempo Real</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Valores</th>
+                </tr>
+              </thead>
+              <tbody id="status-table-body">
+                <tr>
+                  <td>Faturado</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Disponível para Faturar</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Previsão de Faturamento</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Meta Mensal</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Falta para Atingir a Meta</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div id="meta-value"></div>
+        <canvas id="line-chart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -357,11 +366,11 @@
       const userEmail = localStorage.getItem('userEmail');
 
       if (userEmail !== null) {
-                document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
-            } else {
-                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
-                document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
-            }
+        document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
+      } else {
+        // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
+        document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
+      }
 
       const metaForm = document.getElementById('meta-form');
 
@@ -560,13 +569,13 @@
             const mesProcedimento = data.getMonth() + 1;
             const anoProcedimento = data.getFullYear();
 
-            if(mesProcedimento === mesAtual && anoProcedimento === anoAtual){
+            if (mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
 
               if (estado in somaValorPorEstadoStatus) {
-              somaValorPorEstadoStatus[estado] += valorTotal;
-            } else {
-              somaValorPorEstadoStatus[estado] = valorTotal;
-            }
+                somaValorPorEstadoStatus[estado] += valorTotal;
+              } else {
+                somaValorPorEstadoStatus[estado] = valorTotal;
+              }
 
             }
           }
@@ -612,12 +621,12 @@
             const mesProcedimento = data.getMonth() + 1;
             const anoProcedimento = data.getFullYear();
 
-            if(mesProcedimento === mesAtual && anoProcedimento === anoAtual){
+            if (mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
               if (estado in somaValorPorEstadoFinalizado) {
-              somaValorPorEstadoFinalizado[estado] += valorTotal;
-            } else {
-              somaValorPorEstadoFinalizado[estado] = valorTotal;
-            }
+                somaValorPorEstadoFinalizado[estado] += valorTotal;
+              } else {
+                somaValorPorEstadoFinalizado[estado] = valorTotal;
+              }
             }
           }
         });
@@ -686,12 +695,46 @@
 
                 const estadosTableBody = document.getElementById('estados-table-body');
                 estadosTableBody.innerHTML = '';
+                const formatCurrency = (value) => {
+                  return 'R$ ' + value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                };
+
                 const estadosData = [
-                  { estado: 'Ceará', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['CE'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['CE'] || '' },
-                  { estado: 'Piauí', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['PI'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['PI'] || '' },
-                  { estado: 'Cariri', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['RMC'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['RMC'] || '' },
-                  { estado: 'Maranhão', aguardandoFaturamento: 'R$ ' + somaValorPorEstadoStatus['MA'] || '', pendenciaFaturamento: 'R$ ' + somaValorTotalPorEstado['MA'] || '' },
-                  { estado: 'Total', aguardandoFaturamento: 'R$ ' + (somaValorPorEstadoStatus['CE'] + somaValorPorEstadoStatus['PI'] + somaValorPorEstadoStatus['RMC'] + somaValorPorEstadoStatus['MA']) || '', pendenciaFaturamento: 'R$ ' + (somaValorTotalPorEstado['CE'] + somaValorTotalPorEstado['PI'] + somaValorTotalPorEstado['RMC'] + somaValorTotalPorEstado['MA']) || '' }
+                  {
+                    estado: 'Ceará',
+                    aguardandoFaturamento: formatCurrency(somaValorPorEstadoStatus['CE'] || 0),
+                    pendenciaFaturamento: formatCurrency(somaValorTotalPorEstado['CE'] || 0)
+                  },
+                  {
+                    estado: 'Piauí',
+                    aguardandoFaturamento: formatCurrency(somaValorPorEstadoStatus['PI'] || 0),
+                    pendenciaFaturamento: formatCurrency(somaValorTotalPorEstado['PI'] || 0)
+                  },
+                  {
+                    estado: 'Cariri',
+                    aguardandoFaturamento: formatCurrency(somaValorPorEstadoStatus['RMC'] || 0),
+                    pendenciaFaturamento: formatCurrency(somaValorTotalPorEstado['RMC'] || 0)
+                  },
+                  {
+                    estado: 'Maranhão',
+                    aguardandoFaturamento: formatCurrency(somaValorPorEstadoStatus['MA'] || 0),
+                    pendenciaFaturamento: formatCurrency(somaValorTotalPorEstado['MA'] || 0)
+                  },
+                  {
+                    estado: 'Total',
+                    aguardandoFaturamento: formatCurrency(
+                      (somaValorPorEstadoStatus['CE'] || 0) +
+                      (somaValorPorEstadoStatus['PI'] || 0) +
+                      (somaValorPorEstadoStatus['RMC'] || 0) +
+                      (somaValorPorEstadoStatus['MA'] || 0)
+                    ),
+                    pendenciaFaturamento: formatCurrency(
+                      (somaValorTotalPorEstado['CE'] || 0) +
+                      (somaValorTotalPorEstado['PI'] || 0) +
+                      (somaValorTotalPorEstado['RMC'] || 0) +
+                      (somaValorTotalPorEstado['MA'] || 0)
+                    )
+                  }
                 ];
 
                 estadosData.forEach(estData => {
@@ -709,12 +752,28 @@
                 const previsao = faturado + disponivel;
 
                 statusTableBody.innerHTML = '';
+
                 const statusData = [
-                  { status: 'Faturado', valores: 'R$ ' + faturado || '' },
-                  { status: 'Disponível para Faturar', valores: 'R$ ' + disponivel || '' },
-                  { status: 'Previsão de Faturamento', valores: 'R$ ' + previsao || '' },
-                  { status: 'Meta Mensal', valores: 'R$ ' + meta || '' },
-                  { status: 'Falta para Atingir a Meta', valores: 'R$ ' + (meta - previsao) || '' }
+                  {
+                    status: 'Faturado',
+                    valores: formatCurrency(faturado || 0)
+                  },
+                  {
+                    status: 'Disponível para Faturar',
+                    valores: formatCurrency(disponivel || 0)
+                  },
+                  {
+                    status: 'Previsão de Faturamento',
+                    valores: formatCurrency(previsao || 0)
+                  },
+                  {
+                    status: 'Meta Mensal',
+                    valores: formatCurrency(meta || 0)
+                  },
+                  {
+                    status: 'Falta para Atingir a Meta',
+                    valores: formatCurrency((meta - previsao) || 0)
+                  }
                 ];
 
                 statusData.forEach(status => {
@@ -750,44 +809,49 @@
     }
 
     async function contarPedidosPorEstado() {
-  try {
-    const response = await fetch('https://api.itmf.app.br/faturamento/receberFaturamento');
-    if (!response.ok) {
-      throw new Error('Erro ao buscar faturamentos');
-    }
-    const faturamentos = await response.json();
+      try {
+        const response = await fetch('https://api.itmf.app.br/faturamento/receberFaturamento');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar faturamentos');
+        }
+        const faturamentos = await response.json();
 
-    const estadosAlvo = ['CE', 'PI', 'MA', 'RMC'];
+        const estadosAlvo = ['CE', 'PI', 'MA', 'RMC'];
 
-    const pedidosPorEstado = {};
-    estadosAlvo.forEach(estado => {
-      pedidosPorEstado[estado] = 0;
-    });
+        const pedidosPorEstado = {};
+        estadosAlvo.forEach(estado => {
+          pedidosPorEstado[estado] = 0;
+        });
 
-    // Obter mês e ano atuais
-    const dataAtual = new Date();
-    const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
-    const anoAtual = dataAtual.getFullYear();
+        const dataAtual = new Date();
+        const mesAtual = dataAtual.getMonth() + 1;
+        const anoAtual = dataAtual.getFullYear();
 
-    faturamentos.forEach(pedido => {
-      const { estado, dataProcedimento } = pedido;
-      
-      const data = new Date(dataProcedimento);
-      const mesProcedimento = data.getMonth() + 1;
-      const anoProcedimento = data.getFullYear();
+        console.log(`Mês Atual: ${mesAtual}, Ano Atual: ${anoAtual}`);
 
-      // Verificar se o pedido é do mês e ano corrente
-      if (estadosAlvo.includes(estado) && mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
-        pedidosPorEstado[estado]++;
+        faturamentos.forEach(pedido => {
+          const { estado, dataProcedimento } = pedido;
+
+          const data = new Date(dataProcedimento);
+          const mesProcedimento = data.getMonth() + 1;
+          const anoProcedimento = data.getFullYear();
+
+          console.log(`Estado: ${estado}, Data Procedimento: ${dataProcedimento}, Mês: ${mesProcedimento}, Ano: ${anoProcedimento}`);
+
+          // Verificar se o pedido é do mês e ano corrente
+          if (estadosAlvo.includes(estado) && mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
+            pedidosPorEstado[estado]++;
+            console.log(`Pedido contado para o estado ${estado}: ${pedidosPorEstado[estado]}`);
+          }
+        });
+
+        console.log('Pedidos por Estado:', pedidosPorEstado);
+        return pedidosPorEstado;
+      } catch (error) {
+        console.error('Erro ao contar pedidos por estado:', error);
+        throw error;
       }
-    });
-
-    return pedidosPorEstado;
-  } catch (error) {
-    console.error('Erro ao contar pedidos por estado:', error);
-    throw error;
-  }
-}
+    }
 
     async function criarTerceiroGraficoPizza() {
       try {
@@ -795,7 +859,8 @@
 
         const labels = Object.keys(pedidosPorEstado);
         const data = Object.values(pedidosPorEstado);
-        console.log(pedidosPorEstado)
+        console.log('Labels:', labels);
+        console.log('Data:', data);
 
         const ctx = document.getElementById('terceiro-grafico-pizza').getContext('2d');
         const terceiroGraficoPizza = new Chart(ctx, {
