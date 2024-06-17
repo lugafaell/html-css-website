@@ -537,15 +537,15 @@
         })
         .catch(error => console.error('Erro ao buscar funcionários:', error));
 
-      fetch('http://localhost:3000/funcionario/funcionarios?cargo=Instrumentador')
+      fetch('https://api.itmf.app.br/funcionario/funcionarios?cargo=Instrumentador')
         .then(response => response.json())
         .then(data => {
-          const vendedorSelect = document.getElementById('instrumentador');
+          const instrumentadorSelect = document.getElementById('instrumentador');
           data.forEach(funcionario => {
             const option = document.createElement('option');
             option.value = funcionario.nomeFuncionario;
             option.textContent = funcionario.nomeFuncionario;
-            vendedorSelect.appendChild(option);
+            instrumentadorSelect.appendChild(option);
           });
         })
         .catch(error => console.error('Erro ao buscar funcionários:', error));
@@ -553,12 +553,12 @@
       fetch('https://api.itmf.app.br/funcionario/funcionarios?cargo=Médico')
         .then(response => response.json())
         .then(data => {
-          const vendedorSelect = document.getElementById('medico');
+          const medicoSelect = document.getElementById('medico');
           data.forEach(funcionario => {
             const option = document.createElement('option');
             option.value = funcionario.nomeFuncionario;
             option.textContent = funcionario.nomeFuncionario;
-            vendedorSelect.appendChild(option);
+            medicoSelect.appendChild(option);
           });
         })
         .catch(error => console.error('Erro ao buscar funcionários:', error));
