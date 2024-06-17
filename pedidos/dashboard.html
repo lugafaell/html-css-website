@@ -207,7 +207,7 @@
               <a class="nav-link text-white" href="../misc/agenda.html">Agendamento THULEP</a>
             </li>
             <li id="cadastroFuncionario" class="nav-item">
-              <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+              <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Funcionarios</a>
             </li>
             <li id="equipamentosOpme" class="nav-item">
               <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
@@ -501,9 +501,8 @@
 
         const estadosVerificados = ['CE', 'PI', 'RMC', 'MA'];
 
-        // Obter mês e ano atuais
         const dataAtual = new Date();
-        const mesAtual = dataAtual.getMonth() + 1; // getMonth() retorna o mês de 0 a 11
+        const mesAtual = dataAtual.getMonth() + 1;
         const anoAtual = dataAtual.getFullYear();
 
         faturamentos.forEach(pedido => {
@@ -514,7 +513,6 @@
             const mesProcedimento = data.getMonth() + 1;
             const anoProcedimento = data.getFullYear();
 
-            // Verificar se o pedido é do mês e ano corrente
             if (mesProcedimento === mesAtual && anoProcedimento === anoAtual) {
               const parsedValue = parseFloat(valorTotal);
               const valorParaSomar = !isNaN(parsedValue) ? parsedValue : 0;
