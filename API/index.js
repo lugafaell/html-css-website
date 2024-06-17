@@ -7,12 +7,13 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 
-const authRoutes = require('./routes/auth');
-const dashboardRoutes = require('./routes/dashboard');
-const registroRoutes = require('./routes/registro');
-const faturamentoRoutes = require('./routes/faturamento');
-const agendaRoutes = require('./routes/agenda');
-
+const authRoutes = require("./routes/auth");
+const dashboardRoutes = require("./routes/dashboard");
+const registroRoutes = require("./routes/registro");
+const faturamentoRoutes = require("./routes/faturamento");
+const agendaRoutes = require("./routes/agenda");
+const funcionarioRoutes = require("./routes/funcionario");
+const itensRoutes = require("./routes/item");
 
 require("dotenv").config();
 
@@ -39,11 +40,13 @@ db.once("open", () => {
 // Middleware para lidar com dados JSON
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-app.use('/meta', dashboardRoutes);
-app.use('/registrar', registroRoutes);
-app.use('/faturamento', faturamentoRoutes);
-app.use('/agenda', agendaRoutes);
+app.use("/auth", authRoutes);
+app.use("/meta", dashboardRoutes);
+app.use("/registrar", registroRoutes);
+app.use("/faturamento", faturamentoRoutes);
+app.use("/agenda", agendaRoutes);
+app.use("/funcionario", funcionarioRoutes);
+app.use("/item", itensRoutes);
 
 // Definindo a porta em que o servidor irá escutar
 const PORT = process.env.PORT || 3000;

@@ -625,7 +625,7 @@
                 return;
             }
 
-            fetch(`https://api.itmf.app.br/faturamento/receberFaturamento/${faturamentoId}`)
+            fetch(`https://app.itmf.app.br/faturamento/receberFaturamento/${faturamentoId}`)
                 .then(response => response.json())
                 .then(faturamento => {
                     fillFaturamentoDetails(faturamento);

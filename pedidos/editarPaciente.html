@@ -1344,6 +1344,31 @@
             return `${hours}:${minutes}:${seconds}`;
         }
 
+        function validarCampos() {
+      const camposObrigatorios = [
+        "hospital",
+        "linha",
+        "dataProcedimento",
+        "horaProcedimento",
+        "medico",
+        "nomePaciente",
+        "responsabilidade",
+        "tipoProcedimento",
+        "vendedor",
+        "instrumentador",
+        "convenio"
+      ];
+
+      for (const campoId of camposObrigatorios) {
+        const campo = document.getElementById(campoId);
+        if (!campo || !campo.value.trim()) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
         function registrar(event) {
             event.preventDefault();
 
@@ -1354,6 +1379,11 @@
                 .then(response => response.json())
                 .then(userData => {
                     const estado = userData.estado; // Obtém o estado do usuário
+
+                    if (!validarCampos()) {
+            alert("Por favor, preencha todos os campos obrigatórios.");
+            return;
+          }
 
                     const hospital = document.getElementById("hospital").value;
                     const linha = document.getElementById("linha").value;
