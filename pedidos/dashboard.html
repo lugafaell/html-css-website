@@ -35,7 +35,6 @@
       padding: 20px;
       border-radius: 10px;
       background-color: transparent;
-      /* Fundo transparente */
     }
 
     canvas {
@@ -50,14 +49,12 @@
 
     #meta-progress {
       width: calc(100% - 160px);
-      /* Ajuste para separar do campo de entrada */
       height: 30px;
       background-color: #e9ecef;
       border-radius: 5px;
       overflow: hidden;
       position: relative;
       margin-right: 20px;
-      /* Adicionando margem à direita */
     }
 
     #progress-bar {
@@ -171,9 +168,7 @@
 
     .fundo-preto {
       background-color: #000000;
-      /* cor preta */
       color: #ffffff;
-      /* texto branco para contrastar */
     }
   </style>
 </head>
@@ -210,6 +205,12 @@
             </li>
             <li id="agenda" class="nav-item">
               <a class="nav-link text-white" href="../misc/agenda.html">Agendamento THULEP</a>
+            </li>
+            <li id="cadastroFuncionario" class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+            </li>
+            <li id="equipamentosOpme" class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
             </li>
             <li class="nav-item">
               <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
@@ -351,13 +352,10 @@
   <script>
 
     function logout() {
-      // Limpe o token do localStorage
       localStorage.removeItem('token');
 
-      // Limpe o email do usuário do localStorage
       localStorage.removeItem('userEmail');
 
-      // Redirecione para a tela de login
       window.location.href = '../login/tela_login.html';
     }
 
@@ -368,7 +366,6 @@
       if (userEmail !== null) {
         document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
       } else {
-        // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
         document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
       }
 

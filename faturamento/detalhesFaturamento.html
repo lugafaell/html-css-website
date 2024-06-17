@@ -16,20 +16,16 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* Coloca o contêiner da imagem de fundo atrás do conteúdo principal */
             background-color: #017f2d;
             background-size: 40%;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* Estilos para o contêiner do conteúdo principal */
         .content-container {
             position: relative;
             z-index: 1;
-            /* Garante que o conteúdo principal fique acima da imagem de fundo */
             padding: 20px;
-            /* Adapte conforme necessário */
         }
 
         .card {
@@ -63,58 +59,42 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Estilos personalizados para o accordion */
         .custom-accordion {
             margin-bottom: 20px;
-            /* Adiciona espaçamento na parte inferior */
         }
 
         .custom-accordion .accordion-button {
             background-color: #343a40;
-            /* Cor de fundo do botão */
             color: #ffffff;
-            /* Cor do texto do botão */
             border-radius: 5px;
-            /* Arredonda os cantos do botão */
         }
 
         .custom-accordion .accordion-button:focus {
             box-shadow: none;
-            /* Remover sombra ao focar */
         }
 
         .custom-accordion .accordion-button::after {
             color: #ffffff;
-            /* Cor do ícone de seta */
         }
 
         .custom-accordion .accordion-button.collapsed {
             background-color: #343a40;
-            /* Cor de fundo do botão quando colapsado */
         }
 
         .custom-accordion .accordion-collapse {
             background-color: #212529;
-            /* Cor de fundo do conteúdo do accordion */
             color: #ffffff;
-            /* Cor do texto do conteúdo do accordion */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            /* Borda do conteúdo do accordion */
             border-radius: 5px;
-            /* Arredonda os cantos do conteúdo do accordion */
         }
 
         .custom-accordion .accordion-collapse hr {
             border-top-color: rgba(255, 255, 255, 0.1);
-            /* Cor da linha horizontal */
         }
 
         .nota-img {
             max-width: 200px;
-            /* Defina o tamanho máximo de largura desejado */
             max-height: 200px;
-            /* Defina o tamanho máximo de altura desejado */
-            /* Adicione outras propriedades de estilo conforme necessário */
         }
     </style>
 </head>
@@ -160,6 +140,12 @@
                         <li id="dashboard" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
                         </li>
+                        <li id="cadastroFuncionario" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+                        </li>
+                        <li id="equipamentosOpme" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
                         </li>
@@ -204,7 +190,6 @@
                             <div id="notasAccordionCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="notasAccordionHeading" data-bs-parent="#equipamentosAccordion">
                                 <div class="accordion-body">
-                                    <!-- Conteúdo do accordion de notas -->
                                     <h6>Comunicado de Uso</h6>
                                     <img id="imgComunicadoUso" class="nota-img" src="" alt="Comunicado de Uso">
                                     <button id="btnUso" class="btn btn-success mt-2"
@@ -242,29 +227,23 @@
         function downloadImage(imageId) {
             const imgElement = document.getElementById(imageId);
             const imgSrc = imgElement.src;
-            const imgName = `${imageId}.png`; // Defina o nome do arquivo aqui
+            const imgName = `${imageId}.png`;
 
-            // Crie um link de download temporário
             const link = document.createElement('a');
             link.href = imgSrc;
             link.download = imgName;
 
-            // Adicione o link ao documento e clique nele para iniciar o download
             document.body.appendChild(link);
             link.click();
 
-            // Limpe o link após o download
             document.body.removeChild(link);
         }
 
         function logout() {
-            // Limpe o token do localStorage
             localStorage.removeItem('token');
 
-            // Limpe o email do usuário do localStorage
             localStorage.removeItem('userEmail');
 
-            // Redirecione para a tela de login
             window.location.href = '../login/tela_login.html';
         }
 
@@ -300,12 +279,10 @@
                 const btnDevo = document.getElementById('btnDevo');
                 btnDevo.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota de Devolução";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeDevolucao = imgDevolucao.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeDevolucao = imgDevolucao.previousElementSibling;
                 notaDeDevolucao.parentNode.insertBefore(h7, notaDeDevolucao.nextSibling);
             }
 
@@ -317,12 +294,10 @@
                 const btnUso = document.getElementById('btnUso');
                 btnUso.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Comunicado de Uso";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeUso = imgComunicadoUso.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeUso = imgComunicadoUso.previousElementSibling;
                 notaDeUso.parentNode.insertBefore(h7, notaDeUso.nextSibling);
             }
 
@@ -334,12 +309,10 @@
                 const btnRemessa = document.getElementById('btnRemessa');
                 btnRemessa.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota de Remessa";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeRemessa = imgRemessa.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeRemessa = imgRemessa.previousElementSibling;
                 notaDeRemessa.parentNode.insertBefore(h7, notaDeRemessa.nextSibling);
             }
 
@@ -351,12 +324,10 @@
                 const btnFiscal = document.getElementById('btnFiscal');
                 btnFiscal.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota Fiscal";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaFiscal = imgNotaFiscal.previousElementSibling; // Seleciona o <h6> anterior
+                const notaFiscal = imgNotaFiscal.previousElementSibling;
                 notaFiscal.parentNode.insertBefore(h7, notaFiscal.nextSibling);
             }
 
@@ -386,19 +357,21 @@
                 dashboard.style.display = 'none';
             }
 
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const equipamentosOpme = document.getElementById('equipamentosOpme');
+
+                equipamentosOpme.style.display = 'none';
+            }
+
             const token = localStorage.getItem('token');
             if (!token) {
-                // Se não houver token, redireciona para a página de login
                 window.location.href = '../login/tela_login.html';
             }
-            // Recupera o email armazenado no localStorage
             const userEmail = localStorage.getItem('userEmail');
 
-            // Atualize o conteúdo do elemento no menu com o valor do email
             if (userEmail !== null) {
                 document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
             } else {
-                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
                 document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
             }
         });

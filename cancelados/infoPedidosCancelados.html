@@ -113,10 +113,7 @@
 
         .nota-img {
             max-width: 200px;
-            /* Defina o tamanho máximo de largura desejado */
             max-height: 200px;
-            /* Defina o tamanho máximo de altura desejado */
-            /* Adicione outras propriedades de estilo conforme necessário */
         }
     </style>
 </head>
@@ -153,6 +150,12 @@
                         </li>
                         <li id="dashboard" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
+                        </li>
+                        <li id="cadastroFuncionario" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+                        </li>
+                        <li id="equipamentosOpme" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
@@ -238,18 +241,15 @@
         function downloadImage(imageId) {
             const imgElement = document.getElementById(imageId);
             const imgSrc = imgElement.src;
-            const imgName = `${imageId}.png`; // Defina o nome do arquivo aqui
+            const imgName = `${imageId}.png`;
 
-            // Crie um link de download temporário
             const link = document.createElement('a');
             link.href = imgSrc;
             link.download = imgName;
 
-            // Adicione o link ao documento e clique nele para iniciar o download
             document.body.appendChild(link);
             link.click();
 
-            // Limpe o link após o download
             document.body.removeChild(link);
         }
 
@@ -297,6 +297,12 @@
                 const dashboard = document.getElementById('dashboard');
 
                 dashboard.style.display = 'none';
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const equipamentosOpme = document.getElementById('equipamentosOpme');
+
+                equipamentosOpme.style.display = 'none';
             }
 
             const token = localStorage.getItem('token');
@@ -482,7 +488,6 @@
                         remessaImage.style.display = 'none';
                     }
 
-                    // Exibe o motivo do cancelamento
                     if (pedido.motivoCancelamento && pedido.motivoCancelamento.trim() !== '') {
                         motivoCancelamentoContainer.textContent = pedido.motivoCancelamento;
                     } else {

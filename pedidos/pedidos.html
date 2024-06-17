@@ -129,6 +129,12 @@
             <li id="dashboard" class="nav-item">
               <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
             </li>
+            <li id="cadastroFuncionario" class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+            </li>
+            <li id="equipamentosOpme" class="nav-item">
+              <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
             </li>
@@ -502,13 +508,10 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script>
     function logout() {
-      // Limpe o token do localStorage
       localStorage.removeItem('token');
 
-      // Limpe o email do usuário do localStorage
       localStorage.removeItem('userEmail');
 
-      // Redirecione para a tela de login
       window.location.href = '../login/tela_login.html';
     }
 
@@ -560,7 +563,6 @@
         })
         .catch(error => console.error('Erro ao buscar funcionários:', error));
 
-      // Recupera o email armazenado no localStorage
       const userEmail = localStorage.getItem('userEmail');
       const token = localStorage.getItem('token');
       const cargo = localStorage.getItem('cargo');
@@ -581,6 +583,12 @@
         const dashboard = document.getElementById('dashboard');
 
         dashboard.style.display = 'none';
+      }
+
+      if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+        const equipamentosOpme = document.getElementById('equipamentosOpme');
+
+        equipamentosOpme.style.display = 'none';
       }
 
       if (!token) {

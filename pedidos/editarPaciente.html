@@ -119,6 +119,12 @@
                         <li id="dashboard" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
                         </li>
+                        <li id="cadastroFuncionario" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+                        </li>
+                        <li id="equipamentosOpme" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
+                          </li>
                         <li class="nav-item">
                             <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
                         </li>
@@ -1260,13 +1266,10 @@
         crossorigin="anonymous"></script>
     <script>
         function logout() {
-            // Limpe o token do localStorage
             localStorage.removeItem('token');
 
-            // Limpe o email do usuário do localStorage
             localStorage.removeItem('userEmail');
 
-            // Redirecione para a tela de login
             window.location.href = '../login/tela_login.html';
         }
 
@@ -1279,7 +1282,6 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
 
-            // Recupera o email armazenado no localStorage
             const userEmail = localStorage.getItem('userEmail');
             const token = localStorage.getItem('token');
             const cargo = localStorage.getItem('cargo');
@@ -1300,18 +1302,21 @@
                 const dashboard = document.getElementById('dashboard');
 
                 dashboard.style.display = 'none';
-            } 
+            }
+
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const equipamentosOpme = document.getElementById('equipamentosOpme');
+
+                equipamentosOpme.style.display = 'none';
+            }
 
             if (!token) {
-                // Se não houver token, redireciona para a página de login
                 window.location.href = '../login/tela_login.html';
             }
 
-            // Atualize o conteúdo do elemento no menu com o valor do email
             if (userEmail !== null) {
                 document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
             } else {
-                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
                 document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
             }
         });

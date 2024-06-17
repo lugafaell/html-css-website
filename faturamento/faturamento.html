@@ -160,6 +160,12 @@ select:focus {
                         <li id="dashboard" class="nav-item">
                             <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
                         </li>
+                        <li id="cadastroFuncionario" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Itens</a>
+                        </li>
+                        <li id="equipamentosOpme" class="nav-item">
+                            <a class="nav-link text-white" href="../pedidos/equipamentosOpme.html">Cadastro Itens</a>
+                          </li>
                         <li class="nav-item">
                             <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
                         </li>
@@ -178,31 +184,26 @@ select:focus {
                         <th>
                             <select id="filtroHospital">
                                 <option value="">Hospital</option>
-                                <!-- Opções específicas do hospital podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
                         <th>
                             <select id="filtroDataProcedimento">
                                 <option value="">Data do Procedimento</option>
-                                <!-- Opções específicas de data podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
                         <th>
                             <select id="filtroPaciente">
                                 <option value="">Paciente</option>
-                                <!-- Opções específicas do paciente podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
                         <th>
                             <select id="filtroStatus">
                                 <option value="">Status</option>
-                                <!-- Opções específicas do status podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
                         <th>
                             <select id="filtroMotivo">
                                 <option value="">Motivo</option>
-                                <!-- Opções específicas do motivo podem ser preenchidas dinamicamente se necessário -->
                             </select>
                         </th>
                     </tr>
@@ -219,13 +220,10 @@ select:focus {
     <script>
 
         function logout() {
-            // Limpe o token do localStorage
             localStorage.removeItem('token');
 
-            // Limpe o email do usuário do localStorage
             localStorage.removeItem('userEmail');
 
-            // Redirecione para a tela de login
             window.location.href = '../login/tela_login.html';
         }
         document.addEventListener('DOMContentLoaded', function () {
@@ -252,19 +250,21 @@ select:focus {
                 dashboard.style.display = 'none';
             }
 
+            if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
+                const equipamentosOpme = document.getElementById('equipamentosOpme');
+
+                equipamentosOpme.style.display = 'none';
+            }
+
             const token = localStorage.getItem('token');
             if (!token) {
-                // Se não houver token, redireciona para a página de login
                 window.location.href = '../login/tela_login.html';
             }
-            // Recupera o email armazenado no localStorage
             const userEmail = localStorage.getItem('userEmail');
 
-            // Atualize o conteúdo do elemento no menu com o valor do email
             if (userEmail !== null) {
                 document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
             } else {
-                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
                 document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
             }
         });
@@ -315,7 +315,6 @@ select:focus {
     const tbody = document.getElementById('tbodyFaturamento');
     tbody.innerHTML = '';
 
-    // Filtrando faturamentos
     const faturamentosFiltrados = faturamentos.filter(faturamento => {
         return faturamento.status !== "FATURADO" && faturamento.motivo !== "FINALIZADO";
     });
@@ -347,13 +346,11 @@ select:focus {
                 const select = document.getElementById(elementId);
                 select.innerHTML = '';
 
-                // Adicionar opção genérica "Mostrar Todos"
                 const allOption = document.createElement('option');
                 allOption.value = '';
                 allOption.text = `${filterName}`;
                 select.add(allOption);
 
-                // Adicionar opções dinâmicas com base nos valores únicos
                 valuesArray.forEach(value => {
                     const option = document.createElement('option');
                     option.value = value;
@@ -376,7 +373,6 @@ select:focus {
                 pacientes.add(faturamento.nomePaciente);
                 statuses.add(faturamento.status);
                 motivos.add(faturamento.motivo);
-                // Adicione outros campos conforme necessário
             });
 
             preencherSelect('filtroHospital', Array.from(hospitais), 'Hospital');
@@ -390,7 +386,7 @@ select:focus {
             .then(response => response.json())
             .then(faturamentos => {
                 fillFaturamentoTable(faturamentos);
-                filtrarTabela(); // Aplicar filtro inicialmente após o preenchimento dos dados
+                filtrarTabela();
             })
             .catch(error => {
                 console.error('Erro ao buscar faturamentos:', error);
