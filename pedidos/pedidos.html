@@ -1048,15 +1048,12 @@
       }
 
       if (!token) {
-        // Se não houver token, redireciona para a página de login
         window.location.href = '../login/tela_login.html';
       }
 
-      // Atualize o conteúdo do elemento no menu com o valor do email
       if (userEmail !== null) {
         document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
       } else {
-        // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
         document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
       }
 
@@ -1071,11 +1068,9 @@
     function atualizarSelects(procedimentoSelecionado) {
 
       let equipamentoURL = 'https://api.itmf.app.br/item/itens?tipo=EQUIPAMENTO';
-      let materialURL = 'https://api.itmf.app.br/item/itens?tipo=OPME';
 
       if (procedimentoSelecionado && procedimentoSelecionado !== 'Selecione...') {
-        equipamentoURL += `&procedimento=${procedimentoSelecionado}`;
-        materialURL += `&procedimento=${procedimentoSelecionado}`;
+        equipamentoURL += `&procedimento=${procedimentoSelecionado}`;;
       }
 
       fetch(equipamentoURL)
@@ -1091,20 +1086,6 @@
           });
         })
         .catch(error => console.error('Erro ao buscar Equipamentos:', error));
-
-      fetch(materialURL)
-        .then(response => response.json())
-        .then(data => {
-          const materialSelect = document.getElementById('materialSelect');
-          materialSelect.innerHTML = '<option selected disabled>Selecione...</option>';
-          data.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item.nomeItem + " " + item.codeItem;
-            option.textContent = item.nomeItem + " " + item.codeItem;
-            materialSelect.appendChild(option);
-          });
-        })
-        .catch(error => console.error('Erro ao buscar Materiais:', error));
     }
 
     function toUpperCase() {
