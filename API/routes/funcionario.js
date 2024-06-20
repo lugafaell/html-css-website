@@ -11,6 +11,12 @@ router.post('/funcionarios', async (req, res) => {
   }
 
   try {
+    const funcionarioExistente = await Funcionario.findOne({ cargoFuncionario, nomeFuncionario });
+
+    if (funcionarioExistente) {
+      return res.status(400).json({ message: 'Já existe um funcionário com este nome e cargo' });
+    }
+
     const novoFuncionario = new Funcionario({ cargoFuncionario, nomeFuncionario });
     await novoFuncionario.save();
     res.status(201).json({ message: 'Funcionario registrado com sucesso' });
