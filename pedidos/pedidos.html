@@ -91,6 +91,10 @@
       padding: 0;
       height: 100%;
     }
+
+    .select2-container .select2-results__options {
+    max-height: none !important;
+}
   </style>
 </head>
 
@@ -1218,7 +1222,6 @@
             return;
           }
 
-          // Verificar se o tipo de procedimento é "THULEP"
           if (tipoProcedimento === "THULEP") {
             const datasRegistradas = await obterDatasRegistradas();
 
@@ -1326,81 +1329,112 @@
     }
 
     function adicionarCampo(containerId, inputName1, inputName2, label1, label2) {
-      var container = document.getElementById(containerId);
+    var container = document.getElementById(containerId);
 
-      var novoCampo = document.createElement("div");
-      novoCampo.classList.add("row", "mb-3");
+    var novoCampo = document.createElement("div");
+    novoCampo.classList.add("row", "mb-3");
 
-      var divInput1 = document.createElement("div");
-      divInput1.classList.add("col-md-4", "mt-2");
-      var labelElement1 = document.createElement("label");
-      labelElement1.htmlFor = inputName1; // Corrigido 'for' para 'htmlFor'
-      labelElement1.textContent = label1;
-      divInput1.appendChild(labelElement1);
-      var select1 = document.createElement("select");
-      select1.classList.add("form-select", "custom-select2-container");
-      select1.name = inputName1;
+    var divInput1 = document.createElement("div");
+    divInput1.classList.add("col-md-4", "mt-2");
+    var labelElement1 = document.createElement("label");
+    labelElement1.htmlFor = inputName1;
+    labelElement1.textContent = label1;
+    divInput1.appendChild(labelElement1);
+    var select1 = document.createElement("select");
+    select1.classList.add("form-select", "custom-select2-container");
+    select1.name = inputName1;
 
-      // Adiciona as opções filtradas
-      adicionarOpcoesFiltradas(select1, inputName1);
-      divInput1.appendChild(select1);
-      novoCampo.appendChild(divInput1);
+    adicionarOpcoesFiltradas(select1, inputName1);
+    divInput1.appendChild(select1);
+    novoCampo.appendChild(divInput1);
 
-      var divInput2 = document.createElement("div");
-      divInput2.classList.add("col-md-4", "mt-2");
-      var labelElement2 = document.createElement("label");
-      labelElement2.htmlFor = inputName2; // Corrigido 'for' para 'htmlFor'
-      labelElement2.textContent = label2;
-      divInput2.appendChild(labelElement2);
-      var input2 = document.createElement("input");
-      input2.type = "number";
-      input2.classList.add("form-control");
-      input2.name = inputName2;
-      divInput2.appendChild(input2);
-      novoCampo.appendChild(divInput2);
+    var divInput2 = document.createElement("div");
+    divInput2.classList.add("col-md-4", "mt-2");
+    var labelElement2 = document.createElement("label");
+    labelElement2.htmlFor = inputName2;
+    labelElement2.textContent = label2;
+    divInput2.appendChild(labelElement2);
+    var input2 = document.createElement("input");
+    input2.type = "number";
+    input2.classList.add("form-control");
+    input2.name = inputName2;
+    divInput2.appendChild(input2);
+    novoCampo.appendChild(divInput2);
 
-      container.appendChild(novoCampo);
+    container.appendChild(novoCampo);
 
-      $(select1).select2();
-    }
-
-    function adicionarOpcoesFiltradas(selectElement, inputName) {
-      // Obtém o elemento de seleção de procedimento
-      var procedimentoSelect = document.getElementById('tipoProcedimento');
-
-      // Verifica se o elemento de seleção de procedimento existe e tem um valor
-      if (!procedimentoSelect) {
+    $(select1).select2();
+}
+function adicionarOpcoesFiltradas(selectElement, inputName) {
+    var procedimentoSelect = document.getElementById('tipoProcedimento');
+    
+    if (!procedimentoSelect) {
         console.error('Elemento tipoProcedimento não encontrado.');
         return;
-      }
+    }
+    
+    var procedimentoSelecionado = procedimentoSelect.value;
 
-      var procedimentoSelecionado = procedimentoSelect.value;
-
-      // Verifica se o valor do procedimento selecionado é válido
-      if (!procedimentoSelecionado || procedimentoSelecionado === 'Selecione...') {
+    if (!procedimentoSelecionado || procedimentoSelecionado === 'Selecione...') {
         console.error('Procedimento não selecionado ou inválido.');
         return;
-      }
+    }
 
-      // Defina a URL apropriada com base no tipo de input
-      var tipo = inputName.includes('equipamento') ? 'EQUIPAMENTO' : 'OPME';
-      var url = `https://api.itmf.app.br/item/itens?tipo=${tipo}&procedimento=${procedimentoSelecionado}`;
+    const procedimentoParaLinha = {
+        "RTU BIPOLAR": "UROLOGIA",
+        "REFLUXO GASTRICO": "GERAL",
+        "HISTERECTOMIA": "GERAL",
+        "HISTEROSCOPIA": "GERAL",
+        "RETOSSIGMOIDOCTOMIA": "GERAL",
+        "GASTRECTOMIA": "GERAL",
+        "VASECTOMIA": "GERAL",
+        "ANGIOPLASTIA": "VASCULAR",
+        "NEFRECTOMIA": "UROLOGIA",
+        "URETERO FLEXIVEL": "UROLOGIA",
+        "URETERO RIGIDO": "UROLOGIA",
+        "OOFORECTOMIA": "GERAL",
+        "COLESCISTECTOMIA": "GERAL",
+        "PROSTATECTOMIA": "UROLOGIA",
+        "LAPAROTOMIA": "GERAL",
+        "CISTONEFROSCOPIO": "UROLOGIA",
+        "CISTOLITOTRIPSIA": "UROLOGIA",
+        "PERCUTANEA": "UROLOGIA",
+        "BARIATRICA": "GERAL",
+        "TIREOIDECTOMIA": "GERAL",
+        "REVASCULARIZAÇÃO DO MIOCARDIO": "VASCULAR",
+        "LOBECTOMIA": "GERAL",
+        "CISTOPLASTIA": "UROLOGIA",
+        "CONSIGNAÇÃO": "GERAL",
+        "VENDA DIRETA": "GERAL",
+        "COLECTOMIA": "GERAL",
+        "HERNIORRAFIA": "GERAL",
+        "REPOSIÇÃO": "GERAL",
+        "OUTROS": "GERAL",
+        "RETIRADA DE DUPLO J": "UROLOGIA",
+        "THULEP": "UROLOGIA",
+        "URETROTOMIA": "UROLOGIA"
+    };
 
-      fetch(url)
+    var linhaEquipamento = procedimentoParaLinha[procedimentoSelecionado];
+
+    var url = `https://api.itmf.app.br/equipamento/equipamentos?linha=${linhaEquipamento}`;
+
+    fetch(url)
         .then(response => response.json())
         .then(data => {
-          data.forEach(item => {
-            var option = document.createElement('option');
-            option.value = item.nomeItem;
-            option.textContent = item.nomeItem;
-            selectElement.appendChild(option);
-          });
+            selectElement.innerHTML = '<option selected disabled>Selecione...</option>';
+            
+            data.forEach(item => {
+                var option = document.createElement('option');
+                option.value = item.nomeEquipamento;
+                option.textContent = item.nomeEquipamento;
+                selectElement.appendChild(option);
+            });
 
-          // Re-inicializa o Select2 após adicionar as opções
-          $(selectElement).select2();
+            $(selectElement).select2();
         })
         .catch(error => console.error('Erro ao buscar itens:', error));
-    }
+}
 
     function removerUltimoCampo(containerId) {
       var container = document.getElementById(containerId);
