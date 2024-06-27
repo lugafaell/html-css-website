@@ -93,8 +93,8 @@
     }
 
     .select2-container .select2-results__options {
-    max-height: none !important;
-}
+      max-height: none !important;
+    }
   </style>
 </head>
 
@@ -933,8 +933,7 @@
               <input type="number" class="form-control" name="quantidadeMaterial[]" />
             </div>
             <div class="col-md-4 d-flex align-items-end mt-2">
-              <button type="button" class="btn btn-success me-2"
-                onclick="adicionarCampo('camposMaterial', 'material[]', 'quantidadeMaterial[]', 'Material', 'Quantidade do Material')">
+              <button type="button" class="btn btn-success me-2" onclick="adicionarCampoMaterial()">
                 Adicionar
               </button>
               <button type="button" class="btn btn-danger" onclick="removerUltimoCampo('camposMaterial')">
@@ -1329,58 +1328,59 @@
     }
 
     function adicionarCampo(containerId, inputName1, inputName2, label1, label2) {
-    var container = document.getElementById(containerId);
+      var container = document.getElementById(containerId);
 
-    var novoCampo = document.createElement("div");
-    novoCampo.classList.add("row", "mb-3");
+      var novoCampo = document.createElement("div");
+      novoCampo.classList.add("row", "mb-3");
 
-    var divInput1 = document.createElement("div");
-    divInput1.classList.add("col-md-4", "mt-2");
-    var labelElement1 = document.createElement("label");
-    labelElement1.htmlFor = inputName1;
-    labelElement1.textContent = label1;
-    divInput1.appendChild(labelElement1);
-    var select1 = document.createElement("select");
-    select1.classList.add("form-select", "custom-select2-container");
-    select1.name = inputName1;
+      var divInput1 = document.createElement("div");
+      divInput1.classList.add("col-md-4", "mt-2");
+      var labelElement1 = document.createElement("label");
+      labelElement1.htmlFor = inputName1;
+      labelElement1.textContent = label1;
+      divInput1.appendChild(labelElement1);
+      var select1 = document.createElement("select");
+      select1.classList.add("form-select", "custom-select2-container");
+      select1.name = inputName1;
 
-    adicionarOpcoesFiltradas(select1, inputName1);
-    divInput1.appendChild(select1);
-    novoCampo.appendChild(divInput1);
+      adicionarOpcoesFiltradas(select1, inputName1);
+      divInput1.appendChild(select1);
+      novoCampo.appendChild(divInput1);
 
-    var divInput2 = document.createElement("div");
-    divInput2.classList.add("col-md-4", "mt-2");
-    var labelElement2 = document.createElement("label");
-    labelElement2.htmlFor = inputName2;
-    labelElement2.textContent = label2;
-    divInput2.appendChild(labelElement2);
-    var input2 = document.createElement("input");
-    input2.type = "number";
-    input2.classList.add("form-control");
-    input2.name = inputName2;
-    divInput2.appendChild(input2);
-    novoCampo.appendChild(divInput2);
+      var divInput2 = document.createElement("div");
+      divInput2.classList.add("col-md-4", "mt-2");
+      var labelElement2 = document.createElement("label");
+      labelElement2.htmlFor = inputName2;
+      labelElement2.textContent = label2;
+      divInput2.appendChild(labelElement2);
+      var input2 = document.createElement("input");
+      input2.type = "number";
+      input2.classList.add("form-control");
+      input2.name = inputName2;
+      divInput2.appendChild(input2);
+      novoCampo.appendChild(divInput2);
 
-    container.appendChild(novoCampo);
+      container.appendChild(novoCampo);
 
-    $(select1).select2();
-}
-function adicionarOpcoesFiltradas(selectElement, inputName) {
-    var procedimentoSelect = document.getElementById('tipoProcedimento');
-    
-    if (!procedimentoSelect) {
+      $(select1).select2();
+    }
+
+    function adicionarOpcoesFiltradas(selectElement, inputName) {
+      var procedimentoSelect = document.getElementById('tipoProcedimento');
+
+      if (!procedimentoSelect) {
         console.error('Elemento tipoProcedimento não encontrado.');
         return;
-    }
-    
-    var procedimentoSelecionado = procedimentoSelect.value;
+      }
 
-    if (!procedimentoSelecionado || procedimentoSelecionado === 'Selecione...') {
+      var procedimentoSelecionado = procedimentoSelect.value;
+
+      if (!procedimentoSelecionado || procedimentoSelecionado === 'Selecione...') {
         console.error('Procedimento não selecionado ou inválido.');
         return;
-    }
+      }
 
-    const procedimentoParaLinha = {
+      const procedimentoParaLinha = {
         "RTU BIPOLAR": "UROLOGIA",
         "REFLUXO GASTRICO": "GERAL",
         "HISTERECTOMIA": "GERAL",
@@ -1413,28 +1413,79 @@ function adicionarOpcoesFiltradas(selectElement, inputName) {
         "RETIRADA DE DUPLO J": "UROLOGIA",
         "THULEP": "UROLOGIA",
         "URETROTOMIA": "UROLOGIA"
-    };
+      };
 
-    var linhaEquipamento = procedimentoParaLinha[procedimentoSelecionado];
+      var linhaEquipamento = procedimentoParaLinha[procedimentoSelecionado];
 
-    var url = `https://api.itmf.app.br/equipamento/equipamentos?linha=${linhaEquipamento}`;
+      var url = `https://api.itmf.app.br/equipamento/equipamentos?linha=${linhaEquipamento}`;
 
-    fetch(url)
+      fetch(url)
         .then(response => response.json())
         .then(data => {
-            selectElement.innerHTML = '<option selected disabled>Selecione...</option>';
-            
-            data.forEach(item => {
-                var option = document.createElement('option');
-                option.value = item.nomeEquipamento;
-                option.textContent = item.nomeEquipamento;
-                selectElement.appendChild(option);
-            });
+          selectElement.innerHTML = '<option selected disabled>Selecione...</option>';
 
-            $(selectElement).select2();
+          data.forEach(item => {
+            var option = document.createElement('option');
+            option.value = item.nomeEquipamento;
+            option.textContent = item.nomeEquipamento;
+            selectElement.appendChild(option);
+          });
+
+          $(selectElement).select2();
         })
         .catch(error => console.error('Erro ao buscar itens:', error));
-}
+    }
+
+    function adicionarCampoMaterial() {
+      var container = document.getElementById('camposMaterial');
+
+      var novoCampo = document.createElement("div");
+      novoCampo.classList.add("row", "mb-3");
+
+      var divInput1 = document.createElement("div");
+      divInput1.classList.add("col-md-4", "mt-2");
+      var labelElement1 = document.createElement("label");
+      labelElement1.textContent = "Material";
+      divInput1.appendChild(labelElement1);
+
+      var select1 = document.createElement("select");
+      select1.classList.add("form-select", "custom-select2-container");
+      select1.name = "material[]";
+      divInput1.appendChild(select1);
+
+      adicionarOpcoesMateriais(select1);
+      novoCampo.appendChild(divInput1);
+
+      var divInput2 = document.createElement("div");
+      divInput2.classList.add("col-md-4", "mt-2");
+      var labelElement2 = document.createElement("label");
+      labelElement2.textContent = "Quantidade do Material";
+      divInput2.appendChild(labelElement2);
+
+      var input2 = document.createElement("input");
+      input2.type = "number";
+      input2.classList.add("form-control");
+      input2.name = "quantidadeMaterial[]";
+      divInput2.appendChild(input2);
+
+      novoCampo.appendChild(divInput2);
+      container.appendChild(novoCampo);
+
+      $(select1).select2();
+    }
+
+    function adicionarOpcoesMateriais(selectElement) {
+      var originalSelect = document.getElementById('materialSelect');
+
+      originalSelect.querySelectorAll('option').forEach(function (option) {
+        var newOption = document.createElement('option');
+        newOption.value = option.value;
+        newOption.textContent = option.textContent;
+        selectElement.appendChild(newOption);
+      });
+
+      $(selectElement).select2();
+    }
 
     function removerUltimoCampo(containerId) {
       var container = document.getElementById(containerId);
