@@ -3,7 +3,6 @@ const Registro = require('../models/registro');
 
 const router = express.Router();
 
-// Rota para lidar com requisições POST para registrar os dados do formulário
 router.post("/enviarPedido", (req, res) => {
   const {
     situacao,
@@ -31,10 +30,8 @@ router.post("/enviarPedido", (req, res) => {
     entregador,
   } = req.body;
 
-  // Gerar um ID automático para o paciente
   const idPaciente = `PAC${Math.random().toString(36).substr(2, 9)}`;
 
-  // Criar uma nova instância do modelo Registro e salvar no MongoDB
   Registro.create({
     idPaciente,
     situacao,
@@ -80,7 +77,6 @@ router.get("/receberPedidos", async (req, res) => {
   }
 });
 
-// Rota para obter detalhes de um pedido específico pelo ID
 router.get("/receberID/:id", async (req, res) => {
   const pedidoId = req.params.id;
 
@@ -130,7 +126,6 @@ router.put("/atualizarPedido/:id", async (req, res) => {
   } = req.body;
 
   try {
-    // Encontrar e atualizar o documento de registro pelo ID do paciente
     const registro = await Registro.findOneAndUpdate(
       { idPaciente: pacienteId },
       {
@@ -159,7 +154,7 @@ router.put("/atualizarPedido/:id", async (req, res) => {
         imagemRemessa64,
         entregador,
       },
-      { new: true } // Para retornar o documento atualizado
+      { new: true } 
     );
 
     if (!registro) {
@@ -176,7 +171,6 @@ router.put("/atualizarPedido/:id", async (req, res) => {
   }
 });
 
-// Rota para remover um pedido específico pelo ID
 router.delete("/deletarPedido/:id", async (req, res) => {
   const pedidoId = req.params.id;
 
