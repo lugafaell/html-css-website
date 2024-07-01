@@ -126,10 +126,12 @@
                         <a class="nav-link text-white" href="../pedidos/dashboard.html">Dashboard</a>
                     </li>
                     <li id="cadastroFuncionario" class="nav-item">
-                        <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro Funcionarios</a>
+                        <a class="nav-link text-white" href="../pedidos/cadastroFuncionario.html">Cadastro
+                            Funcionarios</a>
                     </li>
                     <li id="equipamentosOpme" class="nav-item">
-                        <a class="nav-link text-white" href="../pedidos/cadastroEquipamentos.html">Cadastro Equipamentos</a>
+                        <a class="nav-link text-white" href="../pedidos/cadastroEquipamentos.html">Cadastro
+                            Equipamentos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mt-auto text-white" href="#" onclick="logout()">Sair</a>
@@ -161,15 +163,13 @@
         crossorigin="anonymous"></script>
     <script>
         function logout() {
-            // Limpe o token do localStorage
             localStorage.removeItem('token');
 
-            // Limpe o email do usuário do localStorage
             localStorage.removeItem('userEmail');
 
-            // Redirecione para a tela de login
             window.location.href = '../login/tela_login.html';
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             const cargo = localStorage.getItem('cargo');
             const faturamento = document.getElementById('faturamento');
@@ -191,13 +191,11 @@
 
             if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
                 const dashboard = document.getElementById('dashboard');
-
                 dashboard.style.display = 'none';
             }
 
             if (cargo === "Vendedor" || cargo === "Comercial" || cargo === "Comercial2" || cargo === "Logistica") {
                 const equipamentosOpme = document.getElementById('equipamentosOpme');
-
                 equipamentosOpme.style.display = 'none';
             }
 
@@ -228,7 +226,6 @@
                     url += `?estado=${estadoSelecionado}`;
                 }
 
-                // Limpe a lista de pedidos antes de buscar e exibir os novos pedidos
                 pedidosListContainer.innerHTML = '';
 
                 const cargoUsuario = localStorage.getItem('cargo');
@@ -237,27 +234,32 @@
                 fetch(url)
                     .then(response => response.json())
                     .then(pedidos => {
+                        // Ordenar os pedidos pela dataProcedimento e horaProcedimento
+                        pedidos.sort((a, b) => {
+                            const dataHoraA = new Date(`${a.dataProcedimento}T${a.horaProcedimento}`);
+                            const dataHoraB = new Date(`${b.dataProcedimento}T${b.horaProcedimento}`);
+                            return dataHoraA - dataHoraB;
+                        });
+
                         pedidos.forEach(pedido => {
                             if (cargoUsuario === 'Vendedor') {
-                                // Se o cargo for 'Vendedor', filtrar pelos pedidos em que o vendedor seja o usuário atual
                                 if (pedido.vendedor !== userEmail) {
-                                    return; // Ignorar este pedido se não corresponder ao vendedor atual
+                                    return;
                                 }
                             }
 
                             if (pedido.situacao !== 'Em Processo') {
-                                return; // Pule este pedido se a situacao não for "Em Processo"
+                                return;
                             }
 
                             if (estadoSelecionado && pedido.estado !== estadoSelecionado) {
-                                return; // Se o estado selecionado não corresponder ao estado do pedido, pule este pedido
+                                return;
                             }
 
                             const listItem = document.createElement('a');
                             listItem.href = `../pedidos/infoPedidos.html?id=${pedido.idPaciente}`;
                             listItem.classList.add('list-group-item', 'list-group-item-action');
 
-                            // Adicione classes com base na data do procedimento (como você já está fazendo)
                             if (pedido.dataProcedimento === dataFormatada) {
                                 listItem.classList.add('data-hoje');
                             } else if (pedido.dataProcedimento > dataFormatada) {
@@ -266,15 +268,14 @@
                                 listItem.classList.add('data-anterior');
                             }
 
-                            // Crie e adicione o conteúdo do pedido ao listItem
                             listItem.innerHTML = `
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">${pedido.nomePaciente}</h5>
-                    <small>${pedido.dataProcedimento} - ${pedido.horaProcedimento}</small>
-                </div>
-                <p class="mb-1">${pedido.hospital} - ${pedido.linha}</p>
-                <small>${pedido.medico}</small>
-            `;
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${pedido.nomePaciente}</h5>
+                                <small>${pedido.dataProcedimento} - ${pedido.horaProcedimento}</small>
+                            </div>
+                            <p class="mb-1">${pedido.hospital} - ${pedido.linha}</p>
+                            <small>${pedido.medico}</small>
+                        `;
 
                             pedidosListContainer.appendChild(listItem);
                         });
@@ -285,14 +286,12 @@
                     });
             }
 
-            // Adicione um ouvinte de evento para o filtro de estado
             estadoFiltroSelect.addEventListener('change', () => {
                 const estadoSelecionado = estadoFiltroSelect.value;
                 carregarPedidos(estadoSelecionado);
             });
 
-            // Carregue todos os pedidos ao inicializar a página
-            carregarPedidos(); // Isso carrega todos os pedidos (sem filtro de estado)
+            carregarPedidos();
         });
     </script>
 </body>
