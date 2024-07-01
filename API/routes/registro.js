@@ -175,7 +175,6 @@ router.delete("/deletarPedido/:id", async (req, res) => {
   const pedidoId = req.params.id;
 
   try {
-    // Remover o pedido do banco de dados
     const deletedPedido = await Registro.findOneAndDelete({
       idPaciente: pedidoId,
     });
