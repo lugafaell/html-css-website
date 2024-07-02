@@ -173,4 +173,23 @@ router.put("/atualizarFaturamento/:id", async (req, res) => {
   }
 });
 
+router.delete("/deletarFaturamento/:id", async (req, res) => {
+  const faturamentoId = req.params.id;
+
+  try {
+    const deletedFaturamento = await Faturamento.findOneAndDelete({
+      idPaciente: faturamentoId,
+    });
+
+    if (!deletedFaturamento) {
+      return res.status(404).json({ error: "Faturamento não encontrado" });
+    }
+
+    res.status(200).send("Faturamento removido com sucesso!");
+  } catch (error) {
+    console.error("Erro ao remover o Faturamento:", error);
+    res.status(500).send("Erro interno ao remover o Faturamento.");
+  }
+});
+
 module.exports = router;

@@ -17,20 +17,16 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* Coloca o contêiner da imagem de fundo atrás do conteúdo principal */
             background-color: #017f2d;
             background-size: 40%;
             background-position: center;
             background-repeat: no-repeat;
         }
 
-        /* Estilos para o contêiner do conteúdo principal */
         .content-container {
             position: relative;
             z-index: 1;
-            /* Garante que o conteúdo principal fique acima da imagem de fundo */
             padding: 20px;
-            /* Adapte conforme necessário */
         }
 
         .card {
@@ -64,58 +60,42 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Estilos personalizados para o accordion */
         .custom-accordion {
             margin-bottom: 20px;
-            /* Adiciona espaçamento na parte inferior */
         }
 
         .custom-accordion .accordion-button {
             background-color: #343a40;
-            /* Cor de fundo do botão */
             color: #ffffff;
-            /* Cor do texto do botão */
             border-radius: 5px;
-            /* Arredonda os cantos do botão */
         }
 
         .custom-accordion .accordion-button:focus {
             box-shadow: none;
-            /* Remover sombra ao focar */
         }
 
         .custom-accordion .accordion-button::after {
             color: #ffffff;
-            /* Cor do ícone de seta */
         }
 
         .custom-accordion .accordion-button.collapsed {
             background-color: #343a40;
-            /* Cor de fundo do botão quando colapsado */
         }
 
         .custom-accordion .accordion-collapse {
             background-color: #212529;
-            /* Cor de fundo do conteúdo do accordion */
             color: #ffffff;
-            /* Cor do texto do conteúdo do accordion */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            /* Borda do conteúdo do accordion */
             border-radius: 5px;
-            /* Arredonda os cantos do conteúdo do accordion */
         }
 
         .custom-accordion .accordion-collapse hr {
             border-top-color: rgba(255, 255, 255, 0.1);
-            /* Cor da linha horizontal */
         }
 
         .nota-img {
             max-width: 200px;
-            /* Defina o tamanho máximo de largura desejado */
             max-height: 200px;
-            /* Defina o tamanho máximo de altura desejado */
-            /* Adicione outras propriedades de estilo conforme necessário */
         }
     </style>
 </head>
@@ -176,10 +156,12 @@
         <div class="row">
             <div class="col-12 mb-4">
                 <div class="card bg-dark text-light">
+                    <h3 class="text-center mt-2 mb-4">Paciente
+                        <button id="btnDeletar" class="btn btn-danger float-end" data-id="PAC7f3e695e">
+                            <i class="fas fa-trash-alt"></i></button>
+                    </h3>
                     <div class="card-body" id="faturamentoDetails">
                     </div>
-                    <button type="button" class="btn btn-success" id="btnAtualizar"
-                        style="display: none;">Atualizar</button>
                 </div>
             </div>
 
@@ -205,7 +187,6 @@
                             <div id="notasAccordionCollapse" class="accordion-collapse collapse"
                                 aria-labelledby="notasAccordionHeading" data-bs-parent="#equipamentosAccordion">
                                 <div class="accordion-body">
-                                    <!-- Conteúdo do accordion de notas -->
                                     <h6>Comunicado de Uso</h6>
                                     <img id="imgComunicadoUso" class="nota-img" src="" alt="Comunicado de Uso">
                                     <button id="btnUso" class="btn btn-success mt-2"
@@ -240,32 +221,50 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.getElementById('btnDeletar').addEventListener('click', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const faturamentoId = urlParams.get('id');
+            
+            if (confirm('Tem certeza de que deseja deletar este pedido?')) {
+                try {
+                    const response = await fetch(`https://api.itmf.app.br/faturamento/deletarFaturamento/${faturamentoId}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+                        alert('Faturamento removido com sucesso!');
+                        window.location.href = "../faturamento/faturamento.html";
+                    } else {
+                        const errorData = await response.json();
+                        alert('Erro ao remover o faturamento: ' + errorData.error);
+                    }
+                } catch (error) {
+                    console.error('Erro ao remover o faturamento:', error);
+                    alert('Erro interno ao remover o faturamento.');
+                }
+            }
+        });
+
         function downloadImage(imageId) {
             const imgElement = document.getElementById(imageId);
             const imgSrc = imgElement.src;
-            const imgName = `${imageId}.png`; // Defina o nome do arquivo aqui
+            const imgName = `${imageId}.png`;
 
-            // Crie um link de download temporário
             const link = document.createElement('a');
             link.href = imgSrc;
             link.download = imgName;
 
-            // Adicione o link ao documento e clique nele para iniciar o download
             document.body.appendChild(link);
             link.click();
 
-            // Limpe o link após o download
             document.body.removeChild(link);
         }
 
         function logout() {
-            // Limpe o token do localStorage
             localStorage.removeItem('token');
 
-            // Limpe o email do usuário do localStorage
             localStorage.removeItem('userEmail');
 
-            // Redirecione para a tela de login
             window.location.href = '../login/tela_login.html';
         }
 
@@ -301,12 +300,10 @@
                 const btnDevo = document.getElementById('btnDevo');
                 btnDevo.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota de Devolução";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeDevolucao = imgDevolucao.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeDevolucao = imgDevolucao.previousElementSibling;
                 notaDeDevolucao.parentNode.insertBefore(h7, notaDeDevolucao.nextSibling);
             }
 
@@ -318,12 +315,10 @@
                 const btnUso = document.getElementById('btnUso');
                 btnUso.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Comunicado de Uso";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeUso = imgComunicadoUso.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeUso = imgComunicadoUso.previousElementSibling;
                 notaDeUso.parentNode.insertBefore(h7, notaDeUso.nextSibling);
             }
 
@@ -335,12 +330,10 @@
                 const btnRemessa = document.getElementById('btnRemessa');
                 btnRemessa.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota de Remessa";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaDeRemessa = imgRemessa.previousElementSibling; // Seleciona o <h6> anterior
+                const notaDeRemessa = imgRemessa.previousElementSibling;
                 notaDeRemessa.parentNode.insertBefore(h7, notaDeRemessa.nextSibling);
             }
 
@@ -352,12 +345,10 @@
                 const btnFiscal = document.getElementById('btnFiscal');
                 btnFiscal.style.display = 'none';
 
-                // Criar e adicionar o elemento <h3>
                 const h7 = document.createElement('h7');
                 h7.textContent = "Não possui Nota Fiscal";
 
-                // Inserir o <h3> após o elemento <h6> "Nota de Devolução"
-                const notaFiscal = imgNotaFiscal.previousElementSibling; // Seleciona o <h6> anterior
+                const notaFiscal = imgNotaFiscal.previousElementSibling;
                 notaFiscal.parentNode.insertBefore(h7, notaFiscal.nextSibling);
             }
 
@@ -389,17 +380,13 @@
 
             const token = localStorage.getItem('token');
             if (!token) {
-                // Se não houver token, redireciona para a página de login
                 window.location.href = '../login/tela_login.html';
             }
-            // Recupera o email armazenado no localStorage
             const userEmail = localStorage.getItem('userEmail');
 
-            // Atualize o conteúdo do elemento no menu com o valor do email
             if (userEmail !== null) {
                 document.getElementById('userName').textContent = `Bem-Vindo, ${userEmail}`;
             } else {
-                // Caso o email seja nulo ou indefinido, exiba uma saudação padrão
                 document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
             }
         });
@@ -430,7 +417,7 @@ faturamentoFields.forEach(key => {
                 <p class="faturamento-info-label">${label}:</p>
                 <p class="faturamento-info-value" id="value-${key}">${value}</p>
                 <div class="button-container">
-                    ${key !== 'idPaciente' && key !== 'carimboHorario' ? `
+                    ${key !== 'idPaciente' && key !== 'carimboHorario' && key !== 'valorTotal' ? `
                         <button class="acao-btn" data-key="${key}">
                             <i class="fas fa-pencil-alt"></i>
                         </button>
@@ -961,17 +948,10 @@ saveButtons.forEach(button => {
                 });
         }
 
-        const btnAtualizar = document.getElementById('btnAtualizar');
-        btnAtualizar.addEventListener('click', function () {
-            const faturamentoId = getFaturamentoIdFromUrl();
-            updateFaturamento(faturamentoId);
-        });
-
         document.addEventListener('DOMContentLoaded', fetchFaturamentoDetails);
 
         document.addEventListener('DOMContentLoaded', function () {
             const btnAtualizarEquipamentos = document.getElementById('btnAtualizarEquipamentosMateriais');
-            const btnAtualizar = document.getElementById('btnAtualizar');
 
             fetchFaturamentoDetails();
 
@@ -994,10 +974,8 @@ saveButtons.forEach(button => {
 
                         if (contador === 0) {
                             btnAtualizarEquipamentos.style.display = 'block';
-                            btnAtualizar.style.display = 'none';
                         } else {
                             btnAtualizarEquipamentos.style.display = 'none';
-                            btnAtualizar.style.display = 'block';
                         }
                     })
                     .catch(error => {
