@@ -39,6 +39,7 @@ router.post("/registrarFaturamento", async (req, res) => {
   }
 
   try {
+    // Criar uma nova instância do modelo Faturamento e salvar no MongoDB
     const faturamento = await Faturamento.create({
       hospital,
       estado,
@@ -88,6 +89,7 @@ router.get("/receberFaturamento", async (req, res) => {
   }
 });
 
+// Rota para obter detalhes de um faturamento específico pelo ID
 router.get("/receberFaturamento/:id", async (req, res) => {
   const faturamentoId = req.params.id;
 
@@ -107,7 +109,8 @@ router.get("/receberFaturamento/:id", async (req, res) => {
   }
 });
 
-router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
+// Rota para atualizar os detalhes do faturamento pelo ID
+router.post("/atualizarFaturamento/atualizar/:id", async (req, res) => {
   const faturamentoId = req.params.id;
   const {
     processoPaciente,
@@ -121,6 +124,7 @@ router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
   } = req.body;
 
   try {
+    // Encontrar e atualizar o documento de faturamento pelo ID
     const faturamento = await Faturamento.findOneAndUpdate(
       { _id: faturamentoId },
       {
@@ -133,7 +137,7 @@ router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
         contador,
         CNPJ,
       },
-      { new: true }
+      { new: true } // Para retornar o documento atualizado
     );
 
     if (!faturamento) {
@@ -145,30 +149,6 @@ router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
     console.error("Erro ao atualizar detalhes do faturamento:", error);
     res.status(500).json({
       error: "Erro interno ao atualizar detalhes do faturamento",
-    });
-  }
-});
-
-router.put("/atualizarFaturamento/:id", async (req, res) => {
-  const faturamentoId = req.params.id;
-  const updateData = req.body;
-
-  try {
-    const faturamento = await Faturamento.findOneAndUpdate(
-      { _id: faturamentoId },
-      updateData,
-      { new: true }
-    );
-
-    if (!faturamento) {
-      return res.status(404).json({ error: "Faturamento não encontrado" });
-    }
-
-    res.status(200).json(faturamento);
-  } catch (error) {
-    console.error("Erro ao atualizar o faturamento:", error);
-    res.status(500).json({
-      error: "Erro interno ao atualizar o faturamento",
     });
   }
 });
