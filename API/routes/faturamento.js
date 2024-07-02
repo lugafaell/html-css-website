@@ -178,7 +178,7 @@ router.delete("/deletarFaturamento/:id", async (req, res) => {
 
   try {
     const deletedFaturamento = await Faturamento.findOneAndDelete({
-      idPaciente: faturamentoId,
+      _id: faturamentoId,
     });
 
     if (!deletedFaturamento) {
