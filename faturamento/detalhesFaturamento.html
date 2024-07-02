@@ -7,6 +7,7 @@
     <title>Detalhes do Faturamento</title>
     <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         #background-container {
@@ -157,9 +158,9 @@
 
     <div class="container mt-5">
         <h2 class="text-center mb-4">Detalhes do Faturamento</h2>
-
+    
         <div class="row">
-            <div class="col-md-6 mb-4">
+            <div class="col-12 mb-4">
                 <div class="card bg-dark text-light">
                     <div class="card-body" id="faturamentoDetails">
                     </div>
@@ -167,8 +168,8 @@
                         style="display: none;">Atualizar</button>
                 </div>
             </div>
-
-            <div class="col-md-6">
+    
+            <div class="col-12">
                 <div class="card bg-dark text-light">
                     <div class="card-body">
                         <h5>Equipamentos</h5>
@@ -179,7 +180,7 @@
                         <div class="accordion custom-accordion" id="materiaisAccordion">
                         </div>
                         <div class="accordion custom-accordion">
-
+    
                             <h2 class="accordion-header" id="notasAccordionHeading">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#notasAccordionCollapse" aria-expanded="false"
@@ -217,7 +218,7 @@
                     </div>
                 </div>
             </div>
-
+    
         </div>
     </div>
     </div>
@@ -383,54 +384,147 @@
 
         function fillFaturamentoDetails(faturamento) {
             const faturamentoDetailsContainer = document.getElementById('faturamentoDetails');
-            faturamentoDetailsContainer.innerHTML = `
-        <h5>Paciente</h5>
-        <p><strong>Hospital:</strong> ${faturamento.hospital}</p>
-        <p><strong>Convênio:</strong> ${faturamento.convenio}</p>
-        <p><strong>Data do Procedimento:</strong> ${faturamento.dataProcedimento}</p>
-        <p><strong>Carimbo de Horário:</strong> ${faturamento.carimboHorario}</p>
-        <p><strong>Paciente:</strong> ${faturamento.nomePaciente}</p>
-        <p><strong>ID do Paciente:</strong> ${faturamento.idPaciente}</p>
-        <p><strong>Vendedor:</strong> ${faturamento.vendedor}</p>
-        <p><strong>CNPJ:</strong> <input type="text" id="CNPJ" class="form-control" value="${faturamento.CNPJ || ''}"></p>
-        <p><strong>Forma de Pagamento:</strong> ${faturamento.formaPagamento}</p>
-        <p><strong>Valor Total:</strong> <input type="text" id="valorTotal" class="form-control" value="${faturamento.valorTotal || ''}"></p>
-        <p><strong>Status:</strong> 
-            <select class="form-select" id="status">
-                <option selected disabled>Escolha...</option>
-                <option value="AGUARDANDO FATURAMENTO" ${faturamento.status === 'AGUARDANDO FATURAMENTO' ? 'selected' : ''}>AGUARDANDO FATURAMENTO</option>
-                <option value="FATURADO" ${faturamento.status === 'FATURADO' ? 'selected' : ''}>FATURADO</option>
-                <option value="FATURADO PARCIAL" ${faturamento.status === 'FATURADO PARCIAL' ? 'selected' : ''}>FATURADO PARCIAL</option>
-                <option value="PENDENCIA ADMINISTRATIVA" ${faturamento.status === 'PENDENCIA ADMINISTRATIVA' ? 'selected' : ''}>PENDENCIA ADMINISTRATIVA</option>
-                <option value="PENDENCIA DOCUMENTO" ${faturamento.status === 'PENDENCIA DOCUMENTO' ? 'selected' : ''}>PENDENCIA DOCUMENTO</option>
-                <option value="DOAÇÃO SCAFURI" ${faturamento.status === 'DOAÇÃO SCAFURI' ? 'selected' : ''}>DOAÇÃO SCAFURI</option>
-            </select>
-        </p>
-        <p><strong>Motivo:</strong> 
-            <select class="form-select" id="motivo">
-                <option selected disabled>Escolha...</option>
-                <option value="COBRANÇA" ${faturamento.status === 'COBRANÇA' ? 'selected' : ''}>COBRANÇA</option>
-                <option value="ENVIADO PARA JURÍDICO" ${faturamento.status === 'ENVIADO PARA JURÍDICO' ? 'selected' : ''}>ENVIADO PARA JURÍDICO</option>
-                <option value="PRAZO PORTAL" ${faturamento.status === 'PRAZO PORTAL' ? 'selected' : ''}>PRAZO PORTAL</option>
-                <option value="AGUARDANDO PRAZO MÊS POSTERIOR" ${faturamento.status === 'AGUARDANDO PRAZO MÊS POSTERIOR' ? 'selected' : ''}>AGUARDANDO PRAZO MÊS POSTERIOR</option>
-                <option value="FINALIZADO" ${faturamento.status === 'FINALIZADO' ? 'selected' : ''}>FINALIZADO</option>
-                <option value="DIVERGÊNCIA FORNECEDOR X CLIENTE" ${faturamento.status === 'DIVERGÊNCIA FORNECEDOR X CLIENTE' ? 'selected' : ''}>DIVERGÊNCIA FORNECEDOR X CLIENTE</option>
-                <option value="GASTO/AUTORIZAÇÃO" ${faturamento.status === 'GASTO/AUTORIZAÇÃO' ? 'selected' : ''}>GASTO/AUTORIZAÇÃO</option>
-                <option value="AUTORIZAÇÃO DIRETORIA ITMF" ${faturamento.status === 'AUTORIZAÇÃO DIRETORIA ITMF' ? 'selected' : ''}>AUTORIZAÇÃO DIRETORIA ITMF</option>
-                <option value="AGUARDANDO REVISÃO DA NFE" ${faturamento.status === 'AGUARDANDO REVISÃO DA NFE' ? 'selected' : ''}>AGUARDANDO REVISÃO DA NFE</option>
-                <option value="AGUARDANDO ENVIO DO EMAIL" ${faturamento.status === 'AGUARDANDO ENVIO DO EMAIL' ? 'selected' : ''}>AGUARDANDO ENVIO DO EMAIL</option>
-                <option value="AGUARDANDO ENVIO DA NFE" ${faturamento.status === 'AGUARDANDO ENVIO DA NFE' ? 'selected' : ''}>AGUARDANDO ENVIO DA NFE</option>
-                <option value="GASTO/COM. DE USO" ${faturamento.status === 'GASTO/COM. DE USO' ? 'selected' : ''}>GASTO/COM. DE USO</option>
-                <option value="AGUARDANDO COMERCIAL FATURAR" ${faturamento.status === 'AGUARDANDO COMERCIAL FATURAR' ? 'selected' : ''}>AGUARDANDO COMERCIAL FATURAR</option>
-                <option value="AUTORIZAÇÃO/COM. DE USO" ${faturamento.status === 'AUTORIZAÇÃO/COM. DE USO' ? 'selected' : ''}>AUTORIZAÇÃO/COM. DE USO</option>
-                <option value="GASTO DE SALA(HOSP)" ${faturamento.status === 'GASTO DE SALA(HOSP)' ? 'selected' : ''}>GASTO DE SALA(HOSP)</option>
-                <option value="AUTORIZAÇÃO" ${faturamento.status === 'AUTORIZAÇÃO' ? 'selected' : ''}>AUTORIZAÇÃO</option>
-                <option value="COMUNICADO DE USO (ITMF)" ${faturamento.status === 'COMUNICADO DE USO (ITMF)' ? 'selected' : ''}>COMUNICADO DE USO (ITMF)</option>
-                <option value="AUTORIZAÇÃO PORTAL" ${faturamento.status === 'AUTORIZAÇÃO PORTAL' ? 'selected' : ''}>AUTORIZAÇÃO PORTAL</option>
-                <option value="AGUARDANDO CONFERÊNCIA DE CIRURGIAS" ${faturamento.status === 'AGUARDANDO CONFERÊNCIA DE CIRURGIAS' ? 'selected' : ''}>AGUARDANDO CONFERÊNCIA DE CIRURGIAS</option>
-            </select>
-        </p>
+faturamentoDetailsContainer.innerHTML = '';
+
+const faturamentoFields = [
+    'hospital', 'convenio', 'dataProcedimento', 'carimboHorario', 'nomePaciente', 
+    'idPaciente', 'vendedor', 'CNPJ', 'formaPagamento', 'valorTotal', 'status', 'motivo'
+];
+
+let faturamentoRowHtml = '';
+
+faturamentoFields.forEach(key => {
+    const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+    const value = faturamento[key] || '';
+
+    faturamentoRowHtml += `
+        <div class="col-md-4">
+            <div class="faturamento-info-item">
+                <p class="faturamento-info-label">${label}:</p>
+                <p class="faturamento-info-value" id="value-${key}">${key === 'CNPJ' || key === 'valorTotal' ? `<input type="text" id="input-${key}" value="${value}">` : value}</p>
+                <div class="button-container">
+                    ${key !== 'idPaciente' && key !== 'carimboHorario' ? `
+                        <button class="acao-btn" data-key="${key}">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <button class="salvar-btn" data-key="${key}" style="display:none;">
+                            <i class="fas fa-save"></i></button>
+                    ` : ''}
+                </div>
+            </div>
+        </div>
     `;
+});
+
+faturamentoDetailsContainer.innerHTML = `
+    <div class="row">
+        ${faturamentoRowHtml}
+    </div>
+`;
+
+const cssFaturamentoStyle = `
+    .faturamento-info-item {
+        background-color: #6a6868;
+        border: 1px solid #dee2e6;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .faturamento-info-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .faturamento-info-value {
+        margin-bottom: 0;
+        flex-grow: 1;
+    }
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+    .acao-btn, .salvar-btn {
+        background-color: #6a6868;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .acao-btn i, .salvar-btn i {
+        margin-right: 5px;
+    }
+    .acao-btn:hover, .salvar-btn:hover {
+        background-color: #0056b3;
+    }
+`;
+
+const styleFaturamentoElement = document.createElement('style');
+styleFaturamentoElement.textContent = cssFaturamentoStyle;
+document.head.appendChild(styleFaturamentoElement);
+
+const actionButtons = document.querySelectorAll('.acao-btn');
+actionButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const btn = event.target.closest('.acao-btn');
+        if (!btn) return;
+
+        const key = btn.getAttribute('data-key');
+        const valueElement = document.getElementById(`value-${key}`);
+        const currentValue = valueElement.textContent;
+
+        valueElement.innerHTML = `<input type="text" id="input-${key}" value="${currentValue}">`;
+
+        btn.style.display = 'none';
+        const saveButton = document.querySelector(`.salvar-btn[data-key="${key}"]`);
+        saveButton.style.display = 'inline-block';
+    });
+});
+
+const saveButtons = document.querySelectorAll('.salvar-btn');
+saveButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const btn = event.target.closest('.salvar-btn');
+        if (!btn) return;
+
+        const key = btn.getAttribute('data-key');
+        const inputElement = document.getElementById(`input-${key}`);
+        const newValue = inputElement.value;
+
+        const valueElement = document.getElementById(`value-${key}`);
+        valueElement.innerHTML = newValue;
+
+        btn.style.display = 'none';
+        const actionButton = document.querySelector(`.acao-btn[data-key="${key}"]`);
+        actionButton.style.display = 'inline-block';
+
+        const updatedData = {
+            ...faturamento,
+            [key]: newValue
+        };
+
+        const faturamentoId = getFaturamentoIdFromUrl();
+
+        fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        })
+        .then(response => response.json())
+        .then(updatedFaturamento => {
+            console.log(`Registro atualizado com sucesso para o campo: ${key}`);
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar registro:', error);
+        });
+    });
+});
 
 
             if (faturamento.contador === 1) {
