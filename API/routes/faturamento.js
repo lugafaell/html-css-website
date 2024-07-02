@@ -107,32 +107,14 @@ router.get("/receberFaturamento/:id", async (req, res) => {
   }
 });
 
-router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
+router.put("/atualizarFaturamento/:id", async (req, res) => {
   const faturamentoId = req.params.id;
-  const {
-    processoPaciente,
-    valorTotal,
-    status,
-    motivo,
-    novoEquipamentos,
-    novoMateriais,
-    contador,
-    CNPJ,
-  } = req.body;
+  const updateData = req.body;
 
   try {
     const faturamento = await Faturamento.findOneAndUpdate(
       { _id: faturamentoId },
-      {
-        processoPaciente,
-        valorTotal,
-        status,
-        motivo,
-        novoEquipamentos,
-        novoMateriais,
-        contador,
-        CNPJ,
-      },
+      updateData,
       { new: true }
     );
 
@@ -142,9 +124,9 @@ router.put("/atualizarFaturamento/atualizar/:id", async (req, res) => {
 
     res.status(200).json(faturamento);
   } catch (error) {
-    console.error("Erro ao atualizar detalhes do faturamento:", error);
+    console.error("Erro ao atualizar o faturamento:", error);
     res.status(500).json({
-      error: "Erro interno ao atualizar detalhes do faturamento",
+      error: "Erro interno ao atualizar o faturamento",
     });
   }
 });

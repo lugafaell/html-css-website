@@ -509,7 +509,7 @@ saveButtons.forEach(button => {
 
         const faturamentoId = getFaturamentoIdFromUrl();
 
-        fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
+        fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/${faturamentoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
