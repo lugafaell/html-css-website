@@ -251,7 +251,16 @@
         function downloadImage(imageId) {
             const imgElement = document.getElementById(imageId);
             const imgSrc = imgElement.src;
-            const imgName = `${imageId}.png`;
+            let imgName = `${imageId}`;
+
+            if (imgSrc.startsWith('data:image/png')) {
+                imgName += '.png';
+            } else if (imgSrc.startsWith('data:application/pdf')) {
+                imgName += '.pdf';
+            } else {
+                console.error('Formato de arquivo não suportado.');
+                return;
+            }
 
             const link = document.createElement('a');
             link.href = imgSrc;
@@ -262,7 +271,7 @@
 
             document.body.removeChild(link);
         }
-
+        
         function logout() {
             localStorage.removeItem('token');
 
@@ -294,66 +303,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            const imgDevolucao = document.getElementById('imgDevolucao');
-
-
-            if (!imgDevolucao.src.trim() || !imgDevolucao.src.startsWith("data:image/")) {
-                imgDevolucao.style.display = 'none';
-
-                const btnDevo = document.getElementById('btnDevo');
-                btnDevo.style.display = 'none';
-
-                const h7 = document.createElement('h7');
-                h7.textContent = "Não possui Nota de Devolução";
-
-                const notaDeDevolucao = imgDevolucao.previousElementSibling;
-                notaDeDevolucao.parentNode.insertBefore(h7, notaDeDevolucao.nextSibling);
-            }
-
-            const imgComunicadoUso = document.getElementById('imgComunicadoUso');
-
-            if (!imgComunicadoUso.src.trim() || !imgComunicadoUso.src.startsWith("data:image/")) {
-                imgComunicadoUso.style.display = 'none';
-
-                const btnUso = document.getElementById('btnUso');
-                btnUso.style.display = 'none';
-
-                const h7 = document.createElement('h7');
-                h7.textContent = "Não possui Comunicado de Uso";
-
-                const notaDeUso = imgComunicadoUso.previousElementSibling;
-                notaDeUso.parentNode.insertBefore(h7, notaDeUso.nextSibling);
-            }
-
-            const imgRemessa = document.getElementById('imgRemessa');
-
-            if (!imgRemessa.src.trim() || !imgRemessa.src.startsWith("data:image/")) {
-                imgRemessa.style.display = 'none';
-
-                const btnRemessa = document.getElementById('btnRemessa');
-                btnRemessa.style.display = 'none';
-
-                const h7 = document.createElement('h7');
-                h7.textContent = "Não possui Nota de Remessa";
-
-                const notaDeRemessa = imgRemessa.previousElementSibling;
-                notaDeRemessa.parentNode.insertBefore(h7, notaDeRemessa.nextSibling);
-            }
-
-            const imgNotaFiscal = document.getElementById('imgNotaFiscal');
-
-            if (!imgNotaFiscal.src.trim() || !imgNotaFiscal.src.startsWith("data:image/")) {
-                imgNotaFiscal.style.display = 'none';
-
-                const btnFiscal = document.getElementById('btnFiscal');
-                btnFiscal.style.display = 'none';
-
-                const h7 = document.createElement('h7');
-                h7.textContent = "Não possui Nota Fiscal";
-
-                const notaFiscal = imgNotaFiscal.previousElementSibling;
-                notaFiscal.parentNode.insertBefore(h7, notaFiscal.nextSibling);
-            }
 
             const pedidos = document.getElementById('pedidos');
             const listaPedidos = document.getElementById('listaPedidos');
@@ -772,6 +721,59 @@
                     imgDevolucao.src = imagens.imagemDevolucao64;
                     imgNotaFiscal.src = imagens.imagemBase64;
 
+
+                    if (!imgDevolucao.src.trim() || !imgDevolucao.src.startsWith("data")) {
+                        imgDevolucao.style.display = 'none';
+
+                        const btnDevo = document.getElementById('btnDevo');
+                        btnDevo.style.display = 'none';
+
+                        const h7 = document.createElement('h7');
+                        h7.textContent = "Não possui Nota de Devolução";
+
+                        const notaDeDevolucao = imgDevolucao.previousElementSibling;
+                        notaDeDevolucao.parentNode.insertBefore(h7, notaDeDevolucao.nextSibling);
+                    }
+
+                    if (!imgComunicadoUso.src.trim() || !imgComunicadoUso.src.startsWith("data")) {
+                        imgComunicadoUso.style.display = 'none';
+
+                        const btnUso = document.getElementById('btnUso');
+                        btnUso.style.display = 'none';
+
+                        const h7 = document.createElement('h7');
+                        h7.textContent = "Não possui Comunicado de Uso";
+
+                        const notaDeUso = imgComunicadoUso.previousElementSibling;
+                        notaDeUso.parentNode.insertBefore(h7, notaDeUso.nextSibling);
+                    }
+
+                    if (!imgRemessa.src.trim() || !imgRemessa.src.startsWith("data")) {
+                        imgRemessa.style.display = 'none';
+
+                        const btnRemessa = document.getElementById('btnRemessa');
+                        btnRemessa.style.display = 'none';
+
+                        const h7 = document.createElement('h7');
+                        h7.textContent = "Não possui Nota de Remessa";
+
+                        const notaDeRemessa = imgRemessa.previousElementSibling;
+                        notaDeRemessa.parentNode.insertBefore(h7, notaDeRemessa.nextSibling);
+                    }
+
+                    if (!imgNotaFiscal.src.trim() || !imgNotaFiscal.src.startsWith("data")) {
+                        imgNotaFiscal.style.display = 'none';
+
+                        const btnFiscal = document.getElementById('btnFiscal');
+                        btnFiscal.style.display = 'none';
+
+                        const h7 = document.createElement('h7');
+                        h7.textContent = "Não possui Nota Fiscal";
+
+                        const notaFiscal = imgNotaFiscal.previousElementSibling;
+                        notaFiscal.parentNode.insertBefore(h7, notaFiscal.nextSibling);
+                    }
+
                 })
                 .catch(error => {
                     console.error('Erro ao obter detalhes do faturamento:', error);
@@ -857,6 +859,7 @@
         }
 
         function logSelecoes() {
+
             console.log('logSelecoes called');
 
             const equipamentosSelecionados = [];

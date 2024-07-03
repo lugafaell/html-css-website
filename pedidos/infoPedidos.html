@@ -8,7 +8,9 @@
     <link rel="icon" href="../imgs/116767489_289311779001162_8843699157529714928_n.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js"></script>    
 
     <style>
         #background-container {
@@ -113,9 +115,60 @@
         }
 
         .nota-img {
-            max-width: 200px;
-            max-height: 200px;
-        }
+        max-width: 200px;
+        max-height: 200px;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .comunicado-container {
+        margin-top: 20px;
+    }
+
+    
+
+    .comunicado-container input,
+    .comunicado-container button {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .remessa-container {
+        margin-top: 20px;
+    }
+
+    .remessa-container input,
+    .remessa-container button {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .devolucao-container {
+        margin-top: 20px;
+    }
+
+    .devolucao-container input,
+    .devolucao-container button {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .fiscal-container {
+        margin-top: 20px;
+    }
+
+    .fiscal-container input,
+    .fiscal-container button {
+        display: block;
+        margin-top: 10px;
+    }
+
+        canvas, img {
+    max-width: 100%;
+    max-height: 100%;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 
@@ -203,30 +256,36 @@
                                 <div>
                                     <label for="comunicadoInput" class="form-label mt-2">Comunicado de Uso</label>
                                     <input type="file" class="form-control" id="comunicadoInput" accept="image/*" />
-                                    <img id="comunicadoImage" class="nota-img" src="" alt="Preview"
-                                        style="max-width: 100%; margin-top: 10px; display: none;" />
-                                    <button id="btnComunicado" class="btn btn-success mt-2">Anexar Comunicado de
-                                        Uso</button>
-                                    <button id="btnComunicadoAtualizar" class="btn btn-success mt-2"
-                                        style="display: none;">Atulizar Comunicado de Uso</button>
+                                    
+                                    <div class="comunicado-container">
+                                        <img id="comunicadoImage" class="nota-img mt-2" src="" alt="Preview" />
+                                        <button id="btnComunicado" class="btn btn-success mt-2">Anexar Comunicado de Uso</button>
+                                        <button id="btnComunicadoAtualizar" class="btn btn-success mt-2" style="display: none;">Atualizar Comunicado de Uso</button>
+                                    </div>
                                 </div>
 
                                 <div id="remessaDevolucao">
                                     <div>
                                         <label for="remessaInput" class="form-label mt-3">Nota de Remessa</label>
                                         <input type="file" class="form-control" id="remessaInput" accept="image/*" />
-                                        <img id="remessaImage" class="nota-img" src="#" alt="Preview"
+
+                                        <div class="remessa-container">
+                                            <img id="remessaImage" class="nota-img mt-2" src="#" alt="Preview"
                                             style="max-width: 100%; margin-top: 10px; display: none;" />
-                                        <button id="btnRemessa" class="btn btn-success mt-2">Anexar Nota de
+                                            <button id="btnRemessa" class="btn btn-success mt-2">Anexar Nota de
                                             Remessa</button>
-                                        <button id="btnRemessaAtualizar" class="btn btn-success mt-2"
+                                            <button id="btnRemessaAtualizar" class="btn btn-success mt-2"
                                             style="display: none;">Atulizar Nota de Remessa</button>
+                                        </div>
                                     </div>
 
                                     <label for="devolucaoInput" class="form-label mt-3">Nota de Devolução</label>
                                     <input type="file" class="form-control" id="devolucaoInput" accept="image/*" />
-                                    <img id="devolucaoImage" class="nota-img" src="#" alt="Preview"
+
+                                    <div class="devolucao-container">
+                                        <img id="devolucaoImage" class="nota-img" src="#" alt="Preview"
                                         style="max-width: 100%; margin-top: 10px; display: none;" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -253,14 +312,15 @@
 
                                     <div class="mb-3">
                                         <input type="file" class="form-control" id="fotoInput" accept="image/*" />
-                                        <img id="previewImage" class="nota-img" src="#" alt="Preview"
+                                        <div class="fiscal-container">
+                                            <img id="previewImage" class="nota-img" src="#" alt="Preview"
                                             style="max-width: 100%; margin-top: 10px; display: none;" />
+                                            <button id="btnNota" class="btn btn-success">Anexar Nota Fiscal</button>
+                                            <button id="btnNotaAtualizar" class="btn btn-success"
+                                                style="display: none;">Atualizar Nota
+                                                Fiscal</button>
+                                        </div>
                                     </div>
-
-                                    <button id="btnNota" class="btn btn-success">Anexar Nota Fiscal</button>
-                                    <button id="btnNotaAtualizar" class="btn btn-success"
-                                        style="display: none;">Atualizar Nota
-                                        Fiscal</button>
                                 </div>
                             </div>
                         </div>
@@ -274,8 +334,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script>;
+        crossorigin="anonymous"></script>   
+    <script>
 
         const btnVoltar = document.getElementById('btnVoltar');
 
@@ -451,74 +511,115 @@
             } else {
                 document.getElementById('userName').textContent = 'Bem-Vindo, Usuário';
             }
+
+            const MAX_WIDTH = 300;
+    const MAX_HEIGHT = 400;
+
+    const resizeCanvas = (canvas, maxWidth, maxHeight) => {
+        const context = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        const newCanvas = document.createElement('canvas');
+        const newContext = newCanvas.getContext('2d');
+
+        let newWidth, newHeight;
+
+        if (width > height) {
+            newWidth = maxWidth;
+            newHeight = (height / width) * maxWidth;
+        } else {
+            newHeight = maxHeight;
+            newWidth = (width / height) * maxHeight;
+        }
+
+        newCanvas.width = newWidth;
+        newCanvas.height = newHeight;
+        newContext.drawImage(canvas, 0, 0, newWidth, newHeight);
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        context.clearRect(0, 0, width, height);
+        context.drawImage(newCanvas, 0, 0);
+    };
+
+    const previewFile = (input, previewImage) => {
+        input.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            if (file) {
+                console.log(`File selected: ${file.name}`);
+                if (file.type === 'application/pdf') {
+                    reader.onload = (e) => {
+                        const pdfData = new Uint8Array(e.target.result);
+                        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+                        const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+
+                        loadingTask.promise.then((pdf) => {
+                            pdf.getPage(1).then((page) => {
+                                const viewport = page.getViewport({ scale: 1 });
+                                const canvas = document.createElement('canvas');
+                                const context = canvas.getContext('2d');
+                                canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+
+                                const renderContext = {
+                                    canvasContext: context,
+                                    viewport: viewport
+                                };
+
+                                page.render(renderContext).promise.then(() => {
+                                    resizeCanvas(canvas, MAX_WIDTH, MAX_HEIGHT);
+                                    previewImage.style.display = 'none';
+                                    if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
+                                        previewImage.nextElementSibling.remove();
+                                    }
+                                    previewImage.insertAdjacentElement('afterend', canvas);
+                                    console.log('PDF renderizado com sucesso.');
+                                }).catch((error) => {
+                                    console.error('Erro ao renderizar a página do PDF:', error);
+                                });
+                            }).catch((error) => {
+                                console.error('Erro ao obter a página do PDF:', error);
+                            });
+                        }).catch((error) => {
+                            console.error('Erro ao carregar o PDF:', error);
+                        });
+                    };
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reader.onload = (e) => {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                        previewImage.style.maxWidth = `${MAX_WIDTH}px`;
+                        previewImage.style.maxHeight = `${MAX_HEIGHT}px`;
+                        if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
+                            previewImage.nextElementSibling.remove();
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
         });
+    };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const fotoInput = document.getElementById('fotoInput');
-            const comunicadoInput = document.getElementById('comunicadoInput');
-            const remessaInput = document.getElementById('remessaInput');
-            const devolucaoInput = document.getElementById('devolucaoInput');
+    const fotoInput = document.getElementById('fotoInput');
+    const previewImage = document.getElementById('previewImage');
+    previewFile(fotoInput, previewImage);
 
-            const comunicadoImage = document.getElementById('comunicadoImage');
-            const previewImage = document.getElementById('previewImage');
-            const remessaImage = document.getElementById('remessaImage');
-            const devolucaoImage = document.getElementById('devolucaoImage');
+    const devolucaoInput = document.getElementById('devolucaoInput');
+    const devolucaoImage = document.getElementById('devolucaoImage');
+    previewFile(devolucaoInput, devolucaoImage);
 
-            fotoInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                const reader = new FileReader();
+    const remessaInput = document.getElementById('remessaInput');
+    const remessaImage = document.getElementById('remessaImage');
+    previewFile(remessaInput, remessaImage);
 
-                reader.onload = (e) => {
-                    previewImage.src = e.target.result;
-                    previewImage.style.display = 'block';
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            comunicadoInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    comunicadoImage.src = e.target.result;
-                    comunicadoImage.style.display = 'block';
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            remessaInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    remessaImage.src = e.target.result;
-                    remessaImage.style.display = 'block';
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            devolucaoInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    devolucaoImage.src = e.target.result;
-                    devolucaoImage.style.display = 'block';
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-            });
+    const comunicadoInput = document.getElementById('comunicadoInput');
+    const comunicadoImage = document.getElementById('comunicadoImage');
+    previewFile(comunicadoInput, comunicadoImage);
         });
 
         const btnComunicado = document.getElementById('btnComunicado');
