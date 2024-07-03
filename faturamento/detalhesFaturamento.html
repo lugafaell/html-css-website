@@ -194,17 +194,20 @@
                                     <hr>
                                     <h6>Nota de Remessa</h6>
                                     <img id="imgRemessa" class="nota-img" src="" alt="Nota de Remessa">
-                                    <button id="btnRemessa" class="btn btn-success mt-2" onclick="downloadImage('imgRemessa')">Baixar
+                                    <button id="btnRemessa" class="btn btn-success mt-2"
+                                        onclick="downloadImage('imgRemessa')">Baixar
                                         Nota de Remessa</button>
                                     <hr>
                                     <h6>Nota de Devolução</h6>
                                     <img id="imgDevolucao" class="nota-img" src="" alt="Nota de Devolução">
-                                    <button id="btnDevo" class="btn btn-success mt-2" onclick="downloadImage('imgDevolucao')">Baixar
+                                    <button id="btnDevo" class="btn btn-success mt-2"
+                                        onclick="downloadImage('imgDevolucao')">Baixar
                                         Nota de Devolução</button>
                                     <hr>
                                     <h6>Nota Fiscal</h6>
                                     <img id="imgNotaFiscal" class="nota-img" src="" alt="Nota Fiscal">
-                                    <button id="btnFiscal" class="btn btn-success mt-2" onclick="downloadImage('imgNotaFiscal')">Baixar
+                                    <button id="btnFiscal" class="btn btn-success mt-2"
+                                        onclick="downloadImage('imgNotaFiscal')">Baixar
                                         Nota Fiscal</button>
                                 </div>
                             </div>
@@ -221,10 +224,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('btnDeletar').addEventListener('click', async function() {
+        document.getElementById('btnDeletar').addEventListener('click', async function () {
             const urlParams = new URLSearchParams(window.location.search);
             const faturamentoId = urlParams.get('id');
-            
+
             if (confirm('Tem certeza de que deseja deletar este pedido?')) {
                 try {
                     const response = await fetch(`https://api.itmf.app.br/faturamento/deletarFaturamento/${faturamentoId}`, {
@@ -398,20 +401,20 @@
 
         function fillFaturamentoDetails(faturamento) {
             const faturamentoDetailsContainer = document.getElementById('faturamentoDetails');
-faturamentoDetailsContainer.innerHTML = '';
+            faturamentoDetailsContainer.innerHTML = '';
 
-const faturamentoFields = [
-    'hospital', 'convenio', 'dataProcedimento', 'carimboHorario', 'nomePaciente', 
-    'idPaciente', 'vendedor', 'CNPJ', 'formaPagamento', 'valorTotal', 'status', 'motivo'
-];
+            const faturamentoFields = [
+                'hospital', 'convenio', 'dataProcedimento', 'carimboHorario', 'nomePaciente',
+                'idPaciente', 'vendedor', 'CNPJ', 'formaPagamento', 'valorTotal', 'status', 'motivo'
+            ];
 
-let faturamentoRowHtml = '';
+            let faturamentoRowHtml = '';
 
-faturamentoFields.forEach(key => {
-    const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
-    const value = faturamento[key] || '';
+            faturamentoFields.forEach(key => {
+                const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+                const value = faturamento[key] || '';
 
-    faturamentoRowHtml += `
+                faturamentoRowHtml += `
         <div class="col-md-4">
             <div class="faturamento-info-item">
                 <p class="faturamento-info-label">${label}:</p>
@@ -428,15 +431,15 @@ faturamentoFields.forEach(key => {
             </div>
         </div>
     `;
-});
+            });
 
-faturamentoDetailsContainer.innerHTML = `
+            faturamentoDetailsContainer.innerHTML = `
     <div class="row">
         ${faturamentoRowHtml}
     </div>
 `;
 
-const cssFaturamentoStyle = `
+            const cssFaturamentoStyle = `
     .faturamento-info-item {
         background-color: #6a6868;
         border: 1px solid #dee2e6;
@@ -477,22 +480,22 @@ const cssFaturamentoStyle = `
     }
 `;
 
-const styleFaturamentoElement = document.createElement('style');
-styleFaturamentoElement.textContent = cssFaturamentoStyle;
-document.head.appendChild(styleFaturamentoElement);
+            const styleFaturamentoElement = document.createElement('style');
+            styleFaturamentoElement.textContent = cssFaturamentoStyle;
+            document.head.appendChild(styleFaturamentoElement);
 
-const actionButtons = document.querySelectorAll('.acao-btn');
-actionButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-        const btn = event.target.closest('.acao-btn');
-        if (!btn) return;
+            const actionButtons = document.querySelectorAll('.acao-btn');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const btn = event.target.closest('.acao-btn');
+                    if (!btn) return;
 
-        const key = btn.getAttribute('data-key');
-        const valueElement = document.getElementById(`value-${key}`);
-        const currentValue = valueElement.textContent;
+                    const key = btn.getAttribute('data-key');
+                    const valueElement = document.getElementById(`value-${key}`);
+                    const currentValue = valueElement.textContent;
 
-        if (key === 'status' || key === 'motivo') {
-            const options = key === 'status' ? `
+                    if (key === 'status' || key === 'motivo') {
+                        const options = key === 'status' ? `
                 <option value="AGUARDANDO FATURAMENTO">AGUARDANDO FATURAMENTO</option>
                 <option value="FATURADO">FATURADO</option>
                 <option value="FATURADO PARCIAL">FATURADO PARCIAL</option>
@@ -521,58 +524,58 @@ actionButtons.forEach(button => {
                 <option value="AGUARDANDO CONFERÊNCIA DE CIRURGIAS">AGUARDANDO CONFERÊNCIA DE CIRURGIAS</option>
             `;
 
-            valueElement.innerHTML = `<select id="input-${key}" class="form-select">${options}</select>`;
-            document.getElementById(`input-${key}`).value = currentValue;
-        } else {
-            valueElement.innerHTML = `<input type="text" id="input-${key}" value="${currentValue}">`;
-        }
+                        valueElement.innerHTML = `<select id="input-${key}" class="form-select">${options}</select>`;
+                        document.getElementById(`input-${key}`).value = currentValue;
+                    } else {
+                        valueElement.innerHTML = `<input type="text" id="input-${key}" value="${currentValue}">`;
+                    }
 
-        btn.style.display = 'none';
-        const saveButton = document.querySelector(`.salvar-btn[data-key="${key}"]`);
-        saveButton.style.display = 'inline-block';
-    });
-});
+                    btn.style.display = 'none';
+                    const saveButton = document.querySelector(`.salvar-btn[data-key="${key}"]`);
+                    saveButton.style.display = 'inline-block';
+                });
+            });
 
-const saveButtons = document.querySelectorAll('.salvar-btn');
-saveButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-        const btn = event.target.closest('.salvar-btn');
-        if (!btn) return;
+            const saveButtons = document.querySelectorAll('.salvar-btn');
+            saveButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const btn = event.target.closest('.salvar-btn');
+                    if (!btn) return;
 
-        const key = btn.getAttribute('data-key');
-        const inputElement = document.getElementById(`input-${key}`);
-        const newValue = inputElement.value;
+                    const key = btn.getAttribute('data-key');
+                    const inputElement = document.getElementById(`input-${key}`);
+                    const newValue = inputElement.value;
 
-        const valueElement = document.getElementById(`value-${key}`);
-        valueElement.innerHTML = newValue;
+                    const valueElement = document.getElementById(`value-${key}`);
+                    valueElement.innerHTML = newValue;
 
-        btn.style.display = 'none';
-        const actionButton = document.querySelector(`.acao-btn[data-key="${key}"]`);
-        actionButton.style.display = 'inline-block';
+                    btn.style.display = 'none';
+                    const actionButton = document.querySelector(`.acao-btn[data-key="${key}"]`);
+                    actionButton.style.display = 'inline-block';
 
-        const updatedData = {
-            ...faturamento,
-            [key]: newValue
-        };
+                    const updatedData = {
+                        ...faturamento,
+                        [key]: newValue
+                    };
 
-        const faturamentoId = getFaturamentoIdFromUrl();
+                    const faturamentoId = getFaturamentoIdFromUrl();
 
-        fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/${faturamentoId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedData)
-        })
-        .then(response => response.json())
-        .then(updatedFaturamento => {
-            console.log(`Registro atualizado com sucesso para o campo: ${key}`);
-        })
-        .catch(error => {
-            console.error('Erro ao atualizar registro:', error);
-        });
-    });
-});
+                    fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/${faturamentoId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedData)
+                    })
+                        .then(response => response.json())
+                        .then(updatedFaturamento => {
+                            console.log(`Registro atualizado com sucesso para o campo: ${key}`);
+                        })
+                        .catch(error => {
+                            console.error('Erro ao atualizar registro:', error);
+                        });
+                });
+            });
 
 
             if (faturamento.contador === 1) {
@@ -840,27 +843,26 @@ saveButtons.forEach(button => {
 
         btnAtualizarEquipamentosMateriais.addEventListener('click', onClickAtualizarEquipamentos);
 
-        function onClickAtualizarEquipamentos() {
+        async function onClickAtualizarEquipamentos() {
+            try {
+                const { somaTotal, equipamentosSelecionados, materiaisSelecionados, contador } = logSelecoes();
 
-            const {
-                somaTotal,
-                equipamentosSelecionados,
-                materiaisSelecionados,
-                contador
-            } = logSelecoes();
+                const faturamentoId = getFaturamentoIdFromUrl();
+                await atualizarDadosFaturamento(faturamentoId, somaTotal, equipamentosSelecionados, materiaisSelecionados, contador);
 
-            const faturamentoId = getFaturamentoIdFromUrl();
-            atualizarDadosFaturamento(faturamentoId, somaTotal, equipamentosSelecionados, materiaisSelecionados, contador);
-
-            location.reload();
+                location.reload();
+            } catch (error) {
+                console.error('Erro ao atualizar equipamentos:', error);
+            }
         }
 
         function logSelecoes() {
+            console.log('logSelecoes called');
+
             const equipamentosSelecionados = [];
             const materiaisSelecionados = [];
 
             const parseDecimal = (str) => {
-
                 const cleanedStr = typeof str === 'string' ? str.replace(',', '.') : str;
                 return parseFloat(cleanedStr);
             };
@@ -912,6 +914,8 @@ saveButtons.forEach(button => {
 
             let contador = 1;
 
+            console.log('Seleções:', { somaTotal, equipamentosSelecionados, materiaisSelecionados, contador });
+
             return {
                 somaTotal: somaTotal,
                 equipamentosSelecionados: equipamentosSelecionados,
@@ -921,7 +925,6 @@ saveButtons.forEach(button => {
         }
 
         function atualizarDadosFaturamento(faturamentoId, somaTotal, equipamentosSelecionados, materiaisSelecionados, contador) {
-
             const body = {
                 valorTotal: somaTotal,
                 novoEquipamentos: equipamentosSelecionados,
@@ -929,7 +932,7 @@ saveButtons.forEach(button => {
                 contador: contador,
             };
 
-            fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
+            return fetch(`https://api.itmf.app.br/faturamento/atualizarFaturamento/atualizar/${faturamentoId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
