@@ -10,7 +10,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js"></script>
 
     <style>
         #background-container {
@@ -115,60 +115,60 @@
         }
 
         .nota-img {
-        max-width: 200px;
-        max-height: 200px;
-        display: block;
-        margin-bottom: 10px;
-    }
+            max-width: 200px;
+            max-height: 200px;
+            display: block;
+            margin-bottom: 10px;
+        }
 
-    .comunicado-container {
-        margin-top: 20px;
-    }
+        .comunicado-container {
+            margin-top: 20px;
+        }
 
-    
 
-    .comunicado-container input,
-    .comunicado-container button {
-        display: block;
-        margin-top: 10px;
-    }
 
-    .remessa-container {
-        margin-top: 20px;
-    }
+        .comunicado-container input,
+        .comunicado-container button {
+            display: block;
+            margin-top: 10px;
+        }
 
-    .remessa-container input,
-    .remessa-container button {
-        display: block;
-        margin-top: 10px;
-    }
+        .remessa-container {
+            margin-top: 20px;
+        }
 
-    .devolucao-container {
-        margin-top: 20px;
-    }
+        .remessa-container input,
+        .remessa-container button {
+            display: block;
+            margin-top: 10px;
+        }
 
-    .devolucao-container input,
-    .devolucao-container button {
-        display: block;
-        margin-top: 10px;
-    }
+        .devolucao-container {
+            margin-top: 20px;
+        }
 
-    .fiscal-container {
-        margin-top: 20px;
-    }
+        .devolucao-container input,
+        .devolucao-container button {
+            display: block;
+            margin-top: 10px;
+        }
 
-    .fiscal-container input,
-    .fiscal-container button {
-        display: block;
-        margin-top: 10px;
-    }
+        .fiscal-container {
+            margin-top: 20px;
+        }
 
-        canvas, img {
-    max-width: 100%;
-    max-height: 100%;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        .fiscal-container input,
+        .fiscal-container button {
+            display: block;
+            margin-top: 10px;
+        }
+
+        canvas,
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -256,11 +256,13 @@
                                 <div>
                                     <label for="comunicadoInput" class="form-label mt-2">Comunicado de Uso</label>
                                     <input type="file" class="form-control" id="comunicadoInput" accept="image/*" />
-                                    
+
                                     <div class="comunicado-container">
                                         <img id="comunicadoImage" class="nota-img mt-2" src="" alt="Preview" />
-                                        <button id="btnComunicado" class="btn btn-success mt-2">Anexar Comunicado de Uso</button>
-                                        <button id="btnComunicadoAtualizar" class="btn btn-success mt-2" style="display: none;">Atualizar Comunicado de Uso</button>
+                                        <button id="btnComunicado" class="btn btn-success mt-2">Anexar Comunicado de
+                                            Uso</button>
+                                        <button id="btnComunicadoAtualizar" class="btn btn-success mt-2"
+                                            style="display: none;">Atualizar Comunicado de Uso</button>
                                     </div>
                                 </div>
 
@@ -271,11 +273,11 @@
 
                                         <div class="remessa-container">
                                             <img id="remessaImage" class="nota-img mt-2" src="#" alt="Preview"
-                                            style="max-width: 100%; margin-top: 10px; display: none;" />
+                                                style="max-width: 100%; margin-top: 10px; display: none;" />
                                             <button id="btnRemessa" class="btn btn-success mt-2">Anexar Nota de
-                                            Remessa</button>
+                                                Remessa</button>
                                             <button id="btnRemessaAtualizar" class="btn btn-success mt-2"
-                                            style="display: none;">Atulizar Nota de Remessa</button>
+                                                style="display: none;">Atulizar Nota de Remessa</button>
                                         </div>
                                     </div>
 
@@ -284,7 +286,7 @@
 
                                     <div class="devolucao-container">
                                         <img id="devolucaoImage" class="nota-img" src="#" alt="Preview"
-                                        style="max-width: 100%; margin-top: 10px; display: none;" />
+                                            style="max-width: 100%; margin-top: 10px; display: none;" />
                                     </div>
                                 </div>
                             </div>
@@ -314,7 +316,7 @@
                                         <input type="file" class="form-control" id="fotoInput" accept="image/*" />
                                         <div class="fiscal-container">
                                             <img id="previewImage" class="nota-img" src="#" alt="Preview"
-                                            style="max-width: 100%; margin-top: 10px; display: none;" />
+                                                style="max-width: 100%; margin-top: 10px; display: none;" />
                                             <button id="btnNota" class="btn btn-success">Anexar Nota Fiscal</button>
                                             <button id="btnNotaAtualizar" class="btn btn-success"
                                                 style="display: none;">Atualizar Nota
@@ -334,7 +336,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>   
+        crossorigin="anonymous"></script>
     <script>
 
         const btnVoltar = document.getElementById('btnVoltar');
@@ -343,10 +345,10 @@
             window.location.href = "../pedidos/tabelaPedidos.html";
         })
 
-        document.getElementById('btnDeletar').addEventListener('click', async function() {
+        document.getElementById('btnDeletar').addEventListener('click', async function () {
             const urlParams = new URLSearchParams(window.location.search);
             const pacienteId = urlParams.get('id');
-            
+
             if (confirm('Tem certeza de que deseja deletar este pedido?')) {
                 try {
                     const response = await fetch(`https://api.itmf.app.br/registrar/deletarPedido/${pacienteId}`, {
@@ -513,113 +515,166 @@
             }
 
             const MAX_WIDTH = 300;
-    const MAX_HEIGHT = 400;
+            const MAX_HEIGHT = 400;
 
-    const resizeCanvas = (canvas, maxWidth, maxHeight) => {
-        const context = canvas.getContext('2d');
-        const width = canvas.width;
-        const height = canvas.height;
+            const resizeCanvas = (canvas, maxWidth, maxHeight) => {
+                const context = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
 
-        const newCanvas = document.createElement('canvas');
-        const newContext = newCanvas.getContext('2d');
+                const newCanvas = document.createElement('canvas');
+                const newContext = newCanvas.getContext('2d');
 
-        let newWidth, newHeight;
+                let newWidth, newHeight;
 
-        if (width > height) {
-            newWidth = maxWidth;
-            newHeight = (height / width) * maxWidth;
-        } else {
-            newHeight = maxHeight;
-            newWidth = (width / height) * maxHeight;
-        }
-
-        newCanvas.width = newWidth;
-        newCanvas.height = newHeight;
-        newContext.drawImage(canvas, 0, 0, newWidth, newHeight);
-
-        canvas.width = newWidth;
-        canvas.height = newHeight;
-        context.clearRect(0, 0, width, height);
-        context.drawImage(newCanvas, 0, 0);
-    };
-
-    const previewFile = (input, previewImage) => {
-        input.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            if (file) {
-                console.log(`File selected: ${file.name}`);
-                if (file.type === 'application/pdf') {
-                    reader.onload = (e) => {
-                        const pdfData = new Uint8Array(e.target.result);
-                        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
-
-                        const loadingTask = pdfjsLib.getDocument({ data: pdfData });
-
-                        loadingTask.promise.then((pdf) => {
-                            pdf.getPage(1).then((page) => {
-                                const viewport = page.getViewport({ scale: 1 });
-                                const canvas = document.createElement('canvas');
-                                const context = canvas.getContext('2d');
-                                canvas.width = viewport.width;
-                                canvas.height = viewport.height;
-
-                                const renderContext = {
-                                    canvasContext: context,
-                                    viewport: viewport
-                                };
-
-                                page.render(renderContext).promise.then(() => {
-                                    resizeCanvas(canvas, MAX_WIDTH, MAX_HEIGHT);
-                                    previewImage.style.display = 'none';
-                                    if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
-                                        previewImage.nextElementSibling.remove();
-                                    }
-                                    previewImage.insertAdjacentElement('afterend', canvas);
-                                    console.log('PDF renderizado com sucesso.');
-                                }).catch((error) => {
-                                    console.error('Erro ao renderizar a página do PDF:', error);
-                                });
-                            }).catch((error) => {
-                                console.error('Erro ao obter a página do PDF:', error);
-                            });
-                        }).catch((error) => {
-                            console.error('Erro ao carregar o PDF:', error);
-                        });
-                    };
-                    reader.readAsArrayBuffer(file);
+                if (width > height) {
+                    newWidth = maxWidth;
+                    newHeight = (height / width) * maxWidth;
                 } else {
-                    reader.onload = (e) => {
-                        previewImage.src = e.target.result;
-                        previewImage.style.display = 'block';
-                        previewImage.style.maxWidth = `${MAX_WIDTH}px`;
-                        previewImage.style.maxHeight = `${MAX_HEIGHT}px`;
-                        if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
-                            previewImage.nextElementSibling.remove();
-                        }
-                    };
-                    reader.readAsDataURL(file);
+                    newHeight = maxHeight;
+                    newWidth = (width / height) * maxHeight;
                 }
+
+                newCanvas.width = newWidth;
+                newCanvas.height = newHeight;
+                newContext.drawImage(canvas, 0, 0, newWidth, newHeight);
+
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                context.clearRect(0, 0, width, height);
+                context.drawImage(newCanvas, 0, 0);
+            };
+
+            const arrayBufferToBase64 = (buffer) => {
+                let binary = '';
+                const bytes = new Uint8Array(buffer);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return window.btoa(binary);
+            };
+
+            const previewFile = (input, previewImage) => {
+                input.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+
+                    if (file) {
+                        console.log(`File selected: ${file.name}`);
+                        if (file.type === 'application/pdf') {
+                            reader.onload = (e) => {
+                                const pdfData = new Uint8Array(e.target.result);
+                                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+                                const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+
+                                loadingTask.promise.then((pdf) => {
+                                    pdf.getPage(1).then((page) => {
+                                        const viewport = page.getViewport({ scale: 1 });
+                                        const canvas = document.createElement('canvas');
+                                        const context = canvas.getContext('2d');
+                                        canvas.width = viewport.width;
+                                        canvas.height = viewport.height;
+
+                                        const renderContext = {
+                                            canvasContext: context,
+                                            viewport: viewport
+                                        };
+
+                                        page.render(renderContext).promise.then(() => {
+                                            resizeCanvas(canvas, MAX_WIDTH, MAX_HEIGHT);
+                                            if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
+                                                previewImage.nextElementSibling.remove();
+                                            }
+                                            previewImage.insertAdjacentElement('afterend', canvas);
+                                            console.log('PDF renderizado com sucesso.');
+                                            const base64String = arrayBufferToBase64(e.target.result);
+                                            previewImage.src = `data:application/pdf;base64,${base64String}`;
+                                        }).catch((error) => {
+                                            console.error('Erro ao renderizar a página do PDF:', error);
+                                        });
+                                    }).catch((error) => {
+                                        console.error('Erro ao obter a página do PDF:', error);
+                                    });
+                                }).catch((error) => {
+                                    console.error('Erro ao carregar o PDF:', error);
+                                });
+                            };
+                            reader.readAsArrayBuffer(file);
+                        } else {
+                            reader.onload = (e) => {
+                                previewImage.src = e.target.result;
+                                previewImage.style.display = 'block';
+                                previewImage.style.maxWidth = `${MAX_WIDTH}px`;
+                                previewImage.style.maxHeight = `${MAX_HEIGHT}px`;
+                                if (previewImage.nextElementSibling && previewImage.nextElementSibling.tagName === 'CANVAS') {
+                                    previewImage.nextElementSibling.remove();
+                                }
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                });
+            };
+            const fotoInput = document.getElementById('fotoInput');
+            const previewImage = document.getElementById('previewImage');
+            previewFile(fotoInput, previewImage);
+
+            const devolucaoInput = document.getElementById('devolucaoInput');
+            const devolucaoImage = document.getElementById('devolucaoImage');
+            previewFile(devolucaoInput, devolucaoImage);
+
+            const remessaInput = document.getElementById('remessaInput');
+            const remessaImage = document.getElementById('remessaImage');
+            previewFile(remessaInput, remessaImage);
+
+            const comunicadoInput = document.getElementById('comunicadoInput');
+            const comunicadoImage = document.getElementById('comunicadoImage');
+            previewFile(comunicadoInput, comunicadoImage);
+
+            if (comunicadoImage.src.startsWith('data:application/pdf;base64,')) {
+                const base64String = comunicadoImage.src.split(',')[1];
+                const pdfData = atob(base64String);
+                const byteArray = new Uint8Array(pdfData.length);
+                for (let i = 0; i < pdfData.length; i++) {
+                    byteArray[i] = pdfData.charCodeAt(i);
+                }
+
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+                const loadingTask = pdfjsLib.getDocument({ data: byteArray });
+
+                loadingTask.promise.then((pdf) => {
+                    pdf.getPage(1).then((page) => {
+                        const viewport = page.getViewport({ scale: 1 });
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+                        canvas.width = viewport.width;
+                        canvas.height = viewport.height;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+
+                        page.render(renderContext).promise.then(() => {
+                            resizeCanvas(canvas, MAX_WIDTH, MAX_HEIGHT);
+                            if (comunicadoImage.nextElementSibling && comunicadoImage.nextElementSibling.tagName === 'CANVAS') {
+                                comunicadoImage.nextElementSibling.remove();
+                            }
+                            comunicadoImage.insertAdjacentElement('afterend', canvas);
+                            console.log('PDF renderizado com sucesso.');
+                        }).catch((error) => {
+                            console.error('Erro ao renderizar a página do PDF:', error);
+                        });
+                    }).catch((error) => {
+                        console.error('Erro ao obter a página do PDF:', error);
+                    });
+                }).catch((error) => {
+                    console.error('Erro ao carregar o PDF:', error);
+                });
             }
-        });
-    };
 
-    const fotoInput = document.getElementById('fotoInput');
-    const previewImage = document.getElementById('previewImage');
-    previewFile(fotoInput, previewImage);
-
-    const devolucaoInput = document.getElementById('devolucaoInput');
-    const devolucaoImage = document.getElementById('devolucaoImage');
-    previewFile(devolucaoInput, devolucaoImage);
-
-    const remessaInput = document.getElementById('remessaInput');
-    const remessaImage = document.getElementById('remessaImage');
-    previewFile(remessaInput, remessaImage);
-
-    const comunicadoInput = document.getElementById('comunicadoInput');
-    const comunicadoImage = document.getElementById('comunicadoImage');
-    previewFile(comunicadoInput, comunicadoImage);
         });
 
         const btnComunicado = document.getElementById('btnComunicado');
@@ -706,103 +761,78 @@
 
         btnNota.addEventListener('click', async function () {
             const previewImage = document.getElementById('previewImage');
-            const nomeEntregador = document.getElementById('nomeEntregadorInput').value;
+            const imageUrl = previewImage.src;
 
             const fotoInput = document.getElementById('fotoInput');
             const file = fotoInput.files[0];
 
             if (!file) {
-                alert('Anexe uma Imagem Válida');
-                return;
-            } else if (!nomeEntregador) {
-                alert('Informe o Nome do Entregador');
+                alert('Anexe um Arquivo Válido');
                 return;
             }
 
-            if (previewImage) {
-                if (previewImage.src && previewImage.src !== '#') {
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.width = previewImage.width;
-                    canvas.height = previewImage.height;
-                    context.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
-                    const base64Image = canvas.toDataURL('image/png');
-
-                    const pacienteId = getPedidoIdFromUrl();
-                    if (!pacienteId) {
-                        console.error('ID do paciente não encontrado na URL.');
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ imagemNotaFiscal64: base64Image, entregador: nomeEntregador })
-                        });
-
-                        if (response.ok) {
-                            console.log('Campo imagemNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
-                        } else {
-                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
-                        }
-                    } catch (error) {
-                        console.error('Erro ao realizar a requisição:', error);
-                    }
-                } else {
-                    console.error('Nenhuma imagem de pré-visualização disponível.');
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
                 }
+
+                try {
+                    const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemNotaFiscal64: imageUrl, })
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageNotaFiscal64 para o paciente:', pacienteId);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
+                }
+                location.reload();
             } else {
-                console.error('Elemento de imagem de pré-visualização não encontrado.');
+                console.error('URL da imagem está vazia.');
             }
-            location.reload();
         });
 
         const btnNotaAtualizar = document.getElementById('btnNotaAtualizar');
 
         btnNotaAtualizar.addEventListener('click', async function () {
             const previewImage = document.getElementById('previewImage');
-            const nomeEntregador = document.getElementById('nomeEntregadorInput').value;
+            const imageUrl = previewImage.src;
 
-            if (previewImage) {
-                if (previewImage.src && previewImage.src !== '#') {
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.width = previewImage.width;
-                    canvas.height = previewImage.height;
-                    context.drawImage(previewImage, 0, 0, previewImage.width, previewImage.height);
-                    const base64Image = canvas.toDataURL('image/png');
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
+                }
 
-                    const pacienteId = getPedidoIdFromUrl();
-                    if (!pacienteId) {
-                        console.error('ID do paciente não encontrado na URL.');
-                        return;
+                try {
+                    const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemNotaFiscal64: "Sem Nota Fiscal", entregador: "Informe o Entregador"})
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageNotaFiscal64 para o paciente:', pacienteId);
                     }
-
-                    try {
-                        const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ imagemNotaFiscal64: "Sem Nota Fiscal", entregador: "Informe o Entregador" })
-                        });
-
-                        if (response.ok) {
-                            console.log('Campo imagemNotaFiscal64 atualizado com sucesso para o paciente:', pacienteId);
-                        } else {
-                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
-                        }
-                    } catch (error) {
-                        console.error('Erro ao realizar a requisição:', error);
-                    }
-                } else {
-                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
                 }
             } else {
-                console.error('Elemento de imagem de pré-visualização não encontrado.');
+                console.error('URL da imagem está vazia.');
             }
             location.reload();
         });
@@ -811,98 +841,78 @@
 
         btnRemessa.addEventListener('click', async function () {
             const remessaImage = document.getElementById('remessaImage');
+            const imageUrl = remessaImage.src;
 
             const remessaInput = document.getElementById('remessaInput');
             const file = remessaInput.files[0];
 
             if (!file) {
-                alert('Anexe uma Imagem Válida');
+                alert('Anexe um Arquivo Válido');
                 return;
             }
 
-            if (remessaImage) {
-                if (remessaImage.src && remessaImage.src !== '#') {
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.width = remessaImage.width;
-                    canvas.height = remessaImage.height;
-                    context.drawImage(remessaImage, 0, 0, remessaImage.width, remessaImage.height);
-                    const base64Image = canvas.toDataURL('image/png');
-
-                    const pacienteId = getPedidoIdFromUrl();
-                    if (!pacienteId) {
-                        console.error('ID do paciente não encontrado na URL.');
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ imagemRemessa64: base64Image })
-                        });
-
-                        if (response.ok) {
-                            console.log('Campo imagemRemessa64 atualizado com sucesso para o paciente:', pacienteId);
-                        } else {
-                            console.error('Falha ao atualizar campo imagemNotaFiscal64 para o paciente:', pacienteId);
-                        }
-                    } catch (error) {
-                        console.error('Erro ao realizar a requisição:', error);
-                    }
-                } else {
-                    console.error('Nenhuma imagem de pré-visualização disponível.');
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
                 }
+
+                try {
+                    const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemRemessa64: imageUrl, })
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageRemessa64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageRemessa64 para o paciente:', pacienteId);
+                    }
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
+                }
+                location.reload();
             } else {
-                console.error('Elemento de imagem de pré-visualização não encontrado.');
+                console.error('URL da imagem está vazia.');
             }
-            location.reload();
         });
 
         const btnRemessaAtualizar = document.getElementById('btnRemessaAtualizar');
 
         btnRemessaAtualizar.addEventListener('click', async function () {
             const remessaImage = document.getElementById('remessaImage');
+            const imageUrl = comunicadoImage.src;
 
-            if (remessaImage) {
-                if (remessaImage.src && remessaImage.src !== '#') {
-                    const canvas = document.createElement('canvas');
-                    const context = canvas.getContext('2d');
-                    canvas.width = remessaImage.width;
-                    canvas.height = remessaImage.height;
-                    context.drawImage(remessaImage, 0, 0, remessaImage.width, remessaImage.height);
-                    const base64Image = canvas.toDataURL('image/png');
+            if (imageUrl.trim() !== '') {
+                const pacienteId = getPedidoIdFromUrl();
+                if (!pacienteId) {
+                    console.error('ID do paciente não encontrado na URL.');
+                    return;
+                }
 
-                    const pacienteId = getPedidoIdFromUrl();
-                    if (!pacienteId) {
-                        console.error('ID do paciente não encontrado na URL.');
-                        return;
+                try {
+                    const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ imagemRemessa64: "Sem Nota de Remessa", })
+                    });
+
+                    if (response.ok) {
+                        console.log('Campo imageRemessa64 atualizado com sucesso para o paciente:', pacienteId);
+                    } else {
+                        console.error('Falha ao atualizar campo imageRemessa64 para o paciente:', pacienteId);
                     }
-
-                    try {
-                        const response = await fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pacienteId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ imagemRemessa64: "Sem Nota de Remessa" })
-                        });
-
-                        if (response.ok) {
-                            console.log('Nota de Remessa atualizada com sucesso para o paciente:', pacienteId);
-                        } else {
-                            console.error('Falha ao atualizar a Nota de Remessa para o paciente:', pacienteId);
-                        }
-                    } catch (error) {
-                        console.error('Erro ao realizar a requisição:', error);
-                    }
-                } else {
-                    console.error('Nenhuma imagem de pré-visualização disponível.');
+                } catch (error) {
+                    console.error('Erro ao realizar a requisição:', error);
                 }
             } else {
-                console.error('Elemento de imagem de pré-visualização não encontrado.');
+                console.error('URL da imagem está vazia.');
             }
             location.reload();
         });
@@ -915,36 +925,36 @@
         let entregador = "Sem Nome";
 
         function fetchPedidoInfo(pedidoId) {
-    fetch(`https://api.itmf.app.br/registrar/receberID/${pedidoId}`)
-        .then(response => response.json())
-        .then(pedido => {
-            const pedidoInfoContainer = document.getElementById('pedidoInfo');
-            const equipamentosInfoContainer = document.getElementById('equipamentosInfo');
+            fetch(`https://api.itmf.app.br/registrar/receberID/${pedidoId}`)
+                .then(response => response.json())
+                .then(pedido => {
+                    const pedidoInfoContainer = document.getElementById('pedidoInfo');
+                    const equipamentosInfoContainer = document.getElementById('equipamentosInfo');
 
-            pedidoInfoContainer.innerHTML = '';
+                    pedidoInfoContainer.innerHTML = '';
 
-            const fieldsToShow = [
-                'idPaciente',
-                'nomePaciente',
-                'hospital',
-                'horaProcedimento',
-                'vendedor',
-                'linha',
-                'carimboHorario',
-                'responsabilidade',
-                'instrumentador',
-                'dataProcedimento',
-                'medico',
-                'tipoProcedimento'
-            ];
+                    const fieldsToShow = [
+                        'idPaciente',
+                        'nomePaciente',
+                        'hospital',
+                        'horaProcedimento',
+                        'vendedor',
+                        'linha',
+                        'carimboHorario',
+                        'responsabilidade',
+                        'instrumentador',
+                        'dataProcedimento',
+                        'medico',
+                        'tipoProcedimento'
+                    ];
 
-            let rowHtml = '';
+                    let rowHtml = '';
 
-            fieldsToShow.forEach(key => {
-                const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
-                const value = pedido[key];
+                    fieldsToShow.forEach(key => {
+                        const label = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+                        const value = pedido[key];
 
-                rowHtml += `
+                        rowHtml += `
                     <div class="col-md-4">
                         <div class="pedido-info-item">
                             <p class="pedido-info-label">${label}:</p>
@@ -961,15 +971,15 @@
                         </div>
                     </div>
                 `;
-            });
+                    });
 
-            pedidoInfoContainer.innerHTML = `
+                    pedidoInfoContainer.innerHTML = `
                 <div class="row">
                     ${rowHtml}
                 </div>
             `;
 
-            const cssStyle = `
+                    const cssStyle = `
                 .pedido-info-item {
                     background-color: #6a6868;
                     border: 1px solid #dee2e6;
@@ -1010,13 +1020,13 @@
                 }
             `;
 
-            const styleElement = document.createElement('style');
-            styleElement.textContent = cssStyle;
-            document.head.appendChild(styleElement);
-            equipamentosInfoContainer.innerHTML = '';
+                    const styleElement = document.createElement('style');
+                    styleElement.textContent = cssStyle;
+                    document.head.appendChild(styleElement);
+                    equipamentosInfoContainer.innerHTML = '';
 
-            if (pedido.equipamentos && pedido.equipamentos.length > 0) {
-                equipamentosInfoContainer.innerHTML += `
+                    if (pedido.equipamentos && pedido.equipamentos.length > 0) {
+                        equipamentosInfoContainer.innerHTML += `
                     <div>
                         <h5>Equipamentos:</h5>
                         <ul>
@@ -1026,12 +1036,12 @@
                         </ul>
                     </div>
                 `;
-            } else {
-                equipamentosInfoContainer.innerHTML += '<p>Nenhum equipamento registrado para este pedido.</p>';
-            }
+                    } else {
+                        equipamentosInfoContainer.innerHTML += '<p>Nenhum equipamento registrado para este pedido.</p>';
+                    }
 
-            if (pedido.materiais && pedido.materiais.length > 0) {
-                equipamentosInfoContainer.innerHTML += `
+                    if (pedido.materiais && pedido.materiais.length > 0) {
+                        equipamentosInfoContainer.innerHTML += `
                     <div>
                         <h5>Materiais:</h5>
                         <ul>
@@ -1041,154 +1051,193 @@
                         </ul>
                     </div>
                 `;
-            } else {
-                equipamentosInfoContainer.innerHTML += '<p>Nenhum material registrado para este pedido.</p>';
-            }
+                    } else {
+                        equipamentosInfoContainer.innerHTML += '<p>Nenhum material registrado para este pedido.</p>';
+                    }
 
-            entregador = pedido.entregador;
+                    entregador = pedido.entregador;
 
-            const comunicadoImage = document.getElementById('comunicadoImage');
-            if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64.trim() !== '') {
-                comunicadoImage.src = `${pedido.imagemComunicadoUso64}`;
-                comunicadoImage.style.display = 'block';
-            }
+                    const comunicadoImage = document.getElementById('comunicadoImage');
+                    if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64.trim() !== '') {
+                        comunicadoImage.src = `${pedido.imagemComunicadoUso64}`;
+                        comunicadoImage.style.display = 'block';
+                    }
 
-            if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64 !== 'Sem comunicado de uso') {
-                const comunicadoInput = document.getElementById('comunicadoInput');
-                const btnComunicado = document.getElementById('btnComunicado');
-                const btnComunicadoAtualizar = document.getElementById('btnComunicadoAtualizar');
+                    if (pedido.imagemComunicadoUso64 && pedido.imagemComunicadoUso64 !== 'Sem comunicado de uso') {
+                        const comunicadoInput = document.getElementById('comunicadoInput');
+                        const comunicadoImage = document.getElementById('comunicadoImage');
+                        const btnComunicado = document.getElementById('btnComunicado');
+                        const btnComunicadoAtualizar = document.getElementById('btnComunicadoAtualizar');
 
-                if (comunicadoInput) {
-                    comunicadoInput.style.display = 'none';
-                }
+                        if (comunicadoImage.src.startsWith('data:application/pdf;base64,')) {
+                            comunicadoImage.style.display = 'none';
 
-                if (btnComunicado) {
-                    btnComunicado.style.display = 'none';
-                    btnComunicadoAtualizar.style.display = 'block';
-                }
-            } else {
-                comunicadoImage.style.display = 'none';
-                btnComunicadoAtualizar.style.display = 'none';
-            }
+                            var message = document.createElement('div');
+                            message.innerText = 'Sem pré-visualização disponível para arquivos .PDF';
+                            message.style.color = 'red';
 
-            const fotoInput = document.getElementById('fotoInput')
-            const previewImage = document.getElementById('previewImage');
-            if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64.trim() !== '') {
-                previewImage.src = `${pedido.imagemNotaFiscal64}`
-                previewImage.style.display = 'block';
-            }
+                            var updateButton = document.querySelector('button[id="btnComunicadoAtualizar"]');
 
-            if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64 != 'Sem Nota Fiscal') {
-                const nomeEntregador = document.getElementById('nomeEntregadorInput');
-                const btnNota = document.getElementById('btnNota');
-                const btnNotaAtualizar = document.getElementById('btnNotaAtualizar');
+                            updateButton.parentNode.insertBefore(message, updateButton);
+                        }
 
-                if (fotoInput) {
-                    fotoInput.style.display = 'none';
-                }
+                        if (comunicadoInput) {
+                            comunicadoInput.style.display = 'none';
+                        }
 
-                if (nomeEntregador) {
-                    nomeEntregador.style.display = 'none';
-                }
+                        if (btnComunicado) {
+                            btnComunicado.style.display = 'none';
+                            btnComunicadoAtualizar.style.display = 'block';
+                        }
+                    } else {
+                        comunicadoImage.style.display = 'none';
+                        btnComunicadoAtualizar.style.display = 'none';
+                    }
 
-                if (btnNota) {
-                    btnNota.style.display = 'none';
-                    btnNotaAtualizar.style.display = 'block'
-                }
+                    const fotoInput = document.getElementById('fotoInput')
+                    const previewImage = document.getElementById('previewImage');
+                    if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64.trim() !== '') {
+                        previewImage.src = `${pedido.imagemNotaFiscal64}`
+                        previewImage.style.display = 'block';
+                    }
 
-            } else {
-                previewImage.style.display = 'none';
-                btnNotaAtualizar.style.display = 'none';
-            }
+                    if (pedido.imagemNotaFiscal64 && pedido.imagemNotaFiscal64 != 'Sem Nota Fiscal') {
+                        const nomeEntregador = document.getElementById('nomeEntregadorInput');
+                        const btnNota = document.getElementById('btnNota');
+                        const btnNotaAtualizar = document.getElementById('btnNotaAtualizar');
+                        const previewImage = document.getElementById('previewImage');
 
-            const remessaInput = document.getElementById('remessaInput')
-            const remessaImage = document.getElementById('remessaImage');
-            if (pedido.imagemRemessa64 && pedido.imagemRemessa64.trim() !== '') {
-                remessaImage.src = `${pedido.imagemRemessa64}`
-                remessaImage.style.display = 'block';
-            }
+                        if (previewImage.src.startsWith('data:application/pdf;base64,')) {
+                            previewImage.style.display = 'none';
 
-            if (pedido.imagemRemessa64 && pedido.imagemRemessa64 != 'Sem Nota de Remessa') {
-                const btnRemessa = document.getElementById('btnRemessa');
-                const btnRemessaAtualizar = document.getElementById('btnRemessaAtualizar');
+                            var message = document.createElement('div');
+                            message.innerText = 'Sem pré-visualização disponível para arquivos .PDF';
+                            message.style.color = 'red';
 
-                if (remessaInput) {
-                    remessaInput.style.display = 'none';
-                }
+                            var updateButton = document.querySelector('button[id="btnNotaAtualizar"]');
 
-                if (btnRemessa) {
-                    btnRemessa.style.display = 'none';
-                    btnRemessaAtualizar.style.display = 'block'
-                }
+                            updateButton.parentNode.insertBefore(message, updateButton);
+                        }
 
-            } else {
-                remessaImage.style.display = 'none';
-                btnRemessaAtualizar.style.display = 'none';
-            }
+                        if (fotoInput) {
+                            fotoInput.style.display = 'none';
+                        }
 
-            const actionButtons = document.querySelectorAll('.acao-btn');
-            actionButtons.forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const btn = event.target.closest('.acao-btn');
-                    if (!btn) return;
+                        if (nomeEntregador) {
+                            nomeEntregador.style.display = 'none';
+                        }
 
-                    const key = btn.getAttribute('data-key');
-                    const valueElement = document.getElementById(`value-${key}`);
-                    const currentValue = valueElement.textContent;
+                        if (btnNota) {
+                            btnNota.style.display = 'none';
+                            btnNotaAtualizar.style.display = 'block'
+                        }
 
-                    valueElement.innerHTML = `<input type="text" id="input-${key}" value="${currentValue}">`;
+                    } else {
+                        previewImage.style.display = 'none';
+                        btnNotaAtualizar.style.display = 'none';
+                    }
 
-                    btn.style.display = 'none';
-                    const saveButton = document.querySelector(`.salvar-btn[data-key="${key}"]`);
-                    saveButton.style.display = 'inline-block';
-                });
-            });
+                    const remessaInput = document.getElementById('remessaInput')
+                    const remessaImage = document.getElementById('remessaImage');
+                    if (pedido.imagemRemessa64 && pedido.imagemRemessa64.trim() !== '') {
+                        remessaImage.src = `${pedido.imagemRemessa64}`
+                        remessaImage.style.display = 'block';
+                    }
 
-            const saveButtons = document.querySelectorAll('.salvar-btn');
-            saveButtons.forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const btn = event.target.closest('.salvar-btn');
-                    if (!btn) return;
+                    if (pedido.imagemRemessa64 && pedido.imagemRemessa64 != 'Sem Nota de Remessa') {
+                        const btnRemessa = document.getElementById('btnRemessa');
+                        const remessaImage = document.getElementById('remessaImage');
+                        const btnRemessaAtualizar = document.getElementById('btnRemessaAtualizar');
 
-                    const key = btn.getAttribute('data-key');
-                    const inputElement = document.getElementById(`input-${key}`);
-                    const newValue = inputElement.value;
+                        if (remessaImage.src.startsWith('data:application/pdf;base64,')) {
+                            remessaImage.style.display = 'none';
 
-                    const valueElement = document.getElementById(`value-${key}`);
-                    valueElement.innerHTML = newValue;
+                            var message = document.createElement('div');
+                            message.innerText = 'Sem pré-visualização disponível para arquivos .PDF';
+                            message.style.color = 'red';
 
-                    btn.style.display = 'none';
-                    const actionButton = document.querySelector(`.acao-btn[data-key="${key}"]`);
-                    actionButton.style.display = 'inline-block';
+                            var updateButton = document.querySelector('button[id="btnRemessaAtualizar"]');
 
-                    const updatedData = {
-                        ...pedido,
-                        [key]: newValue
-                    };
+                            updateButton.parentNode.insertBefore(message, updateButton);
+                        }
 
-                    fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pedidoId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(updatedData)
-                    })
-                        .then(response => response.json())
-                        .then(updatedPedido => {
-                            console.log(`Registro atualizado com sucesso para o campo: ${key}`);
-                        })
-                        .catch(error => {
-                            console.error('Erro ao atualizar registro:', error);
+                        if (remessaInput) {
+                            remessaInput.style.display = 'none';
+                        }
+
+                        if (btnRemessa) {
+                            btnRemessa.style.display = 'none';
+                            btnRemessaAtualizar.style.display = 'block'
+                        }
+
+                    } else {
+                        remessaImage.style.display = 'none';
+                        btnRemessaAtualizar.style.display = 'none';
+                    }
+
+                    const actionButtons = document.querySelectorAll('.acao-btn');
+                    actionButtons.forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const btn = event.target.closest('.acao-btn');
+                            if (!btn) return;
+
+                            const key = btn.getAttribute('data-key');
+                            const valueElement = document.getElementById(`value-${key}`);
+                            const currentValue = valueElement.textContent;
+
+                            valueElement.innerHTML = `<input type="text" id="input-${key}" value="${currentValue}">`;
+
+                            btn.style.display = 'none';
+                            const saveButton = document.querySelector(`.salvar-btn[data-key="${key}"]`);
+                            saveButton.style.display = 'inline-block';
                         });
-                });
-            });
+                    });
 
-        })
-        .catch(error => {
-            console.error('Erro ao obter informações do pedido:', error);
-            alert('Erro ao obter informações do pedido. Tente novamente.');
-        });
-}
+                    const saveButtons = document.querySelectorAll('.salvar-btn');
+                    saveButtons.forEach(button => {
+                        button.addEventListener('click', (event) => {
+                            const btn = event.target.closest('.salvar-btn');
+                            if (!btn) return;
+
+                            const key = btn.getAttribute('data-key');
+                            const inputElement = document.getElementById(`input-${key}`);
+                            const newValue = inputElement.value;
+
+                            const valueElement = document.getElementById(`value-${key}`);
+                            valueElement.innerHTML = newValue;
+
+                            btn.style.display = 'none';
+                            const actionButton = document.querySelector(`.acao-btn[data-key="${key}"]`);
+                            actionButton.style.display = 'inline-block';
+
+                            const updatedData = {
+                                ...pedido,
+                                [key]: newValue
+                            };
+
+                            fetch(`https://api.itmf.app.br/registrar/atualizarPedido/${pedidoId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(updatedData)
+                            })
+                                .then(response => response.json())
+                                .then(updatedPedido => {
+                                    console.log(`Registro atualizado com sucesso para o campo: ${key}`);
+                                })
+                                .catch(error => {
+                                    console.error('Erro ao atualizar registro:', error);
+                                });
+                        });
+                    });
+
+                })
+                .catch(error => {
+                    console.error('Erro ao obter informações do pedido:', error);
+                    alert('Erro ao obter informações do pedido. Tente novamente.');
+                });
+        }
 
 
         function enviarParaFaturamento(pedidoId) {
